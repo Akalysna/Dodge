@@ -8,7 +8,7 @@ public class Dodge extends Application{
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		GameCtrl gameCtrl = new GameCtrl(stage); 
+		DodgeCtrl gameCtrl = new DodgeCtrl(stage); 
 		gameCtrl.run();
 		
 	}
