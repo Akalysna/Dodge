@@ -2,7 +2,9 @@ package app;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import node.machine.Machine;
 import view.CtrlView;
 import view.HomeView;
 import view.MapView;
@@ -14,11 +16,14 @@ public class DodgeCtrl {
 	private Scene scene;
 
 	private CtrlView ctrlView;
+	
+	public static int sceneWidth = 800; 
+	public static int sceneHeight = 600; 
 
 	public DodgeCtrl(Stage stage) {
 
 		BorderPane root = new BorderPane(); 
-		this.scene = new Scene(root, 800,600);
+		this.scene = new Scene(root, sceneWidth,sceneHeight);
 		this.ctrlView = new CtrlView(scene);
 		this.stage = stage;
 		
@@ -34,6 +39,10 @@ public class DodgeCtrl {
 
 	public void run() {
 
+//		BorderPane bp = new BorderPane(); 
+//		bp.getChildren().add(new Machine(50, 50, 50, 5, Color.RED)); 
+//		
+//		this.scene.setRoot(bp);
 		
 		this.stage.setScene(scene);
 		this.stage.show();
