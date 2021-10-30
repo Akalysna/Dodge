@@ -1,14 +1,15 @@
 package app;
 
+import java.util.List;
+
+import game.niveau.Niveau;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import node.machine.Machine;
 import view.CtrlView;
+import view.CtrlView.ScreenName;
 import view.HomeView;
 import view.MapView;
-import view.CtrlView.ScreenName;
 
 public class DodgeCtrl {
 
@@ -38,16 +39,19 @@ public class DodgeCtrl {
 	}
 
 	public void run() {
+		
+		Niveau niveau = new Niveau("niveau/niveau1.txt"); 
+		List<game.niveau.Stage> stages = niveau.getStages(); 
 
-//		BorderPane bp = new BorderPane(); 
-//		bp.getChildren().add(new Machine(50, 50, 50, 5, Color.RED)); 
-//		
-//		this.scene.setRoot(bp);
+		BorderPane bp = new BorderPane(); 
+		bp.getChildren().addAll(stages.get(0).getNodes()); 
+		
+		this.scene.setRoot(bp);
 		
 		this.stage.setScene(scene);
 		this.stage.show();
 
-		this.ctrlView.goTo(ScreenName.HOME);
+		//this.ctrlView.goTo(ScreenName.HOME);
 	}
 	
 	

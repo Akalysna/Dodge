@@ -1,0 +1,5 @@
+Stage
+SimpleMachine:SimpleZone
+SimpleMachine:SimpleZone
+
+SimpleMachine:50,50:SimpleZone:300,100
