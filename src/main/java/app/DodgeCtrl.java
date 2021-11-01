@@ -85,8 +85,6 @@ public class DodgeCtrl {
 
 				String[] line = l.split(":");
 				
-				System.out.println(ControleurDonnee.PATH_CUBY  + line[1]);
-
 				Niveau n = new Niveau(line[0], ControleurDonnee.PATH_CUBY  + line[1], line[2], ControleurDonnee.PATH_NIVEAU + line[3]);
 				this.niveaux.add(n);
 			}
@@ -112,6 +110,7 @@ public class DodgeCtrl {
 	public void startGame() {
 		move();
 		this.ctrlView.saveScreens(ScreenName.GAME, new GameView(this));
+		ctrlView.goTo(ScreenName.GAME);
 	}
 
 	public void gameModes(ScreenName sn) {
@@ -151,7 +150,7 @@ public class DodgeCtrl {
 		if (isMultiPalyer)
 			this.cubyPlayer.addAll(Arrays.asList(new Cuby(Color.WHITE, kt2), new Cuby(Color.WHITE, kt)));
 		else
-			this.cubyPlayer.add(new Cuby(Color.WHITE, kt2));
+			this.cubyPlayer.add(new Cuby(Color.WHITE, kt));
 	}
 
 	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }

@@ -58,10 +58,8 @@ public class Zone extends Polyline {
 	public void hover(boolean b) {
 
 		if (!disable) {
-			Color c = (Color) this.getStroke();
-
 			if (b)
-				this.setFill(c.deriveColor(c.getRed(), c.getGreen(), c.getBlue(), 0.3));
+				this.setFill(couleur.deriveColor(couleur.getRed(), couleur.getGreen(), couleur.getBlue(), 0.3));
 			else
 				this.setFill(Color.TRANSPARENT);
 		}

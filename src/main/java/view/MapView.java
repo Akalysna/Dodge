@@ -75,6 +75,7 @@ public class MapView extends BorderPane implements Initialisable{
 	}
 	
 	private void action() {
+		
 		this.btnPlay.setOnMouseClicked(event ->  dodgeCtrl.startGame());
 		
 		this.btnNextLevel.setOnMouseClicked(event -> {
