@@ -59,10 +59,28 @@ public class Machine extends StackPane implements Initialisable {
 	// Constructeur
 	// ------------------------------------
 
+	/**
+	 * Constructeur d'une machine simple
+	 * @param x Position en X
+	 * @param y Position en Y 
+	 * @param taille Taille de la machine 
+	 * @param lifePoint Point de vie de la machine
+	 * @param color Couleur de la machine
+	 */
 	public Machine(int x, int y, int taille, int lifePoint, Color color) {
 		this(x, y, taille, lifePoint, color, 1000, 1000);
 	}
 
+	/**
+	 * 
+	 * @param x Position en X
+	 * @param y Position en Y 
+	 * @param taille Taille de la machine 
+	 * @param lifePoint Point de vie de la machine
+	 * @param color Couleur de la machine
+	 * @param delayThrow Delai entre chaque lancer 
+	 * @param speedLifePointChrono Vitesse du decompte des points de vie 
+	 */
 	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono) {
 
 		this.couleur = color;

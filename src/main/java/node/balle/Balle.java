@@ -1,5 +1,6 @@
 package node.balle;
 
+import factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -11,10 +12,7 @@ import javafx.scene.shape.Circle;
  * @version 1.0
  *
  */
-
 public abstract class Balle extends Circle {
-	
-	
 
 	protected int vitesse;
 	protected int taille;
@@ -101,33 +99,23 @@ public abstract class Balle extends Circle {
 
 
 	public int getVitesse() { return vitesse; }
-
-	public void setVitesse(int vitesse) { this.vitesse = vitesse; }
-
 	public int getTaille() { return taille; }
 
-	public void setTaille(int taille) { this.taille = taille; }
-
 	public int getX() { return x; }
-
-	public void setX(int x) { this.x = x; }
-
 	public int getY() { return y; }
 
-	public void setY(int y) { this.y = y; }
-
+	public AnimationTimer getAnimBall() { return animBall; }
+	public TypeBalle getTypeBalle() { return typeBalle; }
 	public Color getColor() { return color; }
 
-	public void setColor(Color color) { this.color = color; }
+	public void setVitesse(int vitesse) { this.vitesse = vitesse; }
+	public void setTaille(int taille) { this.taille = taille; }
 
-	public AnimationTimer getAnimBall() { return animBall; }
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
 
 	public void setAnimBall(AnimationTimer animBall) { this.animBall = animBall; }
-
-	public TypeBalle getTypeBalle() { return typeBalle; }
-
 	public void setTypeBalle(TypeBalle typeBalle) { this.typeBalle = typeBalle; }
-
-
+	public void setColor(Color color) { this.color = color; }
 
 }

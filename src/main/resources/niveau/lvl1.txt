@@ -1,0 +1,3 @@
+Stage
+Simple:50,50:Simple:300,100:Simple:200,400
+Simple:500,200

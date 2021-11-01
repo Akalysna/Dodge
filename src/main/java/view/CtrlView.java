@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 public class CtrlView {
 	
 	public enum ScreenName {
-		HOME, MAP, GAME, SETTING; 
+		HOME, MAP, GAME, SETTING, MULTI; 
 	}
 
 	private Scene scene; 

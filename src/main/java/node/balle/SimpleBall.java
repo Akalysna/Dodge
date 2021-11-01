@@ -1,6 +1,7 @@
 package node.balle;
 
 import app.DodgeCtrl;
+import factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 
 public class SimpleBall extends Balle {

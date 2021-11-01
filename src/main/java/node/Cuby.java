@@ -4,7 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import node.KeyTouch.MoveDirection;
+import util.KeyTouch;
+import util.KeyTouch.MoveDirection;
 
 public class Cuby extends Rectangle {
 
