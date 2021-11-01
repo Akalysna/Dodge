@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ctrl.ControleurDonnee;
 import game.niveau.Niveau;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -50,15 +51,9 @@ public class DodgeCtrl {
 
 		this.currentLevel = null;
 
-		addAllScreen();
 	}
 
-	private void addAllScreen() {
-
-		this.ctrlView.saveScreens(ScreenName.HOME, new HomeView(this));
-		this.ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
-
-	}
+	
 
 	public void run() throws EmptyLevelException {
 
@@ -67,6 +62,7 @@ public class DodgeCtrl {
 		this.stage.setScene(scene);
 		this.stage.show();
 
+		this.ctrlView.saveScreens(ScreenName.HOME, new HomeView(this));
 		this.ctrlView.goTo(ScreenName.HOME);
 	}
 
@@ -88,8 +84,10 @@ public class DodgeCtrl {
 			while ((l = in.readLine()) != null) {
 
 				String[] line = l.split(":");
+				
+				System.out.println(ControleurDonnee.PATH_CUBY  + line[1]);
 
-				Niveau n = new Niveau(line[0], line[1], line[2], line[3]);
+				Niveau n = new Niveau(line[0], ControleurDonnee.PATH_CUBY  + line[1], line[2], ControleurDonnee.PATH_NIVEAU + line[3]);
 				this.niveaux.add(n);
 			}
 
@@ -113,7 +111,7 @@ public class DodgeCtrl {
 
 	public void startGame() {
 		move();
-		this.ctrlView.saveScreens(ScreenName.GAME, new GameView(this, cubyPlayer));
+		this.ctrlView.saveScreens(ScreenName.GAME, new GameView(this));
 	}
 
 	public void gameModes(ScreenName sn) {
@@ -127,7 +125,7 @@ public class DodgeCtrl {
 
 			createPlayer(false);
 
-			this.ctrlView.saveScreens(ScreenName.MAP, new MapView());
+			this.ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
 			ctrlView.goTo(ScreenName.MAP);
 
 			break;
@@ -208,6 +206,10 @@ public class DodgeCtrl {
 		// TODO Ajouter une exception ?
 
 	}
+
+	public Niveau getCurrentLevel() { return currentLevel; }
+	
+	
 
 
 

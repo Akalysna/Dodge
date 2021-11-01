@@ -6,18 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Random;
 
 import ctrl.ControleurDonnee.GameColor;
 import factory.MachineFactory;
 import factory.MachineFactory.TypeMachine;
-import factory.ZoneFactory.TypeZone;
 import factory.ZoneFactory;
+import factory.ZoneFactory.TypeZone;
 import javafx.scene.paint.Color;
-import view.GameView;
 
 public class Niveau {
 
@@ -32,6 +29,13 @@ public class Niveau {
 		this("", "", "", levelPath);
 	}
 
+	/**
+	 * Constructeur de Niveau 
+	 * @param name Nom du niveau 
+	 * @param cubyPath chemin d'acces de l'image du niveau 
+	 * @param musicPath chemin d'acces de la musique du niveau 
+	 * @param levelPath chemin d'acces du niveau 
+	 */
 	public Niveau(String name, String cubyPath, String musicPath, String levelPath) {
 
 		this.name = name;
@@ -102,11 +106,7 @@ public class Niveau {
 		}
 
 	}
-
-	public String getLevelPath() { return levelPath; }
-
-	public List<Stage> getStages() { return stages; }
-
+	
 
 	public Color randomColor(List<GameColor> list) {
 		
@@ -115,5 +115,17 @@ public class Niveau {
 		
 		return Color.valueOf(pickColor.getColorName());
 	}
+	
+
+	public String getName() { return name; }
+
+	public String getCubyPath() { return cubyPath; }
+
+	public String getMusicPath() { return musicPath; }
+	
+	public String getLevelPath() { return levelPath; }
+
+	public List<Stage> getStages() { return stages; }
+
 
 }

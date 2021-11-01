@@ -1,5 +1,7 @@
 package ctrl;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Random;
 
 import javafx.scene.image.Image;
@@ -32,9 +34,9 @@ public class ControleurDonnee {
 		}
 	}
 	
-	public static final String PATH_CUBY = "";
+	public static final String PATH_CUBY = "/img/cuby/";
 	public static final String PATH_MUSIC = "";
-	public static final String PATH_NIVEAU = "";
+	public static final String PATH_NIVEAU = "/niveau/";
 	
 
 	public static Color randomColor() {
@@ -46,8 +48,10 @@ public class ControleurDonnee {
 	}
 	
 	public static Image getImage(String path) {
-		return new Image(null)
-
+		
+		InputStream input = ControleurDonnee.class.getClass().getResourceAsStream(path);
+		return new Image(input);
 	}
+	
 
 }

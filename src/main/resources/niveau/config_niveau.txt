@@ -1,2 +1,2 @@
-New Word: : :lvl1.txt
-Begin: : :lvl2.txt
+New Word:cuby_rose.png: :lvl1.txt
+Begin:cuby_bleu.png: :lvl2.txt
