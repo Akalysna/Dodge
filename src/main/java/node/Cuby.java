@@ -1,5 +1,6 @@
 package node;
 
+import app.DodgeCtrl;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -13,7 +14,7 @@ public class Cuby extends Rectangle {
 	private double y;
 	private double vitesse;
 
-	private int width;
+	private int taille;
 
 	private Color color;
 
@@ -27,7 +28,7 @@ public class Cuby extends Rectangle {
 		this.y = y;
 		this.vitesse = vitesse;
 		this.color = color;
-		this.width = width;
+		this.taille = width;
 
 		this.keyTouch = kt;
 
@@ -43,8 +44,8 @@ public class Cuby extends Rectangle {
 
 	private void init() {
 
-		this.setWidth(width);
-		this.setHeight(width);
+		this.setWidth(taille);
+		this.setHeight(taille);
 
 		this.setX(x);
 		this.setY(y);
@@ -65,11 +66,11 @@ public class Cuby extends Rectangle {
 					setY(getY() - vitesse);
 				}
 
-				if (keyTouch.isPressed(MoveDirection.RIGHT) && (getX() < 600 - width)) {
+				if (keyTouch.isPressed(MoveDirection.RIGHT) && (getX() < DodgeCtrl.sceneWidth - taille)) {
 					setX(getX() + vitesse);
 				}
 
-				if (keyTouch.isPressed(MoveDirection.DOWN) && (getY() < 600 -width)) {
+				if (keyTouch.isPressed(MoveDirection.DOWN) && (getY() < DodgeCtrl.sceneHeight -taille)) {
 					setY(getY() + vitesse);
 				}
 

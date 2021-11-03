@@ -7,6 +7,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -17,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import node.zone.Zone;
 import util.StatObject;
 import view.Initialisable;
 
@@ -29,7 +32,9 @@ public class Machine extends StackPane implements Initialisable {
 	private StatObject<Integer> lifePoint;
 
 	private boolean isThrowBall;
-	private boolean isDestroy;
+	
+	private BooleanProperty isDestroy;
+	private BooleanProperty isActived;
 
 	private int speedLifePointChrono;
 	private int delayThrow;
@@ -68,7 +73,7 @@ public class Machine extends StackPane implements Initialisable {
 	 * @param color Couleur de la machine
 	 */
 	public Machine(int x, int y, int taille, int lifePoint, Color color) {
-		this(x, y, taille, lifePoint, color, 1000, 1000);
+		this(x, y, taille, lifePoint, color, 1, 1);
 	}
 
 	/**
@@ -94,6 +99,8 @@ public class Machine extends StackPane implements Initialisable {
 		this.speedLifePointChrono = speedLifePointChrono;
 
 		this.isThrowBall = false;
+		this.isDestroy =  new SimpleBooleanProperty(false);
+		this.isActived = new SimpleBooleanProperty(false); 
 
 		init();
 		animMachine();
@@ -166,6 +173,8 @@ public class Machine extends StackPane implements Initialisable {
 	// -----------
 
 	public void destroyMachine() {
+		
+		this.isDestroy.set(true);
 
 		Timeline fadeColor = new Timeline(
 				new KeyFrame(Duration.millis(500), new KeyValue(Machine.this.anneauGen.strokeProperty(), Color.GRAY),
@@ -176,6 +185,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		this.animRotation.stop();
 		this.timelineBall.stop();
+		timelineChrono.stop();
 
 	}
 
@@ -183,7 +193,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		// Chrono de la machine
 
-		timelineChrono = new Timeline(new KeyFrame(Duration.seconds(speedLifePointChrono * 1000.0), ev -> {
+		timelineChrono = new Timeline(new KeyFrame(Duration.millis(speedLifePointChrono * 1000.0), ev -> {
 			lifePoint.setCurrent(lifePoint.getCurrent() - 1);
 
 			if (lifePoint.getCurrent() <= 0)
@@ -196,7 +206,7 @@ public class Machine extends StackPane implements Initialisable {
 
 	public void setActived(boolean b) {
 
-		if (!isDestroy) {
+		if (!isDestroy.get()) {
 
 			if (b)
 				timelineChrono.play();
@@ -206,13 +216,22 @@ public class Machine extends StackPane implements Initialisable {
 			}
 		}
 	}
+	
+	public void linkZone(Zone z) {
+		isActived.bind(z.getEntered());
+		
+		this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
+		
+		z.getDisable().bind(isDestroy);
+		
+		
+	}
 
 	
 	// ------------------------------------
 	// Accesseur et Mutateur
 	// ------------------------------------
 
-	public boolean isDestroy() { return isDestroy; }
 
 	public double getTaille() { return taille; }
 
@@ -221,5 +240,8 @@ public class Machine extends StackPane implements Initialisable {
 	public String getChronoLP() { return lifePoint.getCurrent().toString(); }
 
 	public boolean isThrowBall() { return isThrowBall; }
+
+	public BooleanProperty getIsDestroy() { return isDestroy; }
+	
 
 }

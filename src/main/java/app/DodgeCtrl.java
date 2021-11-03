@@ -153,9 +153,7 @@ public class DodgeCtrl {
 			this.cubyPlayer.add(new Cuby(Color.WHITE, kt));
 	}
 
-	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }
 
-	public List<Niveau> getNiveaux() { return niveaux; }
 
 	/**
 	 * Récupère le niveauqui suit le niveau courant
@@ -209,6 +207,10 @@ public class DodgeCtrl {
 	public Niveau getCurrentLevel() { return currentLevel; }
 	
 	
+	
+	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }
+
+	public List<Niveau> getNiveaux() { return niveaux; }
 
 
 

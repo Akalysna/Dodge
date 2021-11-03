@@ -15,6 +15,8 @@ import factory.MachineFactory.TypeMachine;
 import factory.ZoneFactory;
 import factory.ZoneFactory.TypeZone;
 import javafx.scene.paint.Color;
+import node.machine.Machine;
+import node.zone.Zone;
 
 public class Niveau {
 
@@ -60,7 +62,7 @@ public class Niveau {
 		
 		try {
 			
-			in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/niveau/lvl1.txt")));
+			in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(levelPath)));
 
 			while ((l = in.readLine()) != null) {
 
@@ -78,7 +80,9 @@ public class Niveau {
 
 				else {
 					
-					currentColor = randomColor(colors); 
+					currentColor = randomColor(colors);
+					
+					Machine m = null; 
 
 					for (int i = 0; i < line.length / 2; i++) {
 
@@ -87,9 +91,11 @@ public class Niveau {
 						if (i == 0) {
 
 							stage.addNode(
-									MachineFactory.get(TypeMachine.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor));
+								m =	MachineFactory.get(TypeMachine.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor));	
 						} else {
-							stage.addNode(ZoneFactory.get(TypeZone.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor));
+							Zone z = ZoneFactory.get(TypeZone.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor);
+							m.linkZone(z);
+							stage.addNode(z);
 						}
 					}
 				}

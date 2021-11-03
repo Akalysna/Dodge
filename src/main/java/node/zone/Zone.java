@@ -5,6 +5,8 @@ import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
@@ -14,8 +16,8 @@ public class Zone extends Polyline {
 
 	private Color couleur;
 
-	private boolean entered;
-	private boolean disable;
+	private BooleanProperty entered;
+	private BooleanProperty disable;
 
 	private double x;
 	private double y;
@@ -26,12 +28,17 @@ public class Zone extends Polyline {
 		this.y = y;
 		this.couleur = color;
 
-		this.entered = false;
-		this.disable = false;
+		this.entered = new SimpleBooleanProperty(false);
+		this.disable = new SimpleBooleanProperty(false);
 
 		for (Double point : forme) {
 			this.getPoints().add(point * taille);
 		}
+		
+		this.disable.addListener((observable, oldValue, newValue) -> {
+			if(newValue.booleanValue())
+				disable(); 
+		});
 
 		init();
 	}
@@ -57,17 +64,19 @@ public class Zone extends Polyline {
 
 	public void hover(boolean b) {
 
-		if (!disable) {
-			if (b)
+		if (!disable.get()) {
+			if (b) {
 				this.setFill(couleur.deriveColor(couleur.getRed(), couleur.getGreen(), couleur.getBlue(), 0.3));
-			else
+				this.entered.set(true);
+			}
+			else {
 				this.setFill(Color.TRANSPARENT);
+				this.entered.set(false);
+			}
 		}
 	}
 
 	public void disable() {
-
-		this.disable = true;
 
 		Timeline fadeColor = new Timeline(
 				new KeyFrame(Duration.millis(500), new KeyValue(Zone.this.strokeProperty(), Color.GRAY),
@@ -78,10 +87,7 @@ public class Zone extends Polyline {
 
 	public Color getCouleur() { return couleur; }
 
-	public boolean isEntered() { return entered; }
+	public BooleanProperty getEntered() { return entered; }
 
-	public boolean isDisables() { return disable; }
-	
-	
-
+	public BooleanProperty getDisable() { return disable; }
 }
