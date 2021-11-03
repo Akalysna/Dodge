@@ -1,32 +1,31 @@
 package game.niveau;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
+import node.machine.Machine;
+import node.zone.Zone;
 
 public class Stage {
-	
-	private HashMap<Node, Point2D> elements; 
-	private List<Node> nodes; 
-	
+
+	private ArrayList<Machine> machines;
+	private ArrayList<Zone> zones;
+
 	public Stage() {
-		this.elements = new HashMap<>(); 
-		this.nodes = new ArrayList<>(); 
-	}
-	
-	public void addElement(Node n, Point2D point) {
-		this.elements.put(n, point); 
-	}
-	
-	public void addNode(Node n) {
-		this.nodes.add(n); 
+		this.machines = new ArrayList<>();
+		this.zones = new ArrayList<>();
 	}
 
-	public List<Node> getNodes() { return nodes; }
-	
-	
+	public void addMachine(Machine m) {
+		this.machines.add(m);
+	}
 
+	public void addZone(Zone z) {
+		this.zones.add(z);
+	}
+
+	public ArrayList<Machine> getMachines() { return machines; }
+
+	public ArrayList<Zone> getZones() { return zones; }
+	
+	
 }

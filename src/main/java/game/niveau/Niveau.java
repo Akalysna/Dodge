@@ -14,10 +14,7 @@ import factory.MachineFactory;
 import factory.MachineFactory.TypeMachine;
 import factory.ZoneFactory;
 import factory.ZoneFactory.TypeZone;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.paint.Color;
 import node.machine.Machine;
 import node.zone.Zone;
@@ -79,20 +76,19 @@ public class Niveau {
 					if (firstLine) {
 						stage = new Stage();
 						firstLine = false;
-					} else
+					} else {
 						this.stages.add(stage);
+						stage = new Stage();
+					}
 				}
 
 				else {
 
-
 					currentColor = randomColor(colors);
-
-					BooleanBinding n = Bindings.or(new SimpleBooleanProperty(false), new SimpleBooleanProperty(false));
 
 					Machine m = new Machine(0, 0, 0, 0, currentColor);
 
-					ArrayList<Zone> zbind = new ArrayList<Zone>();
+					ArrayList<Zone> zbind = new ArrayList<>();
 
 
 					for (int i = 0; i < line.length / 2; i++) {
@@ -103,7 +99,7 @@ public class Niveau {
 
 							m = MachineFactory.get(TypeMachine.valueOf(line[2 * i].toUpperCase()),
 									Integer.valueOf(coor[0]), Integer.valueOf(coor[1]), currentColor);
-							stage.addNode(m);
+							stage.addMachine(m);
 						} else {
 
 							Zone z = ZoneFactory.get(TypeZone.valueOf(line[2 * i].toUpperCase()),
@@ -112,13 +108,12 @@ public class Niveau {
 							m.linkZone(z);
 							zbind.add(z);
 
-							stage.addNode(z);
+							stage.addZone(z);
 						}
 
 					}
 
-					
-					m.link(builBinding(zbind, zbind.size()-1));
+					m.link(builBinding(zbind, zbind.size() - 1));
 				}
 			}
 
@@ -135,23 +130,28 @@ public class Niveau {
 	}
 
 	private BooleanBinding builBinding(ArrayList<Zone> zbind, int i) {
-		
-		if(i<0) {
+
+		if (i < 0) {
 			return new BooleanBinding() {
-				
+
 				@Override
 				protected boolean computeValue() {
 					return false;
 				}
 			};
 		} else {
-			
-			return zbind.get(i).getEntered().or(builBinding(zbind, i-1)); 
+
+			return zbind.get(i).getEntered().or(builBinding(zbind, i - 1));
 		}
 
 	}
 
 
+	/**
+	 * Retourne une couleur en la retirant de la liste
+	 * @param list
+	 * @return
+	 */
 	public Color randomColor(List<GameColor> list) {
 
 		int index = new Random().nextInt(list.size());
