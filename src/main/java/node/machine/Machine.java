@@ -6,7 +6,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
-import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -138,7 +138,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		this.timeLbl.setTextFill(couleur);
 		this.timeLbl.setFont(Font.font("Agency FB", FontWeight.BOLD, 24));
-		this.timeLbl.textProperty().bind(Bindings.createStringBinding(() -> getChronoLP()));
+		chronoLbl();
 
 		StackPane.setAlignment(anneauGen, Pos.CENTER);
 		StackPane.setAlignment(centreGen, Pos.CENTER);
@@ -185,7 +185,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		this.animRotation.stop();
 		this.timelineBall.stop();
-		timelineChrono.stop();
+		this.timelineChrono.stop();
 
 	}
 
@@ -195,6 +195,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		timelineChrono = new Timeline(new KeyFrame(Duration.millis(speedLifePointChrono * 1000.0), ev -> {
 			lifePoint.setCurrent(lifePoint.getCurrent() - 1);
+			chronoLbl();
 
 			if (lifePoint.getCurrent() <= 0)
 				destroyMachine();
@@ -202,6 +203,10 @@ public class Machine extends StackPane implements Initialisable {
 		}));
 
 		timelineChrono.setCycleCount(Animation.INDEFINITE);
+	}
+	
+	private void chronoLbl() {
+		this.timeLbl.setText(this.lifePoint.getCurrent().toString());
 	}
 
 	public void setActived(boolean b) {
@@ -213,16 +218,19 @@ public class Machine extends StackPane implements Initialisable {
 			else {
 				timelineChrono.stop();
 				this.lifePoint.reset();
+				chronoLbl();
 			}
 		}
 	}
 	
 	public void linkZone(Zone z) {
-		isActived.bind(z.getEntered());
-		
-		this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
-		
+
 		z.getDisable().bind(isDestroy);
+	}
+	
+	public void link(BooleanBinding n) {
+		this.isActived.bind(n);
+this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
 		
 		
 	}
@@ -237,11 +245,13 @@ public class Machine extends StackPane implements Initialisable {
 
 	public Color getCouleur() { return couleur; }
 
-	public String getChronoLP() { return lifePoint.getCurrent().toString(); }
-
 	public boolean isThrowBall() { return isThrowBall; }
 
 	public BooleanProperty getIsDestroy() { return isDestroy; }
+
+	public BooleanProperty getIsActived() { return isActived; }
+	
+	
 	
 
 }

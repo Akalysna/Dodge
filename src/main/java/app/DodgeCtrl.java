@@ -122,7 +122,7 @@ public class DodgeCtrl {
 
 		case MAP:
 
-			createPlayer(false);
+			createPlayer(true);
 
 			this.ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
 			ctrlView.goTo(ScreenName.MAP);

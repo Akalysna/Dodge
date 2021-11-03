@@ -14,6 +14,10 @@ import factory.MachineFactory;
 import factory.MachineFactory.TypeMachine;
 import factory.ZoneFactory;
 import factory.ZoneFactory.TypeZone;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.paint.Color;
 import node.machine.Machine;
 import node.zone.Zone;
@@ -32,11 +36,12 @@ public class Niveau {
 	}
 
 	/**
-	 * Constructeur de Niveau 
-	 * @param name Nom du niveau 
-	 * @param cubyPath chemin d'acces de l'image du niveau 
-	 * @param musicPath chemin d'acces de la musique du niveau 
-	 * @param levelPath chemin d'acces du niveau 
+	 * Constructeur de Niveau
+	 * 
+	 * @param name      Nom du niveau
+	 * @param cubyPath  chemin d'acces de l'image du niveau
+	 * @param musicPath chemin d'acces de la musique du niveau
+	 * @param levelPath chemin d'acces du niveau
 	 */
 	public Niveau(String name, String cubyPath, String musicPath, String levelPath) {
 
@@ -51,17 +56,17 @@ public class Niveau {
 	}
 
 	private void readLevel(String levelPath) {
-		
+
 		ArrayList<GameColor> colors = new ArrayList<>(Arrays.asList(GameColor.values()));
-		Color currentColor = null; 
+		Color currentColor = null;
 
 		boolean firstLine = true;
 		Stage stage = new Stage();
 		String l;
 		BufferedReader in;
-		
+
 		try {
-			
+
 			in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(levelPath)));
 
 			while ((l = in.readLine()) != null) {
@@ -79,10 +84,16 @@ public class Niveau {
 				}
 
 				else {
-					
+
+
 					currentColor = randomColor(colors);
-					
-					Machine m = null; 
+
+					BooleanBinding n = Bindings.or(new SimpleBooleanProperty(false), new SimpleBooleanProperty(false));
+
+					Machine m = new Machine(0, 0, 0, 0, currentColor);
+
+					ArrayList<Zone> zbind = new ArrayList<Zone>();
+
 
 					for (int i = 0; i < line.length / 2; i++) {
 
@@ -90,14 +101,24 @@ public class Niveau {
 
 						if (i == 0) {
 
-							stage.addNode(
-								m =	MachineFactory.get(TypeMachine.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor));	
+							m = MachineFactory.get(TypeMachine.valueOf(line[2 * i].toUpperCase()),
+									Integer.valueOf(coor[0]), Integer.valueOf(coor[1]), currentColor);
+							stage.addNode(m);
 						} else {
-							Zone z = ZoneFactory.get(TypeZone.valueOf(line[2*i].toUpperCase()), Integer.valueOf(coor[0]), Integer.valueOf(coor[1]),currentColor);
+
+							Zone z = ZoneFactory.get(TypeZone.valueOf(line[2 * i].toUpperCase()),
+									Integer.valueOf(coor[0]), Integer.valueOf(coor[1]), currentColor);
+
 							m.linkZone(z);
+							zbind.add(z);
+
 							stage.addNode(z);
 						}
+
 					}
+
+					
+					m.link(builBinding(zbind, zbind.size()-1));
 				}
 			}
 
@@ -112,23 +133,40 @@ public class Niveau {
 		}
 
 	}
-	
+
+	private BooleanBinding builBinding(ArrayList<Zone> zbind, int i) {
+		
+		if(i<0) {
+			return new BooleanBinding() {
+				
+				@Override
+				protected boolean computeValue() {
+					return false;
+				}
+			};
+		} else {
+			
+			return zbind.get(i).getEntered().or(builBinding(zbind, i-1)); 
+		}
+
+	}
+
 
 	public Color randomColor(List<GameColor> list) {
-		
-		int index =  new Random().nextInt(list.size());
-		GameColor pickColor = list.remove(index); 
-		
+
+		int index = new Random().nextInt(list.size());
+		GameColor pickColor = list.remove(index);
+
 		return Color.valueOf(pickColor.getColorName());
 	}
-	
+
 
 	public String getName() { return name; }
 
 	public String getCubyPath() { return cubyPath; }
 
 	public String getMusicPath() { return musicPath; }
-	
+
 	public String getLevelPath() { return levelPath; }
 
 	public List<Stage> getStages() { return stages; }
