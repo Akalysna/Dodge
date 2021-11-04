@@ -26,6 +26,8 @@ public class Niveau {
 	private String musicPath;
 	private String levelPath;
 
+	private int progress;
+
 	private List<Stage> stages;
 
 	public Niveau(String levelPath) {
@@ -49,7 +51,26 @@ public class Niveau {
 
 		this.stages = new ArrayList<>();
 
+		this.progress = 0;
+
 		readLevel(levelPath);
+	}
+
+	public int calculProgress() {
+
+		int totalMachine = 0;
+		int totalMachineDestroy = 0;
+
+		for (Stage st : stages) {
+			totalMachine += st.getNbMachine();
+			totalMachineDestroy += st.getMaxMachineDestroy();
+		}
+		
+		if (totalMachine != 0)
+			return totalMachineDestroy * 100 / totalMachine;
+		else
+			return 0;
+
 	}
 
 	private void readLevel(String levelPath) {
@@ -86,7 +107,7 @@ public class Niveau {
 
 					currentColor = randomColor(colors);
 
-					Machine m = new Machine(0, 0, 0, 0, currentColor);
+					Machine m = new Machine(0, 0, 0, 0, currentColor, null);
 
 					ArrayList<Zone> zbind = new ArrayList<>();
 
@@ -149,6 +170,7 @@ public class Niveau {
 
 	/**
 	 * Retourne une couleur en la retirant de la liste
+	 * 
 	 * @param list
 	 * @return
 	 */

@@ -1,7 +1,6 @@
 package ctrl;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 import javafx.scene.image.Image;
@@ -51,6 +50,16 @@ public class ControleurDonnee {
 		
 		InputStream input = ControleurDonnee.class.getClass().getResourceAsStream(path);
 		return new Image(input);
+	}
+	
+	/**
+	 * Transforme un nombre en nombre négatif de façon aléatoire
+	 * 
+	 * @param nb Nombre à transformer
+	 * @return int
+	 */
+	public static int negNb(int nb) {
+		return (new Random().nextInt(100)) > 50 ? -nb : nb;
 	}
 	
 

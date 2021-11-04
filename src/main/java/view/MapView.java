@@ -6,11 +6,13 @@ import app.DodgeCtrl;
 import i18n.I18N;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class MapView extends BorderPane implements Initialisable{
 	
@@ -23,7 +25,8 @@ public class MapView extends BorderPane implements Initialisable{
 	private Button btnLastLevel; 
 	private ImageView cubyImage; 
 	private Label titre; 
-	private Slider progressBar; 
+	private Slider progressBar;
+	private ProgressBar pb;
 	
 	
 	public MapView(DodgeCtrl dodgeCtrl) {
@@ -37,6 +40,7 @@ public class MapView extends BorderPane implements Initialisable{
 	@Override
 	public void init() {
 		
+		this.progressBar = new Slider(); 
 		this.btnPlay = new Button(); 
 		this.btnNextLevel = new Button(); 
 		this.btnLastLevel = new Button(); 
@@ -51,16 +55,25 @@ public class MapView extends BorderPane implements Initialisable{
 		Image img = new Image(input); 
 		this.cubyImage = new ImageView(img);
 		
-		initCurrentLevel();
+		this.progressBar.setPrefWidth(300);
+		this.progressBar.setMax(100);
+		this.progressBar.setMin(0);
 		
+		this.pb = new ProgressBar(); 
+		pb.setPrefWidth(300);
+		
+		initCurrentLevel();
 		
 		HBox hbox = new HBox(); 
 		hbox.getChildren().addAll(cubyImage, titre ); 
 		
+		VBox vbox = new VBox(); 
+		vbox.getChildren().addAll(hbox, pb); 
+		
 		this.setLeft(btnLastLevel);
 		this.setRight(btnNextLevel);
 		this.setTop(btnRetour);
-		this.setCenter(hbox);
+		this.setCenter(vbox);
 		this.setBottom(btnPlay);
 		
 	}
@@ -76,6 +89,8 @@ public class MapView extends BorderPane implements Initialisable{
 		this.cubyImage.prefWidth(100); 
 		
 		this.titre.setText(dodgeCtrl.getCurrentLevel().getName());
+		
+		this.pb.setProgress(dodgeCtrl.getCurrentLevel().calculProgress());
 	}
 	
 	private void action() {

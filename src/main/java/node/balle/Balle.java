@@ -4,6 +4,7 @@ import factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import util.StatObject;
 
 /**
  * 
@@ -14,18 +15,21 @@ import javafx.scene.shape.Circle;
  */
 public abstract class Balle extends Circle {
 
-	protected int vitesse;
+	protected double vitesse;
 	protected int taille;
 
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 
 	protected Color color;
 
 	protected AnimationTimer animBall;
 
 	protected TypeBalle typeBalle;
-
+	
+	protected StatObject<Integer> life; 
+	protected boolean isDestroy; 
+	
 	// ---------------------
 	// Constructeur
 	// ---------------------
@@ -40,7 +44,7 @@ public abstract class Balle extends Circle {
 	 * @param vitesse Vitesse de déplacement de la balle
 	 * @param type    Type de la balle
 	 */
-	protected Balle(int x, int y, int rayon, int vitesse, TypeBalle type) {
+	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type, int life) {
 
 		this.typeBalle = type;
 		this.vitesse = vitesse;
@@ -48,11 +52,17 @@ public abstract class Balle extends Circle {
 		this.x = x;
 		this.y = y;
 
-		this.color = Color.GRAY;
+		this.color = Color.WHITE;
+		this.life = new StatObject<>(life); 
 
 		init();
 		initAnimBall();
+		this.isDestroy = false; 
 
+	}
+	
+	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type) {
+		this(x, y, rayon, vitesse, type, 10); 
 	}
 
 	// ---------------------
@@ -83,26 +93,18 @@ public abstract class Balle extends Circle {
 	 */
 	public abstract void animateBall(Boolean b);
 
-	/**
-	 * Transforme un nombre en nombre négatif de façon aléatoire
-	 * 
-	 * @param nb Nombre à transformer
-	 * @return int
-	 */
-	protected int negNb(int nb) {
-		return (Math.random() * 10) > 5 ? -nb : nb;
-	}
+
 
 	// ---------------------
 	// Accesseur et Mutateur
 	// ---------------------
 
 
-	public int getVitesse() { return vitesse; }
+	public double getVitesse() { return vitesse; }
 	public int getTaille() { return taille; }
 
-	public int getX() { return x; }
-	public int getY() { return y; }
+	public double getX() { return x; }
+	public double getY() { return y; }
 
 	public AnimationTimer getAnimBall() { return animBall; }
 	public TypeBalle getTypeBalle() { return typeBalle; }
@@ -117,5 +119,13 @@ public abstract class Balle extends Circle {
 	public void setAnimBall(AnimationTimer animBall) { this.animBall = animBall; }
 	public void setTypeBalle(TypeBalle typeBalle) { this.typeBalle = typeBalle; }
 	public void setColor(Color color) { this.color = color; }
+
+	public StatObject<Integer> getLife() { return life; }
+
+	public boolean isDestroy() { return isDestroy; }
+
+	public void setDestroy(boolean isDestroy) { this.isDestroy = isDestroy; }
+	
+	
 
 }

@@ -1,5 +1,9 @@
 package node.machine;
 
+import java.util.List;
+import java.util.Random;
+
+import factory.BallFactory.TypeBalle;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -32,7 +36,7 @@ public class Machine extends StackPane implements Initialisable {
 	private StatObject<Integer> lifePoint;
 
 	private boolean isThrowBall;
-	
+
 	private BooleanProperty isDestroy;
 	private BooleanProperty isActived;
 
@@ -60,33 +64,38 @@ public class Machine extends StackPane implements Initialisable {
 	private Timeline timelineChrono;
 	private Timeline timelineBall;
 
+	private List<TypeBalle> typeBalle;
+
 	// ------------------------------------
 	// Constructeur
 	// ------------------------------------
 
 	/**
 	 * Constructeur d'une machine simple
-	 * @param x Position en X
-	 * @param y Position en Y 
-	 * @param taille Taille de la machine 
+	 * 
+	 * @param x         Position en X
+	 * @param y         Position en Y
+	 * @param taille    Taille de la machine
 	 * @param lifePoint Point de vie de la machine
-	 * @param color Couleur de la machine
+	 * @param color     Couleur de la machine
+	 * @param typeBalle Les types de balles que la machine lance
 	 */
-	public Machine(int x, int y, int taille, int lifePoint, Color color) {
-		this(x, y, taille, lifePoint, color, 1, 1);
+	public Machine(int x, int y, int taille, int lifePoint, Color color, List<TypeBalle> typeBalle) {
+		this(x, y, taille, lifePoint, color, 6, 1, typeBalle);
 	}
 
 	/**
 	 * 
-	 * @param x Position en X
-	 * @param y Position en Y 
-	 * @param taille Taille de la machine 
-	 * @param lifePoint Point de vie de la machine
-	 * @param color Couleur de la machine
-	 * @param delayThrow Delai entre chaque lancer 
-	 * @param speedLifePointChrono Vitesse du decompte des points de vie 
+	 * @param x                    Position en X
+	 * @param y                    Position en Y
+	 * @param taille               Taille de la machine
+	 * @param lifePoint            Point de vie de la machine
+	 * @param color                Couleur de la machine
+	 * @param delayThrow           Delai entre chaque lancer
+	 * @param speedLifePointChrono Vitesse du decompte des points de vie
 	 */
-	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono) {
+	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono,
+			List<TypeBalle> typeBalle) {
 
 		this.couleur = color;
 		this.x = x;
@@ -99,8 +108,10 @@ public class Machine extends StackPane implements Initialisable {
 		this.speedLifePointChrono = speedLifePointChrono;
 
 		this.isThrowBall = false;
-		this.isDestroy =  new SimpleBooleanProperty(false);
-		this.isActived = new SimpleBooleanProperty(false); 
+		this.isDestroy = new SimpleBooleanProperty(false);
+		this.isActived = new SimpleBooleanProperty(false);
+		
+		this.typeBalle = typeBalle;
 
 		init();
 		animMachine();
@@ -173,7 +184,7 @@ public class Machine extends StackPane implements Initialisable {
 	// -----------
 
 	public void destroyMachine() {
-		
+
 		this.isDestroy.set(true);
 
 		Timeline fadeColor = new Timeline(
@@ -204,7 +215,7 @@ public class Machine extends StackPane implements Initialisable {
 
 		timelineChrono.setCycleCount(Animation.INDEFINITE);
 	}
-	
+
 	private void chronoLbl() {
 		this.timeLbl.setText(this.lifePoint.getCurrent().toString());
 	}
@@ -222,20 +233,29 @@ public class Machine extends StackPane implements Initialisable {
 			}
 		}
 	}
-	
+
 	public void linkZone(Zone z) {
 
 		z.getDisable().bind(isDestroy);
 	}
-	
+
 	public void link(BooleanBinding n) {
+
 		this.isActived.bind(n);
-this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
+		this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
+	}
+	
+	/**
+	 * Retourne le type de balle a lancer. isthrow = false
+	 * @return 
+	 */
+	public TypeBalle lance() {
 		
-		
+		this.isThrowBall = false; 
+		return this.typeBalle.get(new Random().nextInt(typeBalle.size()));
 	}
 
-	
+
 	// ------------------------------------
 	// Accesseur et Mutateur
 	// ------------------------------------
@@ -250,8 +270,14 @@ this.isActived.addListener((observable, oldValue, newValue) -> setActived(newVal
 	public BooleanProperty getIsDestroy() { return isDestroy; }
 
 	public BooleanProperty getIsActived() { return isActived; }
-	
-	
-	
+
+	public int getX() { return x; }
+
+	public int getY() { return y; }
+
+	public double getCenterX() { return x+(taille/2); }
+
+	public double getCenterY() { return y+(taille/2); }
+
 
 }

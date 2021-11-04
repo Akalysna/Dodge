@@ -59,6 +59,8 @@ public class DodgeCtrl {
 
 		uploadLevel();
 
+		this.stage.setResizable(false);
+		this.stage.setTitle("Dodge");
 		this.stage.setScene(scene);
 		this.stage.show();
 
@@ -68,7 +70,13 @@ public class DodgeCtrl {
 
 	private void move() {
 
-		this.scene.setOnKeyPressed(event -> this.cubyPlayer.forEach(e -> e.move(event, true)));
+		this.scene.setOnKeyPressed(event -> {
+			this.cubyPlayer.forEach(e -> e.move(event, true));
+			
+			if(event.getCode().equals(KeyCode.H)) {
+				ctrlView.goTo(ScreenName.MAP);
+			}
+		});
 		this.scene.setOnKeyReleased(event -> this.cubyPlayer.forEach(e -> e.move(event, false)));
 	}
 
@@ -212,6 +220,9 @@ public class DodgeCtrl {
 
 	public List<Niveau> getNiveaux() { return niveaux; }
 
+	public void goTo(ScreenName sn) {
+		ctrlView.goTo(sn);
 
+	}
 
 }

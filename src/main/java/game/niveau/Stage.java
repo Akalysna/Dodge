@@ -7,6 +7,8 @@ import node.zone.Zone;
 
 public class Stage {
 
+	private int maxMachineDestroy;
+
 	private ArrayList<Machine> machines;
 	private ArrayList<Zone> zones;
 
@@ -26,6 +28,14 @@ public class Stage {
 	public ArrayList<Machine> getMachines() { return machines; }
 
 	public ArrayList<Zone> getZones() { return zones; }
+
+	public void setMachineDestroy() {
+		this.maxMachineDestroy++;
+	}
+
+	public int getNbMachine() { return machines.size();}
+
+	public int getMaxMachineDestroy() { return maxMachineDestroy; }
 	
-	
+
 }
