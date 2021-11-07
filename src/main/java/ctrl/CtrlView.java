@@ -1,4 +1,4 @@
-package view;
+package ctrl;
 
 import java.util.EnumMap;
 
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 public class CtrlView {
 	
 	public enum ScreenName {
-		HOME, MAP, GAME, SETTING, MULTI; 
+		HOME, MAP, GAME, SETTING, MULTI, GAMEOVER; 
 	}
 
 	private Scene scene; 
@@ -21,6 +21,11 @@ public class CtrlView {
 	
 	public void saveScreens(ScreenName sn, Parent parent) {
 		this.screens.put(sn, parent); 
+	}
+	
+	public void goToNewView(ScreenName sn, Parent parent) {
+		saveScreens(sn, parent);
+		goTo(sn);
 	}
 	
 	public void goTo(ScreenName sn) {

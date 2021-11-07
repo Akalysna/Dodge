@@ -13,20 +13,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import util.Initialisable;
 
 public class MapView extends BorderPane implements Initialisable{
 	
 	private DodgeCtrl dodgeCtrl; 
 	
 	private Button btnRetour; 
-	
 	private Button btnPlay;
 	private Button btnNextLevel; 
 	private Button btnLastLevel; 
-	private ImageView cubyImage; 
+	
 	private Label titre; 
-	private Slider progressBar;
 	private ProgressBar pb;
+	private Slider progressBar;
+	private ImageView cubyImage; 
 	
 	
 	public MapView(DodgeCtrl dodgeCtrl) {
@@ -83,26 +84,25 @@ public class MapView extends BorderPane implements Initialisable{
 		InputStream input = getClass().getResourceAsStream(dodgeCtrl.getCurrentLevel().getCubyPath());
 	
 		Image img = new Image(input); 
-	//	this.cubyImage = new ImageView(img); 
 		this.cubyImage.setImage(img);
 		this.cubyImage.prefHeight(100); 
 		this.cubyImage.prefWidth(100); 
 		
 		this.titre.setText(dodgeCtrl.getCurrentLevel().getName());
 		
-		this.pb.setProgress(dodgeCtrl.getCurrentLevel().calculProgress());
+		this.pb.setProgress(dodgeCtrl.getCurrentLevel().getProgress()/100.0);
 	}
 	
 	private void action() {
 		
-		this.btnPlay.setOnMouseClicked(event ->  dodgeCtrl.startGame());
+		this.btnPlay.setOnAction(event ->  dodgeCtrl.startGame());
 		
-		this.btnNextLevel.setOnMouseClicked(event -> {
+		this.btnNextLevel.setOnAction(event -> {
 			dodgeCtrl.getNextLevel(); 
 			initCurrentLevel();
 		});
 		
-		this.btnLastLevel.setOnMouseClicked(event -> {
+		this.btnLastLevel.setOnAction(event -> {
 			dodgeCtrl.getLastLevel(); 
 			initCurrentLevel();
 		});

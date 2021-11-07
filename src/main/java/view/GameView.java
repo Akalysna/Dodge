@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import util.Initialisable;
 
 public class GameView extends AnchorPane implements Initialisable {
 
@@ -38,10 +39,10 @@ public class GameView extends AnchorPane implements Initialisable {
 			public void handle(long now) {
 
 				if (!gameCtrl.isEndGame()) {
-					gameCtrl.updateStageStats();
 					gameCtrl.zoneEntered();
 					gameCtrl.balls();
 					gameCtrl.cubyColision();
+					gameCtrl.updateStageStats();
 				} else {
 
 					gameCtrl.endLevel();

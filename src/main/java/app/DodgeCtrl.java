@@ -9,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import ctrl.ControleurDonnee;
+import ctrl.CtrlView;
+import ctrl.CtrlView.ScreenName;
 import game.niveau.Niveau;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -18,8 +21,6 @@ import javafx.stage.Stage;
 import node.Cuby;
 import util.EmptyLevelException;
 import util.KeyTouch;
-import view.CtrlView;
-import view.CtrlView.ScreenName;
 import view.GameView;
 import view.HomeView;
 import view.MapView;
@@ -53,7 +54,7 @@ public class DodgeCtrl {
 
 	}
 
-	
+
 
 	public void run() throws EmptyLevelException {
 
@@ -72,8 +73,8 @@ public class DodgeCtrl {
 
 		this.scene.setOnKeyPressed(event -> {
 			this.cubyPlayer.forEach(e -> e.move(event, true));
-			
-			if(event.getCode().equals(KeyCode.H)) {
+
+			if (event.getCode().equals(KeyCode.H)) {
 				ctrlView.goTo(ScreenName.MAP);
 			}
 		});
@@ -92,8 +93,9 @@ public class DodgeCtrl {
 			while ((l = in.readLine()) != null) {
 
 				String[] line = l.split(":");
-				
-				Niveau n = new Niveau(line[0], ControleurDonnee.PATH_CUBY  + line[1], line[2], ControleurDonnee.PATH_NIVEAU + line[3]);
+
+				Niveau n = new Niveau(line[0], ControleurDonnee.PATH_CUBY + line[1], line[2],
+						ControleurDonnee.PATH_NIVEAU + line[3]);
 				this.niveaux.add(n);
 			}
 
@@ -165,6 +167,7 @@ public class DodgeCtrl {
 
 	/**
 	 * Récupère le niveauqui suit le niveau courant
+	 * 
 	 * @return Niveau suivant
 	 * @see DodgeCtrl#currentLevel
 	 */
@@ -189,6 +192,7 @@ public class DodgeCtrl {
 
 	/**
 	 * Récupère le niveau precedent le niveau courant
+	 * 
 	 * @return Niveau precedent
 	 * @see DodgeCtrl#currentLevel
 	 */
@@ -197,7 +201,7 @@ public class DodgeCtrl {
 
 			int index = this.niveaux.indexOf(currentLevel);
 			if (index <= 0) {
-				currentLevel = niveaux.get(niveaux.size()-1);
+				currentLevel = niveaux.get(niveaux.size() - 1);
 				return currentLevel;
 			} else {
 				currentLevel = niveaux.get(index - 1);
@@ -213,16 +217,19 @@ public class DodgeCtrl {
 	}
 
 	public Niveau getCurrentLevel() { return currentLevel; }
-	
-	
-	
+
+
+
 	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }
 
 	public List<Niveau> getNiveaux() { return niveaux; }
 
 	public void goTo(ScreenName sn) {
 		ctrlView.goTo(sn);
+	}
 
+	public void goToNewView(ScreenName sn, Parent p) {
+		ctrlView.goToNewView(sn, p);
 	}
 
 }

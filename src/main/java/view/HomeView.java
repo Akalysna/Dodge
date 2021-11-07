@@ -1,6 +1,7 @@
 package view;
 
 import app.DodgeCtrl;
+import ctrl.CtrlView.ScreenName;
 import i18n.I18N;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -9,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import view.CtrlView.ScreenName;
+import util.Initialisable;
 
 public class HomeView extends BorderPane implements Initialisable {
 
@@ -58,10 +59,9 @@ public class HomeView extends BorderPane implements Initialisable {
 	
 	private void action() {
 		
-		this.btnQuit.setOnMouseClicked(event -> Platform.exit());
-		this.btnOnePlayer.setOnMouseClicked(event -> dodgeCtrl.gameModes(ScreenName.MAP));
-		this.btnTwoPlayer.setOnMouseClicked(event -> dodgeCtrl.gameModes(ScreenName.MULTI));
-
+		this.btnQuit.setOnAction(event -> Platform.exit());
+		this.btnOnePlayer.setOnAction(event -> dodgeCtrl.gameModes(ScreenName.MAP));
+		this.btnTwoPlayer.setOnAction(event -> dodgeCtrl.gameModes(ScreenName.MULTI));
 	}
 
 
