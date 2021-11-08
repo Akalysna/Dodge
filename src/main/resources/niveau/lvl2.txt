@@ -1,3 +1,5 @@
 Stage
-Simple:50,50:Simple:300,100:Simple:200,400
-Simple:500,200
+Simple:200,200:Simple:100,100:Simple:400,100
+Simple:200,400:Simple:50,550:Simple:400,500
+Simple:600,200:Simple:750,50:Simple:400,250
+Simple:600,400:Simple:400,350:Simple:750,500
