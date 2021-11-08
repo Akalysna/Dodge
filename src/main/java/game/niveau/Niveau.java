@@ -26,8 +26,6 @@ public class Niveau implements Cloneable {
 	private String musicPath;
 	private String levelPath;
 
-	private int progress;
-
 	private LevelInfo levelInfo;
 
 	private List<Stage> stages;
@@ -58,11 +56,9 @@ public class Niveau implements Cloneable {
 
 		this.levelInfo = new LevelInfo();
 
-		this.progress = 0;
-
 		this.stages = new ArrayList<>();
 
-		readLevel(levelPath);
+		readLevel();
 	}
 
 	/**
@@ -72,7 +68,9 @@ public class Niveau implements Cloneable {
 	 */
 	public int getProgress() { return levelInfo.calculProgress(); }
 
-	private void readLevel(String levelPath) {
+	public void readLevel() {
+		
+		stages.clear();
 
 		ArrayList<GameColor> colors = new ArrayList<>(Arrays.asList(GameColor.values()));
 

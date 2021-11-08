@@ -6,7 +6,6 @@ import java.util.List;
 import app.DodgeCtrl;
 import ctrl.CtrlView.ScreenName;
 import factory.BallFactory;
-import game.niveau.BuildGame;
 import game.niveau.Niveau;
 import game.niveau.Stage;
 import javafx.beans.binding.BooleanBinding;
@@ -44,24 +43,22 @@ public class GameCtrl {
 
 	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
 		
-		this.indexCurrentStage = 0;
-
 		this.dodgeCtrl = dodgeCtrl;
 		this.gameView = gameView;
+
+		this.indexCurrentStage = 0;
+
 		this.currentLevel = dodgeCtrl.getCurrentLevel();
+		this.currentLevel.readLevel();
+		this.stages = (ArrayList<Stage>) currentLevel.getStages(); 
 
 		this.allMachineDestroy = new SimpleBooleanProperty(false);
-		
-		this.stages = currentLevel.getCopyStage(); 
-
+	
 		initListOfElement();
 
 		this.allMachineDestroy.addListener((obs, o, n) -> {
-			if (n.booleanValue()) {
-
+			if (n.booleanValue()) 
 				nextStage();
-
-			}
 		});
 	}
 
@@ -163,7 +160,7 @@ public class GameCtrl {
 
 	private void nextStage() {
 
-		if (indexCurrentStage == stages.size() - 1) {
+		if (indexCurrentStage > stages.size() - 1) {
 			endLevel();
 		} else {
 			indexCurrentStage++;
@@ -192,16 +189,16 @@ public class GameCtrl {
 
 	public void updateStageStats() {
 
-		Machine tempM = null;
+		ArrayList<Machine> engine = new ArrayList<Machine>(); 
 
 		for (Machine m : machines) {
 			if (m.getIsDestroy().get()) {
-				tempM = m;
+				engine.add(m); 
 			}
 		}
-
-		if (tempM != null) {
-			machines.remove(tempM);
+		
+		for (Machine m : engine) {
+			machines.remove(m);
 			dodgeCtrl.getCurrentLevel().destroyMachine();
 		}
 
@@ -209,18 +206,13 @@ public class GameCtrl {
 
 	public void endLevel() {
 
-		gameView.stopUpdate();
 		clear();
+		gameView.stopUpdate();
 		
 		dodgeCtrl.goToNewView(ScreenName.MAP, new MapView(dodgeCtrl));
-
 	}
 
 	public boolean isEndGame() {
-
-		return (indexCurrentStage == currentLevel.getStages().size() - 1) || cubys.isEmpty();
+		return (indexCurrentStage > currentLevel.getStages().size() - 1) || cubys.isEmpty();
 	}
-
-
-
 }
