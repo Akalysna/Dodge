@@ -36,6 +36,7 @@ public class ControleurDonnee {
 	public static final String PATH_CUBY = "/img/cuby/";
 	public static final String PATH_MUSIC = "";
 	public static final String PATH_NIVEAU = "/niveau/";
+	public static final String PATH_IMG_GAME = "/img/game/";
 	
 
 	public static Color randomColor() {
