@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import app.DodgeCtrl;
 import ctrl.CD;
+import ctrl.CtrlView.ScreenName;
 import i18n.I18N;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -33,7 +34,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
-import view.CtrlView.ScreenName;
+
 
 /**
  * HomeView represente la fenêtre d'accueil du jeu 
@@ -137,6 +138,7 @@ public class HomeView extends BorderPane implements Initialisable {
 		createLigne(15, 150, Color.DEEPPINK, 200, 600, 4);
 		createLigne(5, 150, Color.YELLOW, 600, 600, 1);
 		createLigne(10, 150, Color.YELLOW, -100, 600, 3);
+
 	}
 
 	/**

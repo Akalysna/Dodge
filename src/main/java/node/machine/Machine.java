@@ -24,8 +24,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import node.zone.Zone;
+import util.Initialisable;
 import util.StatObject;
-import view.Initialisable;
 
 public class Machine extends StackPane implements Initialisable {
 
@@ -96,6 +96,8 @@ public class Machine extends StackPane implements Initialisable {
 	 */
 	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono,
 			List<TypeBalle> typeBalle) {
+		
+		this.timeLbl = new Label(); 
 
 		this.couleur = color;
 		this.x = x;
@@ -120,17 +122,23 @@ public class Machine extends StackPane implements Initialisable {
 	}
 
 	// ------------------------------------
+	
+	private double getCenter() {
+		return taille /2.0; 
+	}
 
 	@Override
 	public void initNode() {
 
-		this.setLayoutX(x);
-		this.setLayoutY(y);
+		this.setLayoutX(x-(taille));
+		this.setLayoutY(y-(taille));
 
 		this.anneauGen = new Circle(this.taille);
-		this.centreGen = new Circle(this.taille - 10 > 0 ? this.taille - 10 : 0);
-		this.timeLbl = new Label();
+		this.centreGen = new Circle(this.taille - 10);
+		//this.timeLbl = new Label();
 
+		
+		
 		this.anneauGen.getStrokeDashArray().addAll(20.0, 10.0);
 		this.anneauGen.setStrokeWidth(5);
 		this.anneauGen.setStroke(couleur);
@@ -234,12 +242,16 @@ public class Machine extends StackPane implements Initialisable {
 		}
 	}
 
-	public void linkZone(Zone z) {
+	/**
+	 * Lie la zone à la machine. Si la machine est détruite la zone le sera aussi
+	 * @param z Zone à lier à la machine pour la destruction
+	 */
+	public void bindToDestroyMachine(Zone z) {
 
 		z.getDisable().bind(isDestroy);
 	}
 
-	public void link(BooleanBinding n) {
+	public void bindEnteredZone(BooleanBinding n) {
 
 		this.isActived.bind(n);
 		this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));

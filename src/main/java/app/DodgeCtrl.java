@@ -9,12 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import ctrl.CD;
+
 import game.niveau.Niveau;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -27,11 +31,12 @@ import javafx.util.Duration;
 import node.Cuby;
 import util.EmptyLevelException;
 import util.KeyTouch;
-import view.CtrlView;
-import view.CtrlView.ScreenName;
 import view.GameView;
 import view.HomeView;
 import view.MapView;
+
+import ctrl.CtrlView;
+import ctrl.CtrlView.ScreenName;
 
 public class DodgeCtrl {
 
@@ -78,7 +83,6 @@ public class DodgeCtrl {
 
 	}
 
-
 	public void run() throws EmptyLevelException {
 
 		uploadLevel();
@@ -121,6 +125,7 @@ public class DodgeCtrl {
 
 				Niveau n = new Niveau(line[0], CD.PATH_CUBY + line[1], line[2],
 						CD.PATH_NIVEAU + line[3]);
+
 				this.niveaux.add(n);
 			}
 
@@ -225,6 +230,7 @@ public class DodgeCtrl {
 			int index = this.niveaux.indexOf(currentLevel);
 			
 			if (index > 0) {
+
 				currentLevel = niveaux.get(index - 1);
 				return true;
 			} 
@@ -245,6 +251,10 @@ public class DodgeCtrl {
 
 	public void goTo(ScreenName sn) {
 		ctrlView.goTo(sn);
+	}
+
+	public void goToNewView(ScreenName sn, Parent p) {
+		ctrlView.goToNewView(sn, p);
 	}
 	
 	public void goToNewScreen(ScreenName sn, Parent p) {

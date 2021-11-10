@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import app.DodgeCtrl;
 import ctrl.CD;
+import ctrl.CtrlView.ScreenName;
 import i18n.I18N;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -32,7 +33,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import view.CtrlView.ScreenName;
+
 
 /**
  * MapView represente la fenêtre de choix de niveau
@@ -43,11 +44,14 @@ public class MapView extends BorderPane implements Initialisable {
 	private DodgeCtrl dodgeCtrl;
 
 	private Button btnRetour;
+
 	private Button btnPlay;
+
 	private Button btnNextLevel;
 	private Button btnLastLevel;
 
 	private Label titre;
+
 	private ProgressBar pb;
 	private ImageView cubyImage;
 
@@ -57,6 +61,7 @@ public class MapView extends BorderPane implements Initialisable {
 	 * Constructeur de la fenêtre de choix de niveau
 	 * @param dodgeCtrl
 	 */
+
 	public MapView(DodgeCtrl dodgeCtrl) {
 
 		this.dodgeCtrl = dodgeCtrl;
@@ -210,6 +215,7 @@ public class MapView extends BorderPane implements Initialisable {
 
 				updateLevelInfo();
 			}
+
 		});
 
 		this.btnLastLevel.setOnMouseClicked(event -> {
@@ -264,7 +270,7 @@ public class MapView extends BorderPane implements Initialisable {
 
 		this.cubyImage.setImage(img); // Change l'image
 		this.titre.setText(dodgeCtrl.getCurrentLevel().getName()); // Change le nom du niveau
-		this.pb.setProgress(dodgeCtrl.getCurrentLevel().calculProgress()); // Change la progression du niveau
+		this.pb.setProgress(dodgeCtrl.getCurrentLevel().getProgress()); // Change la progression du niveau
 	}
 
 	/**

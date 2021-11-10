@@ -4,11 +4,9 @@ import app.DodgeCtrl;
 import ctrl.CD;
 import ctrl.GameCtrl;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
+
 
 public class GameView extends AnchorPane implements Initialisable {
 
@@ -48,10 +46,10 @@ public class GameView extends AnchorPane implements Initialisable {
 			public void handle(long now) {
 
 				if (!gameCtrl.isEndGame()) {
-					gameCtrl.updateStageStats();
 					gameCtrl.zoneEntered();
 					gameCtrl.balls();
 					gameCtrl.cubyColision();
+					gameCtrl.updateStageStats();
 				} else {
 
 					gameCtrl.endLevel();
