@@ -35,11 +35,15 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import view.CtrlView.ScreenName;
 
+/**
+ * HomeView represente la fenêtre d'accueil du jeu 
+ * @author Llona André--Augustine
+ *
+ */
 public class HomeView extends BorderPane implements Initialisable {
 
 	private Button btnOnePlayer;
 	private Button btnTwoPlayer;
-
 	private Button btnOption;
 	private Button btnQuit;
 
@@ -47,21 +51,32 @@ public class HomeView extends BorderPane implements Initialisable {
 
 	private DodgeCtrl dodgeCtrl;
 
+	/**
+	 * Constructeur de la page de garde
+	 * @param dodgeCtrl
+	 */
 	public HomeView(DodgeCtrl dodgeCtrl) {
+		
 		this.dodgeCtrl = dodgeCtrl;
-		init();
+		
+		initNode();
+		design();
 		action();
+		
 		FadeTransition fd = new FadeTransition(Duration.millis(700), this);
 		fd.setFromValue(0);
 		fd.setToValue(1);
-		fd.play();
+		fd.playFromStart();
 	}
 
+	
+	
 	@Override
-	public void init() {
-		
-		
+	public void initNode() {
 
+		//Padding de la fenêtre
+		this.setPadding(new Insets(20));
+		
 		this.btnOnePlayer = new Button();
 		this.btnTwoPlayer = new Button();
 		this.btnOption = new Button();
@@ -72,23 +87,23 @@ public class HomeView extends BorderPane implements Initialisable {
 		this.btnOnePlayer.textProperty().bind(I18N.createStringBinding("btn.oneplayer"));
 		this.btnTwoPlayer.textProperty().bind(I18N.createStringBinding("btn.twoplayer"));
 		this.btnQuit.textProperty().bind(I18N.createStringBinding("btn.quitter"));
-
 		this.title.textProperty().bind(I18N.createStringBinding("titre.dodge"));
 
 		VBox centerBtn = new VBox(20, btnOnePlayer, btnTwoPlayer, btnQuit);
 		centerBtn.setAlignment(Pos.CENTER);
 		centerBtn.setSpacing(20);
 
-
 		this.setCenter(centerBtn);
 		this.setTop(title);
 		this.setBottom(new HBox(btnOption));
-		design();
-
 	}
 
+	/**
+	 * Modifie l'aspect des éléments
+	 */
 	private void design() {
 
+		// Background de la fenêtre
 		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "menu_fond.png");
 		Image img = new Image(input);
 		this.setBackground(
@@ -103,11 +118,6 @@ public class HomeView extends BorderPane implements Initialisable {
 
 		BorderPane.setAlignment(title, Pos.CENTER);
 
-		btnUi(btnOnePlayer);
-		btnUi(btnTwoPlayer);
-		btnUi(btnQuit);
-
-
 		InputStream in = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "settings_gear.png");
 		Image i = new Image(in);
 		btnOption.setBackground(
@@ -116,72 +126,22 @@ public class HomeView extends BorderPane implements Initialisable {
 
 		btnOption.setPrefWidth(60);
 		btnOption.setPrefHeight(60);
+		
 
+		btnUi(btnOnePlayer);
+		btnUi(btnTwoPlayer);
+		btnUi(btnQuit);
 
+		// Crée les lignes animé en fond
 		createLigne(10, 150, Color.SKYBLUE, 50, 600, 2);
 		createLigne(15, 150, Color.DEEPPINK, 200, 600, 4);
 		createLigne(5, 150, Color.YELLOW, 600, 600, 1);
 		createLigne(10, 150, Color.YELLOW, -100, 600, 3);
-
 	}
 
 	/**
-	 * Créer une ligne pour l'animation de fond
-	 * 
-	 * @param longueur
-	 * @param largeur
-	 * @param color
-	 * @param x
-	 * @param y
-	 * @param duree
+	 * Action sur les éléments du jeu
 	 */
-	private void createLigne(int longueur, int largeur, Color color, int x, int y, int duree) {
-
-		Rectangle rectangle = new Rectangle(longueur, largeur);
-		rectangle.setFill(color);
-
-		rectangle.setRotate(35);
-
-		this.getChildren().add(0, rectangle);
-
-		Path path = new Path(new MoveTo(x, y), new LineTo(x, y), new LineTo(x + (50 * 10), y - (71.5 * 10)));
-		PathTransition pathAnimation = new PathTransition(Duration.seconds(duree), path, rectangle);
-		pathAnimation.setCycleCount(PathTransition.INDEFINITE);
-		pathAnimation.setInterpolator(Interpolator.LINEAR);
-		pathAnimation.play();
-
-	}
-
-	private void btnUi(Button btn) {
-
-		backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
-
-		btn.setPrefWidth(230);
-		btn.setPrefHeight(80);
-
-		btn.setTextFill(Color.WHITE);
-		btn.setFont(Font.font("Agency FB", FontWeight.BOLD, 24));
-		btn.setGraphicTextGap(10);
-		btn.setTextAlignment(TextAlignment.CENTER);
-
-	}
-
-	/**
-	 * Ajoute une image de fond au bouton
-	 * 
-	 * @param imgFile
-	 * @param btn
-	 */
-	public void backgroundImgBtn(String imgFile, Button btn) {
-
-		InputStream input = getClass().getResourceAsStream(imgFile);
-		Image img = new Image(input);
-		btn.setBackground(
-				new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-						BackgroundPosition.CENTER, new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
-
-	}
-
 	private void action() {
 
 		this.btnQuit.setOnMouseClicked(event -> {
@@ -193,9 +153,8 @@ public class HomeView extends BorderPane implements Initialisable {
 			fd.setOnFinished(e -> Platform.exit());
 
 			fd.play();
-
-
 		});
+
 		this.btnOnePlayer.setOnMouseClicked(event -> {
 
 			FadeTransition fd = new FadeTransition(Duration.seconds(1), this);
@@ -219,6 +178,7 @@ public class HomeView extends BorderPane implements Initialisable {
 		});
 
 
+		// Hover des boutons
 
 		ArrayList<Button> btn = new ArrayList<>(Arrays.asList(btnOnePlayer, btnTwoPlayer, btnQuit));
 
@@ -232,7 +192,66 @@ public class HomeView extends BorderPane implements Initialisable {
 				backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", b);
 			});
 		}
+	}
 
+	
+	
+	/**
+	 * Créer une ligne pour l'animation de fond
+	 * 
+	 * @param longueur Longueur de la ligne
+	 * @param largeur  Largeur de la ligne
+	 * @param color    Couleur de la ligne
+	 * @param x        Position en X
+	 * @param y        Position en Y
+	 * @param vitesse  Vitesse de déplacement
+	 */
+	private void createLigne(int longueur, int largeur, Color color, int x, int y, int vitesse) {
+
+		Rectangle rectangle = new Rectangle(longueur, largeur);
+		rectangle.setFill(color);
+		rectangle.setRotate(35);
+
+		this.getChildren().add(0, rectangle);
+
+		Path path = new Path(new MoveTo(x, y), new LineTo(x, y), new LineTo(x + (50 * 10), y - (71.5 * 10)));
+		PathTransition pathAnimation = new PathTransition(Duration.seconds(vitesse), path, rectangle);
+		pathAnimation.setCycleCount(PathTransition.INDEFINITE);
+		pathAnimation.setInterpolator(Interpolator.LINEAR);
+		pathAnimation.play();
+	}
+
+	/**
+	 * Modifie l'apparence du bouton et du texte
+	 * 
+	 * @param btn Bouton a modifier
+	 */
+	private void btnUi(Button btn) {
+
+		backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
+
+		btn.setPrefWidth(230);
+		btn.setPrefHeight(80);
+
+		btn.setTextFill(Color.WHITE);
+		btn.setFont(Font.font("Agency FB", FontWeight.BOLD, 24));
+		btn.setGraphicTextGap(10);
+		btn.setTextAlignment(TextAlignment.CENTER);
+	}
+
+	/**
+	 * Ajoute une image de fond au bouton
+	 * 
+	 * @param imgFile Chemin vers l'image
+	 * @param btn     Button a modifier
+	 */
+	public void backgroundImgBtn(String imgFile, Button btn) {
+
+		InputStream input = getClass().getResourceAsStream(imgFile);
+		Image img = new Image(input);
+		btn.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
 
 	}
 

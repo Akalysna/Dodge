@@ -2,6 +2,6 @@ package view;
 
 public interface Initialisable {
 	
-	public void init(); 
+	public void initNode(); 
 
 }

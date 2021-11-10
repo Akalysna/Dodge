@@ -26,11 +26,11 @@ public class GameView extends AnchorPane implements Initialisable {
 		
 		
 
-		init();
+		initNode();
 	}
 
 	@Override
-	public void init() {
+	public void initNode() {
 
 		this.getChildren().addAll(gameCtrl.getElement());
 		this.setMouseTransparent(true);

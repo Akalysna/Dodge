@@ -113,7 +113,7 @@ public class Machine extends StackPane implements Initialisable {
 		
 		this.typeBalle = typeBalle;
 
-		init();
+		initNode();
 		animMachine();
 		delayThrowBall();
 		lifePointChrono();
@@ -122,7 +122,7 @@ public class Machine extends StackPane implements Initialisable {
 	// ------------------------------------
 
 	@Override
-	public void init() {
+	public void initNode() {
 
 		this.setLayoutX(x);
 		this.setLayoutY(y);

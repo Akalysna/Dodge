@@ -22,7 +22,6 @@ import view.GameView;
 public class GameCtrl {
 
 	private GameView gameView;
-
 	private DodgeCtrl dodgeCtrl;
 
 	private Niveau currentLevel;
