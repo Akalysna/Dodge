@@ -1,2 +1,4 @@
 New Word:cuby_rose.png: :lvl1.txt
 Begin:cuby_bleu.png: :lvl2.txt
+Bonjour:cuby_vert.png: :lvl2.txt
+Hola:cuby_jaune.png: :lvl2.txt

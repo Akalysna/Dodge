@@ -191,26 +191,23 @@ public class DodgeCtrl {
 
 
 	/**
-	 * Récupère le niveauqui suit le niveau courant
+	 * Récupère le niveau qui suit le niveau courant
 	 * 
 	 * @return Niveau suivant
 	 * @see DodgeCtrl#currentLevel
 	 */
-	public Niveau getNextLevel() {
+	public boolean nextLevel() {
 
 		if (currentLevel != null) {
 
 			int index = this.niveaux.indexOf(currentLevel);
-			if (index >= niveaux.size() - 1) {
-				currentLevel = niveaux.get(0);
-				return currentLevel;
-			} else {
+			if (index < niveaux.size() - 1) {
 				currentLevel = niveaux.get(index + 1);
-				return currentLevel;
+				return true;
 			}
 		}
 
-		return null;
+		return false;
 
 		// TODO Ajouter une exception ?
 	}
@@ -221,21 +218,19 @@ public class DodgeCtrl {
 	 * @return Niveau precedent
 	 * @see DodgeCtrl#currentLevel
 	 */
-	public Niveau getLastLevel() {
+	public boolean lastLevel() {
+		
 		if (currentLevel != null) {
 
 			int index = this.niveaux.indexOf(currentLevel);
-			if (index <= 0) {
-				currentLevel = niveaux.get(niveaux.size() - 1);
-				return currentLevel;
-			} else {
+			
+			if (index > 0) {
 				currentLevel = niveaux.get(index - 1);
-				return currentLevel;
-			}
-
+				return true;
+			} 
 		}
 
-		return null;
+		return false;
 
 		// TODO Ajouter une exception ?
 
@@ -286,9 +281,23 @@ public class DodgeCtrl {
 			timelineChrono.play();
 
 		});
-
 	}
 	
+	public boolean isFirstLevel() {
+		return niveaux.indexOf(currentLevel) == 0;
+	}
+	
+	public boolean isLastLevel() {
+		return niveaux.indexOf(currentLevel) == niveaux.size() -1;
+	}
+	
+	public int nbLevel() {
+		return this.niveaux.size(); 
+	}
+	
+	public int indexCurentLevel() {
+		return this.niveaux.indexOf(currentLevel); 
+	}
 	
 
 }

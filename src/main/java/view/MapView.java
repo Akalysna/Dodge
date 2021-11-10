@@ -1,9 +1,11 @@
 package view;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import app.DodgeCtrl;
 import ctrl.CD;
+import game.niveau.Niveau;
 import i18n.I18N;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -17,7 +19,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -27,9 +28,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import view.CtrlView.ScreenName;
 
@@ -46,6 +49,8 @@ public class MapView extends BorderPane implements Initialisable {
 	private Label titre;
 	private Slider progressBar;
 	private ProgressBar pb;
+	
+	private ArrayList<Circle> pagination; 
 
 
 	public MapView(DodgeCtrl dodgeCtrl) {
@@ -60,12 +65,13 @@ public class MapView extends BorderPane implements Initialisable {
 	@Override
 	public void init() {
 
+		this.pagination = new ArrayList<>(); 
 		this.progressBar = new Slider();
 		this.btnPlay = new Button();
 		this.btnNextLevel = new Button();
 		this.btnLastLevel = new Button();
 		this.btnRetour = new Button();
-		
+
 		this.btnRetour.setPrefWidth(40);
 		this.btnRetour.setPrefHeight(40);
 		this.backgroundImgBtn(CD.PATH_IMG_GAME + "fleche_retour.png", btnRetour);
@@ -78,7 +84,7 @@ public class MapView extends BorderPane implements Initialisable {
 		this.btnPlay.textProperty().bind(I18N.createStringBinding("btn.map.play"));
 		this.btnPlay.setPrefWidth(200);
 		this.btnPlay.setPrefHeight(80);
-		
+
 		this.btnPlay.setTextFill(Color.WHITE);
 		this.btnPlay.setFont(Font.font("Agency FB", FontWeight.BOLD, 20));
 		this.btnPlay.setGraphicTextGap(10);
@@ -88,7 +94,7 @@ public class MapView extends BorderPane implements Initialisable {
 		InputStream input = getClass().getResourceAsStream(dodgeCtrl.getCurrentLevel().getCubyPath());
 
 		Image img = new Image(input);
-		
+
 		this.cubyImage = new ImageView(img);
 		this.cubyImage.setFitWidth(200);
 		this.cubyImage.setFitHeight(200);
@@ -111,28 +117,59 @@ public class MapView extends BorderPane implements Initialisable {
 		vbox.setAlignment(Pos.CENTER);
 		vbox.setPrefWidth(200);
 		vbox.setSpacing(20);
-		
-		
+
+
 		BorderPane.setAlignment(vbox, Pos.CENTER);
-		
+
 
 		BorderPane.setAlignment(btnNextLevel, Pos.CENTER);
 		btnNextLevel.setPrefHeight(130);
 		btnNextLevel.setPrefWidth(80);
-		
+
 		BorderPane.setAlignment(btnLastLevel, Pos.CENTER);
 		btnLastLevel.setPrefHeight(130);
 		btnLastLevel.setPrefWidth(80);
 
 		this.setPadding(new Insets(30));
-		
+
 		this.setLeft(btnLastLevel);
 		this.setRight(btnNextLevel);
 		this.setTop(btnRetour);
 		this.setCenter(vbox);
-		//this.setBottom(btnPlay);
 
 		design();
+		cerclePagination();
+
+	}
+	
+	private void cerclePagination() {
+		
+		for (int i = 0; i < dodgeCtrl.nbLevel(); i++) {
+			Circle cercle = new Circle(10); 
+			cercle.setFill(Color.GRAY);
+			this.pagination.add(cercle); 
+			
+		}
+		
+		HBox page = new HBox(); 
+		page.getChildren().addAll(pagination); 
+		page.setSpacing(20);
+		page.setAlignment(Pos.CENTER);
+		
+		pagination.get(dodgeCtrl.indexCurentLevel()).setFill(Color.WHITE);
+		
+		BorderPane.setAlignment(page, Pos.CENTER);
+		this.setBottom(page);
+		
+	}
+	
+	private void changePageCircle() {
+		
+		for (Circle c : pagination) {
+			c.setFill(Color.GREY); 
+		}
+		
+		pagination.get(dodgeCtrl.indexCurentLevel()).setFill(Color.WHITE);
 
 	}
 
@@ -140,6 +177,12 @@ public class MapView extends BorderPane implements Initialisable {
 
 		this.backgroundImgBtn(CD.PATH_IMG_GAME + "arrow_empty.png", btnLastLevel);
 		this.backgroundImgBtn(CD.PATH_IMG_GAME + "arrow_full.png", btnNextLevel);
+
+		Rotate rotate = new Rotate();
+		rotate.setPivotX(btnNextLevel.getPrefWidth() / 2);
+		rotate.setPivotY(btnNextLevel.getPrefHeight() / 2);
+		rotate.setAngle(180);
+		btnNextLevel.getTransforms().add(rotate);
 
 	}
 
@@ -158,65 +201,98 @@ public class MapView extends BorderPane implements Initialisable {
 		this.pb.setProgress(dodgeCtrl.getCurrentLevel().calculProgress());
 	}
 
+	private void switchBtnLevel(boolean lastIsFull, boolean nextIsFull) {
+
+		String full = "arrow_full.png";
+		String empty = "arrow_empty.png";
+
+		String tmp = lastIsFull ? full : empty;
+		this.backgroundImgBtn(CD.PATH_IMG_GAME + tmp, btnLastLevel);
+
+		tmp = nextIsFull ? full : empty;
+		this.backgroundImgBtn(CD.PATH_IMG_GAME + tmp, btnNextLevel);
+
+		Rotate rotate = new Rotate();
+		rotate.setPivotX(btnNextLevel.getPrefWidth() / 2);
+		rotate.setPivotY(btnNextLevel.getPrefHeight() / 2);
+		rotate.setAngle(180);
+
+		btnNextLevel.getTransforms().clear();
+		btnNextLevel.getTransforms().add(rotate);
+	}
+
 	private void action() {
 
-		this.btnPlay.setOnMouseClicked(event -> dodgeCtrl.startGame());
-
 		this.btnNextLevel.setOnMouseClicked(event -> {
-			dodgeCtrl.getNextLevel();
-			initCurrentLevel();
+
+			if (dodgeCtrl.nextLevel()) {
+				
+				changePageCircle();
+
+				if (dodgeCtrl.isLastLevel())
+					switchBtnLevel(true, false);
+
+				else
+					switchBtnLevel(true, true);
+
+				initCurrentLevel();
+			}
 		});
 
 		this.btnLastLevel.setOnMouseClicked(event -> {
-			dodgeCtrl.getLastLevel();
-			initCurrentLevel();
-		});
-		
-		btnPlay.setOnMouseEntered(event -> {
-			backgroundImgBtn(CD.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay);
+
+			if (dodgeCtrl.lastLevel()) {
+				
+				changePageCircle();
+
+				if (dodgeCtrl.isFirstLevel())
+					switchBtnLevel(false, true);
+
+				else
+					switchBtnLevel(true, true);
+
+				initCurrentLevel();
+			}
 		});
 
-		btnPlay.setOnMouseExited(event -> {
-			backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay);
-		});
+		this.btnPlay.setOnMouseClicked(event -> dodgeCtrl.startGame());
+		this.btnPlay.setOnMouseEntered(event -> backgroundImgBtn(CD.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
+		this.btnPlay
+				.setOnMouseExited(event -> backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay));
 
 		this.btnRetour.setOnMouseClicked(event -> dodgeCtrl.goToNewScreen(ScreenName.HOME, new HomeView(dodgeCtrl)));
-		
+
 		hoverScale(btnNextLevel, 1.1);
 		hoverScale(btnLastLevel, 1.1);
-
 	}
-	
+
+	/**
+	 * Agrandi l'élément si la souris passe dessus et revient à la taille normal
+	 * 
+	 * @param n     Node a modifier
+	 * @param scale Agrandissement. 1 taille par défaut
+	 */
 	private void hoverScale(Node n, double scale) {
-		
-		n.setOnMouseEntered(event -> {
 
-			Timeline time = new Timeline(
-					new KeyFrame(Duration.millis(200), new KeyValue(n.scaleXProperty(), scale),
-							new KeyValue(n.scaleYProperty(), scale)));
-			time.play();
+		n.setOnMouseEntered(event ->
 
-		});
+		new Timeline(new KeyFrame(Duration.millis(200), new KeyValue(n.scaleXProperty(), scale),
+				new KeyValue(n.scaleYProperty(), scale))).play());
 
-		n.setOnMouseExited(event -> {
+		n.setOnMouseExited(event ->
 
-			Timeline time = new Timeline(
-					new KeyFrame(Duration.millis(200), new KeyValue(n.scaleXProperty(), 1),
-							new KeyValue(n.scaleYProperty(), 1)));
-			time.play();
-
-		});
-
+		new Timeline(new KeyFrame(Duration.millis(200), new KeyValue(n.scaleXProperty(), 1),
+				new KeyValue(n.scaleYProperty(), 1))).play());
 	}
 
 	public void backgroundImgBtn(String imgFile, Button btn) {
 
 		InputStream input = getClass().getResourceAsStream(imgFile);
 		Image img = new Image(input);
+
 		btn.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
-
 	}
 
 }
