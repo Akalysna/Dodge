@@ -1,13 +1,14 @@
 package view;
 
 import app.DodgeCtrl;
+import ctrl.CD;
 import ctrl.GameCtrl;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class GameView extends AnchorPane implements Initialisable {
 
@@ -17,7 +18,13 @@ public class GameView extends AnchorPane implements Initialisable {
 	public GameView(DodgeCtrl dodgeCtrl) {
 
 		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
-		this.setBackground(new Background(new BackgroundFill(Color.rgb(27, 30, 35), null, null)));
+		this.setBackground(CD.BG_COLOR_DARK);
+
+		//dodgeCtrl.hideCursor(true);
+		
+	dodgeCtrl.hidedCursor(this);
+		
+		
 
 		init();
 	}
@@ -26,6 +33,9 @@ public class GameView extends AnchorPane implements Initialisable {
 	public void init() {
 
 		this.getChildren().addAll(gameCtrl.getElement());
+		this.setMouseTransparent(true);
+
+
 
 		update();
 

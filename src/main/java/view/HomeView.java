@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import app.DodgeCtrl;
-import ctrl.ControleurDonnee;
+import ctrl.CD;
 import i18n.I18N;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -51,10 +51,16 @@ public class HomeView extends BorderPane implements Initialisable {
 		this.dodgeCtrl = dodgeCtrl;
 		init();
 		action();
+		FadeTransition fd = new FadeTransition(Duration.millis(700), this);
+		fd.setFromValue(0);
+		fd.setToValue(1);
+		fd.play();
 	}
 
 	@Override
 	public void init() {
+		
+		
 
 		this.btnOnePlayer = new Button();
 		this.btnTwoPlayer = new Button();
@@ -83,7 +89,7 @@ public class HomeView extends BorderPane implements Initialisable {
 
 	private void design() {
 
-		InputStream input = getClass().getResourceAsStream(ControleurDonnee.PATH_IMG_GAME + "menu_fond.png");
+		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "menu_fond.png");
 		Image img = new Image(input);
 		this.setBackground(
 				new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -102,7 +108,7 @@ public class HomeView extends BorderPane implements Initialisable {
 		btnUi(btnQuit);
 
 
-		InputStream in = getClass().getResourceAsStream(ControleurDonnee.PATH_IMG_GAME + "settings_gear.png");
+		InputStream in = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "settings_gear.png");
 		Image i = new Image(in);
 		btnOption.setBackground(
 				new Background(new BackgroundImage(i, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -148,7 +154,7 @@ public class HomeView extends BorderPane implements Initialisable {
 
 	private void btnUi(Button btn) {
 
-		backgroundImgBtn(ControleurDonnee.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
+		backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
 
 		btn.setPrefWidth(230);
 		btn.setPrefHeight(80);
@@ -172,7 +178,7 @@ public class HomeView extends BorderPane implements Initialisable {
 		Image img = new Image(input);
 		btn.setBackground(
 				new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
-						BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, false))));
+						BackgroundPosition.CENTER, new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
 
 	}
 
@@ -219,11 +225,11 @@ public class HomeView extends BorderPane implements Initialisable {
 		for (Button b : btn) {
 
 			b.setOnMouseEntered(event -> {
-				backgroundImgBtn(ControleurDonnee.PATH_IMG_GAME + "hover_menu_btn.png", b);
+				backgroundImgBtn(CD.PATH_IMG_GAME + "hover_menu_btn.png", b);
 			});
 
 			b.setOnMouseExited(event -> {
-				backgroundImgBtn(ControleurDonnee.PATH_IMG_GAME + "transparent_menu_btn.png", b);
+				backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", b);
 			});
 		}
 

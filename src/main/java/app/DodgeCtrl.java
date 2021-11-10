@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ctrl.ControleurDonnee;
+import ctrl.CD;
 import game.niveau.Niveau;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -19,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import node.Cuby;
 import util.EmptyLevelException;
 import util.KeyTouch;
@@ -114,8 +119,8 @@ public class DodgeCtrl {
 
 				String[] line = l.split(":");
 
-				Niveau n = new Niveau(line[0], ControleurDonnee.PATH_CUBY + line[1], line[2],
-						ControleurDonnee.PATH_NIVEAU + line[3]);
+				Niveau n = new Niveau(line[0], CD.PATH_CUBY + line[1], line[2],
+						CD.PATH_NIVEAU + line[3]);
 				this.niveaux.add(n);
 			}
 
@@ -246,13 +251,44 @@ public class DodgeCtrl {
 	public void goTo(ScreenName sn) {
 		ctrlView.goTo(sn);
 	}
+	
+	public void goToNewScreen(ScreenName sn, Parent p) {
+		ctrlView.saveScreens(sn, p);
+		ctrlView.goTo(sn);
+	}
 
 	private void curseur() {
 
-		InputStream input = getClass().getResourceAsStream(ControleurDonnee.PATH_IMG_GAME + "cursor.png");
+		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
 
 		scene.setCursor(new ImageCursor(img));
 	}
+	
+	private void hideCursor(boolean b) {
+		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "cursor.png");
+		Image img = new Image(input);
+		
+		if(b)
+			scene.setCursor(Cursor.NONE);
+		else 
+			scene.setCursor(new ImageCursor(img));
+		
+	}
+	
+	public void hidedCursor(Parent p) {
+		p.setOnMouseMoved(event -> {
+
+			hideCursor(false);
+
+			Timeline timelineChrono = new Timeline(new KeyFrame(Duration.seconds(2), ev -> hideCursor(true)));
+
+			timelineChrono.play();
+
+		});
+
+	}
+	
+	
 
 }
