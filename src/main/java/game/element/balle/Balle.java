@@ -2,8 +2,12 @@ package game.element.balle;
 
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import util.StatObject;
 
 /**
@@ -61,7 +65,7 @@ public abstract class Balle extends Circle {
 	}
 
 	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type) {
-		this(x, y, rayon, vitesse, type, 10);
+		this(x, y, rayon, vitesse, type, 5);
 	}
 
 	// ---------------------
@@ -97,10 +101,19 @@ public abstract class Balle extends Circle {
 		else
 			animBall.stop();
 	}
-	
+
 	protected void destroy() {
-		isDestroy = true; 
+
 		animateBall(false);
+		this.setStroke(Color.WHITE);
+		this.setStrokeWidth(2);
+		this.getStrokeDashArray().addAll(5.0, 2.0);
+		this.setFill(Color.TRANSPARENT);
+		new Timeline(new KeyFrame(Duration.millis(300), e -> isDestroy = true, 
+				new KeyValue(this.scaleXProperty(), 1.8),
+				new KeyValue(this.scaleYProperty(), 1.8), 
+				new KeyValue(this.strokeProperty(), Color.TRANSPARENT),
+				new KeyValue(this.strokeWidthProperty(), 0))).play();
 	}
 
 
