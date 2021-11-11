@@ -2,13 +2,14 @@ package game.element.factory;
 
 import game.element.balle.Balle;
 import game.element.balle.GhostBall;
+import game.element.balle.InvertBall;
 import game.element.balle.SimpleBall;
 
 public class BallFactory {
 
 	public enum TypeBalle {
 
-		FIRE, SIMPLE, BOMB, GHOST;
+		FIRE, SIMPLE, BOMB, GHOST, INVERT;
 	}
 
 	public static Balle get(TypeBalle tm, double x, double y) {
@@ -23,6 +24,9 @@ public class BallFactory {
 			return null;
 		case GHOST:
 			return ghostBalle(x, y);
+			
+		case INVERT:
+			return invertBalle(x, y);
 
 		default:
 			return null;
@@ -35,6 +39,10 @@ public class BallFactory {
 	
 	public static Balle ghostBalle(double x, double y) {
 		return new GhostBall(x, y, 8, 5.0);
+	}
+	
+	public static Balle invertBalle(double x, double y) {
+		return new InvertBall(x, y, 8, 5.0, true);
 	}
 
 

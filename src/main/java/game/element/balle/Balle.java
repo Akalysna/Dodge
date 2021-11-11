@@ -1,5 +1,6 @@
 package game.element.balle;
 
+import controller.DataCtrl;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
@@ -31,6 +32,9 @@ public abstract class Balle extends Circle {
 
 	protected StatObject<Integer> life;
 	protected boolean isDestroy;
+	
+	protected double dx = DataCtrl.negNb(Math.cos(45)) * vitesse;
+	protected double dy = DataCtrl.negNb(Math.sin(45)) * vitesse;
 
 	// ---------------------
 	// Constructeur

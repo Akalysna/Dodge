@@ -1,39 +1,39 @@
 package game.element.balle;
 
-import controller.DataCtrl;
 import controller.DodgeCtrl;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 
-public class SimpleBall extends Balle {
+public class InvertBall extends Balle {
 
-	/**
-	 * Constructeur de Balle
-	 * 
-	 * @param color   Couleur de la balle
-	 * @param x       Position en x de la balle (Depuis le centre)
-	 * @param y       Position en y de la balle (Depuis le centre)
-	 * @param rayon   Rayon de la balle
-	 * @param vitesse Vitesse de déplacement de la balle
-	 */
-	public SimpleBall(double x, double y, int rayon, double vitesse) {
-		super(x, y, rayon, vitesse, TypeBalle.SIMPLE);
+	public InvertBall(double x, double y, int rayon, double vitesse, boolean isHorizontal) {
+		super(x, y, rayon, vitesse, TypeBalle.INVERT);
+
+		dy = isHorizontal?Math.sin(0) * vitesse: Math.cos(0) * vitesse;
+		dx = isHorizontal? Math.cos(0) * vitesse:Math.sin(0) * vitesse;
+		
+//		if (isHorizontal) {
+//			dy = Math.sin(0) * vitesse;
+//			dx = Math.cos(0) * vitesse;
+//		} else {
+//			dx = Math.sin(0) * vitesse;
+//			dy = Math.cos(0) * vitesse;
+//		}
 	}
 
 	@Override
 	protected void initAnimBall() {
-
 		animBall = new AnimationTimer() {
 
 			@Override
 			public void handle(long arg0) {
-				
-				if(life.getCurrent() == 0) {
+
+				if (life.getCurrent() == 0) {
 					destroy();
 				}
 
-				SimpleBall.this.setCenterX(SimpleBall.this.getCenterX() + dx);
-				SimpleBall.this.setCenterY(SimpleBall.this.getCenterY() + dy);
+				setCenterX(getCenterX() + dx);
+				setCenterY(getCenterY() + dy);
 
 				// ---------------
 
@@ -48,5 +48,7 @@ public class SimpleBall extends Balle {
 				}
 			}
 		};
+
 	}
+
 }

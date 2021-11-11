@@ -1,6 +1,5 @@
 package game.element.balle;
 
-import controller.DataCtrl;
 import controller.DodgeCtrl;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
@@ -22,9 +21,6 @@ public class GhostBall extends Balle {
 	protected void initAnimBall() {
 
 		animBall = new AnimationTimer() {
-
-			double dx = DataCtrl.negNb(Math.cos(45)) * vitesse;
-			double dy = DataCtrl.negNb(Math.sin(45)) * vitesse;
 
 			@Override
 			public void handle(long arg0) {
