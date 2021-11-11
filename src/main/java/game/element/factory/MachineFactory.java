@@ -1,10 +1,10 @@
-package factory;
+package game.element.factory;
 
 import java.util.Arrays;
 
-import factory.BallFactory.TypeBalle;
+import game.element.factory.BallFactory.TypeBalle;
+import game.element.machine.Machine;
 import javafx.scene.paint.Color;
-import node.machine.Machine;
 
 public class MachineFactory {
 

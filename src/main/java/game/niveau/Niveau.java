@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import ctrl.CD.GameColor;
-import factory.MachineFactory;
-import factory.MachineFactory.TypeMachine;
-import factory.ZoneFactory;
-import factory.ZoneFactory.TypeZone;
+import controller.DataCtrl.GameColor;
+import game.element.factory.MachineFactory;
+import game.element.factory.ZoneFactory;
+import game.element.factory.MachineFactory.TypeMachine;
+import game.element.factory.ZoneFactory.TypeZone;
+import game.element.machine.Machine;
+import game.element.zone.Zone;
 import javafx.beans.binding.BooleanBinding;
 import javafx.scene.paint.Color;
-import node.machine.Machine;
-import node.zone.Zone;
 
 public class Niveau implements Cloneable {
 

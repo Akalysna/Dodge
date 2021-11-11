@@ -1,8 +1,8 @@
-package node.machine;
+package game.element.machine;
 
 import java.util.List;
 
-import factory.BallFactory.TypeBalle;
+import game.element.factory.BallFactory.TypeBalle;
 import javafx.scene.paint.Color;
 
 public class SizeMachine extends Machine {

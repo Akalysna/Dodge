@@ -1,4 +1,4 @@
-package ctrl;
+package game.niveau;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,9 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.DodgeCtrl;
-import game.niveau.Niveau;
-import game.niveau.Stage;
+import controller.DataCtrl;
+import controller.DodgeCtrl;
 import util.EmptyLevelException;
 
 public class GestionnaireNiveau {
@@ -50,7 +49,7 @@ public class GestionnaireNiveau {
 
 				String[] line = l.split(":");
 
-				Niveau n = new Niveau(line[0], CD.PATH_CUBY + line[1], line[2], CD.PATH_NIVEAU + line[3]);
+				Niveau n = new Niveau(line[0], DataCtrl.PATH_CUBY + line[1], line[2], DataCtrl.PATH_NIVEAU + line[3]);
 
 				this.niveaux.add(n);
 			}

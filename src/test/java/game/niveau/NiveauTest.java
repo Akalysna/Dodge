@@ -9,7 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ctrl.CD;
+import controller.DataCtrl;
 import javafx.embed.swing.JFXPanel;
 
 class NiveauTest {
@@ -30,7 +30,7 @@ class NiveauTest {
 	void test() {
 
 
-		lvl1 = new Niveau(CD.PATH_NIVEAU + "lvl1.txt");
+		lvl1 = new Niveau(DataCtrl.PATH_NIVEAU + "lvl1.txt");
 		assertEquals(2, lvl1.getStages().size());
 		
 		lvl1.getStages().get(0).setMachineDestroy();

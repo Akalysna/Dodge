@@ -1,9 +1,11 @@
-package node.machine;
+package game.element.machine;
 
 import java.util.List;
 import java.util.Random;
 
-import factory.BallFactory.TypeBalle;
+import game.element.factory.BallFactory.TypeBalle;
+import game.element.zone.Zone;
+import game.view.Initialisable;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -23,9 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import node.zone.Zone;
 import util.StatObject;
-import view.Initialisable;
 
 public class Machine extends StackPane{
 

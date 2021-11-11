@@ -1,4 +1,4 @@
-package node;
+package game.element;
 
 public class Mur {
 	

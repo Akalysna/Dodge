@@ -1,13 +1,16 @@
-package app;
+package controller;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ctrl.CD;
-import ctrl.CtrlView;
-import ctrl.CtrlView.ScreenName;
-import ctrl.GestionnaireNiveau;
+import controller.ViewCtrl.ScreenName;
+import game.element.Cuby;
+import game.niveau.GestionnaireNiveau;
+import game.view.GameView;
+import game.view.HomeView;
+import game.view.Initialisable;
+import game.view.MapView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Cursor;
@@ -21,13 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import node.Cuby;
 import util.EmptyLevelException;
 import util.KeyTouch;
-import view.GameView;
-import view.HomeView;
-import view.Initialisable;
-import view.MapView;
 
 public class DodgeCtrl {
 
@@ -35,7 +33,7 @@ public class DodgeCtrl {
 	public static final int SCENE_HEIGHT = 600;
 
 	private static Scene scene = new Scene(new BorderPane(), SCENE_WIDTH, SCENE_HEIGHT);
-	public static final CtrlView ctrlView = new CtrlView(scene);;
+	public static final ViewCtrl viewCtrl = new ViewCtrl(scene);;
 
 	private Stage stage;
 
@@ -88,7 +86,7 @@ public class DodgeCtrl {
 
 		this.stage.show();
 
-		ctrlView.saveAndGoto(ScreenName.HOME, new HomeView(this));
+		viewCtrl.saveAndGoto(ScreenName.HOME, new HomeView(this));
 	}
 
 	private void action() {
@@ -97,7 +95,7 @@ public class DodgeCtrl {
 			this.cubyPlayer.forEach(e -> e.move(event, true));
 
 			if (event.getCode().equals(KeyCode.H)) {
-				ctrlView.goTo(ScreenName.MAP);
+				viewCtrl.goTo(ScreenName.MAP);
 			}
 		});
 
@@ -107,7 +105,7 @@ public class DodgeCtrl {
 
 
 	public void startGame() {
-		ctrlView.saveAndGoto(ScreenName.GAME, new GameView(this));
+		viewCtrl.saveAndGoto(ScreenName.GAME, new GameView(this));
 	}
 
 	public void gameModes(ScreenName sn) {
@@ -120,8 +118,8 @@ public class DodgeCtrl {
 		case MAP:
 
 			createPlayer(false);
-			ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
-			ctrlView.goTo(ScreenName.MAP);
+			viewCtrl.saveScreens(ScreenName.MAP, new MapView(this));
+			viewCtrl.goTo(ScreenName.MAP);
 
 			break;
 
@@ -154,29 +152,29 @@ public class DodgeCtrl {
 	// ---------
 
 	public static void goTo(ScreenName sn) {
-		ctrlView.goTo(sn);
+		viewCtrl.goTo(sn);
 	}
 
 	public static void loadAndGoto(ScreenName sn) {
-		ctrlView.loadAndGoto(sn);
+		viewCtrl.loadAndGoto(sn);
 	}
 
 	public static void saveAndGoto(ScreenName sn, Initialisable i) {
-		ctrlView.saveAndGoto(sn, i);
+		viewCtrl.saveAndGoto(sn, i);
 	}
 
 	// ---------
 
 	private void curseur() {
 
-		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "cursor.png");
+		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
 
 		scene.setCursor(new ImageCursor(img));
 	}
 
 	private void hideCursor(boolean b) {
-		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "cursor.png");
+		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
 
 		if (b)

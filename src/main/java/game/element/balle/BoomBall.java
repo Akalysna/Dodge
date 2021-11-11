@@ -1,4 +1,4 @@
-package node.balle;
+package game.element.balle;
 
 public class BoomBall {
 

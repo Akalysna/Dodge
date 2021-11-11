@@ -1,12 +1,12 @@
-package view;
+package game.view;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import app.DodgeCtrl;
-import ctrl.CD;
-import ctrl.CtrlView.ScreenName;
+import controller.DataCtrl;
+import controller.DodgeCtrl;
+import controller.ViewCtrl.ScreenName;
 import i18n.I18N;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
@@ -112,7 +112,7 @@ public class HomeView extends BorderPane implements Initialisable {
 	private void design() {
 
 		// Background de la fenêtre
-		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "menu_fond.png");
+		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "menu_fond.png");
 		Image img = new Image(input);
 		this.setBackground(
 				new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -126,7 +126,7 @@ public class HomeView extends BorderPane implements Initialisable {
 
 		BorderPane.setAlignment(title, Pos.CENTER);
 
-		InputStream in = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "settings_gear.png");
+		InputStream in = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "settings_gear.png");
 		Image i = new Image(in);
 		btnOption.setBackground(
 				new Background(new BackgroundImage(i, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
@@ -194,11 +194,11 @@ public class HomeView extends BorderPane implements Initialisable {
 		for (Button b : btn) {
 
 			b.setOnMouseEntered(event -> {
-				backgroundImgBtn(CD.PATH_IMG_GAME + "hover_menu_btn.png", b);
+				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b);
 			});
 
 			b.setOnMouseExited(event -> {
-				backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", b);
+				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b);
 			});
 		}
 	}
@@ -237,7 +237,7 @@ public class HomeView extends BorderPane implements Initialisable {
 	 */
 	private void btnUi(Button btn) {
 
-		backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
+		backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", btn);
 
 		btn.setPrefWidth(230);
 		btn.setPrefHeight(80);

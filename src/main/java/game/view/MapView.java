@@ -1,12 +1,12 @@
-package view;
+package game.view;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import app.DodgeCtrl;
-import ctrl.CD;
-import ctrl.CtrlView.ScreenName;
-import ctrl.GestionnaireNiveau;
+import controller.DataCtrl;
+import controller.DodgeCtrl;
+import controller.ViewCtrl.ScreenName;
+import game.niveau.GestionnaireNiveau;
 import i18n.I18N;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -150,16 +150,16 @@ public class MapView extends BorderPane implements Initialisable {
 	private void initDesign() {
 
 		// Background de la fenêtre
-		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "lobby_fond.png");
+		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "lobby_fond.png");
 		Image img = new Image(input);
 		this.setBackground(
 				new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
 						BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, false, true))));
 
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + "fleche_retour.png", btnRetour);
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + "arrow_empty.png", btnLastLevel);
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + "arrow_full.png", btnNextLevel);
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "fleche_retour.png", btnRetour);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "arrow_empty.png", btnLastLevel);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "arrow_full.png", btnNextLevel);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay);
 
 		this.titre.setFont(Font.font("Berlin Sans FB Demi", 40));
 		this.titre.setTextFill(Color.WHITE);
@@ -243,8 +243,8 @@ public class MapView extends BorderPane implements Initialisable {
 		});
 
 		this.btnPlay.setOnMouseClicked(event -> dodgeCtrl.startGame());
-		this.btnPlay.setOnMouseEntered(event -> backgroundImgBtn(CD.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
-		this.btnPlay.setOnMouseExited(e -> backgroundImgBtn(CD.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay));
+		this.btnPlay.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
+		this.btnPlay.setOnMouseExited(e -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay));
 
 
 		// TODO Trouver une alternative
@@ -305,10 +305,10 @@ public class MapView extends BorderPane implements Initialisable {
 		String empty = "arrow_empty.png";
 
 		String tmp = isLastLevel ? full : empty;
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + tmp, btnLastLevel);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + tmp, btnLastLevel);
 
 		tmp = isNextLevel ? full : empty;
-		this.backgroundImgBtn(CD.PATH_IMG_GAME + tmp, btnNextLevel);
+		this.backgroundImgBtn(DataCtrl.PATH_IMG_GAME + tmp, btnNextLevel);
 
 
 		// Rotation du bouton droit

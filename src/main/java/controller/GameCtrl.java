@@ -1,21 +1,21 @@
-package ctrl;
+package controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.DodgeCtrl;
-import ctrl.CtrlView.ScreenName;
-import factory.BallFactory;
+import controller.ViewCtrl.ScreenName;
+import game.element.Cuby;
+import game.element.balle.Balle;
+import game.element.factory.BallFactory;
+import game.element.machine.Machine;
+import game.element.zone.Zone;
+import game.niveau.GestionnaireNiveau;
+import game.view.GameView;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.shape.Shape;
-import node.Cuby;
-import node.balle.Balle;
-import node.machine.Machine;
-import node.zone.Zone;
-import view.GameView;
 
 public class GameCtrl {
 

@@ -2,7 +2,7 @@ package util;
 
 import java.util.ArrayList;
 
-import factory.ZoneFactory.TypeForme;
+import game.element.factory.ZoneFactory.TypeForme;
 
 public class Forme {
 

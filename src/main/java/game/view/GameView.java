@@ -1,8 +1,8 @@
-package view;
+package game.view;
 
-import app.DodgeCtrl;
-import ctrl.CD;
-import ctrl.GameCtrl;
+import controller.DataCtrl;
+import controller.DodgeCtrl;
+import controller.GameCtrl;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +16,7 @@ public class GameView extends AnchorPane implements Initialisable {
 	public GameView(DodgeCtrl dodgeCtrl) {
 
 		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
-		this.setBackground(CD.BG_COLOR_DARK);
+		this.setBackground(DataCtrl.BG_COLOR_DARK);
 
 		//dodgeCtrl.hideCursor(true);
 		

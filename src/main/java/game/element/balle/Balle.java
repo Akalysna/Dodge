@@ -1,6 +1,6 @@
-package node.balle;
+package game.element.balle;
 
-import factory.BallFactory.TypeBalle;
+import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

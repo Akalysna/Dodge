@@ -1,10 +1,10 @@
-package factory;
+package game.element.factory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import game.element.zone.Zone;
 import javafx.scene.paint.Color;
-import node.zone.Zone;
 import util.Forme;
 
 public class ZoneFactory {

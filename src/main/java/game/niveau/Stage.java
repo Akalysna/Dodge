@@ -2,8 +2,8 @@ package game.niveau;
 
 import java.util.ArrayList;
 
-import node.machine.Machine;
-import node.zone.Zone;
+import game.element.machine.Machine;
+import game.element.zone.Zone;
 
 public class Stage {
 

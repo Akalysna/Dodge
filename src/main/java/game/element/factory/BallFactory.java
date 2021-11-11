@@ -1,7 +1,7 @@
-package factory;
+package game.element.factory;
 
-import node.balle.Balle;
-import node.balle.SimpleBall;
+import game.element.balle.Balle;
+import game.element.balle.SimpleBall;
 
 public class BallFactory {
 

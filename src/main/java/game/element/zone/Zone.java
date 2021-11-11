@@ -1,4 +1,4 @@
-package node.zone;
+package game.element.zone;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

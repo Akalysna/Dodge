@@ -1,6 +1,6 @@
-package node;
+package game.element;
 
-import app.DodgeCtrl;
+import controller.DodgeCtrl;
 import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;

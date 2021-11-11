@@ -1,12 +1,12 @@
-package ctrl;
+package controller;
 
 import java.util.EnumMap;
 
+import game.view.Initialisable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import view.Initialisable;
 
-public class CtrlView {
+public class ViewCtrl {
 	
 	public enum ScreenName {
 		HOME, MAP, GAME, SETTING, MULTI, GAMEOVER; 
@@ -15,7 +15,7 @@ public class CtrlView {
 	private Scene scene; 
 	private EnumMap<ScreenName, Initialisable> screens; 
 	
-	public CtrlView(Scene scene) {
+	public ViewCtrl(Scene scene) {
 		this.scene = scene; 
 		this.screens = new EnumMap<>(ScreenName.class); 
 	}

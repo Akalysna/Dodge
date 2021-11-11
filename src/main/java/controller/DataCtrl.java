@@ -1,4 +1,4 @@
-package ctrl;
+package controller;
 
 import java.io.InputStream;
 import java.util.Random;
@@ -13,7 +13,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.paint.Color;
 
-public class CD {
+public class DataCtrl {
 
 	public enum GameColor {
 
@@ -55,7 +55,7 @@ public class CD {
 	 */
 	public static void backgroundImgBtn(String imgFile, Button btn) {
 
-		InputStream input = CD.class.getResourceAsStream("/src/main/resources" + imgFile);
+		InputStream input = DataCtrl.class.getResourceAsStream("/src/main/resources" + imgFile);
 		System.out.println(imgFile);
 		Image img = new Image(input);
 		btn.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,

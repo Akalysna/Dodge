@@ -1,8 +1,8 @@
-package node.balle;
+package game.element.balle;
 
-import app.DodgeCtrl;
-import ctrl.CD;
-import factory.BallFactory.TypeBalle;
+import controller.DataCtrl;
+import controller.DodgeCtrl;
+import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 
 public class SimpleBall extends Balle {
@@ -25,8 +25,8 @@ public class SimpleBall extends Balle {
 
 		animBall = new AnimationTimer() {
 
-			double dx = Math.cos(CD.negNb(45)) * vitesse;
-			double dy = Math.sin(CD.negNb(45)) * vitesse;
+			double dx = Math.cos(DataCtrl.negNb(45)) * vitesse;
+			double dy = Math.sin(DataCtrl.negNb(45)) * vitesse;
 
 			@Override
 			public void handle(long arg0) {
