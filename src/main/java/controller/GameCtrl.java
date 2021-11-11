@@ -11,6 +11,7 @@ import game.element.machine.Machine;
 import game.element.zone.Zone;
 import game.niveau.GestionnaireNiveau;
 import game.view.GameView;
+import javafx.animation.PathTransition;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -28,6 +29,7 @@ public class GameCtrl {
 	private ArrayList<Machine> machines;
 	private ArrayList<Zone> zones;
 	private ArrayList<Balle> balles;
+	private ArrayList<PathTransition> paths;
 
 	private GestionnaireNiveau gestionNiveau;
 
@@ -58,26 +60,38 @@ public class GameCtrl {
 		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
 		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
 		this.cubys.addAll(dodgeCtrl.getCubyPlayer());
+		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
 
 		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
 	}
 
 	private void clear() {
 
+		if (paths != null)
+			this.paths.forEach(e -> e.stop());
+
 		this.machines = new ArrayList<>();
 		this.zones = new ArrayList<>();
 		this.cubys = new ArrayList<>();
 		this.balles = new ArrayList<>();
+		this.paths = new ArrayList<>();
 
 		this.allMachineDestroy.unbind();
 	}
 
 	public List<Node> getElement() {
 		ArrayList<Node> n = new ArrayList<>();
+		
+		paths.forEach(e -> {
+			n.add(e.getPath());
+			e.play();
+		});
+		
 		n.addAll(machines);
 		n.addAll(zones);
 		n.addAll(cubys);
 		n.addAll(balles);
+
 		return n;
 
 	}
@@ -103,6 +117,19 @@ public class GameCtrl {
 	}
 
 	public void balls() {
+		
+//		for(PathTransition pt : paths) {
+//			if(pt.getNode() instanceof Machine) {
+//				Machine machine = (Machine) pt.getNode(); 
+//				
+//				if (machine.isThrowBall()) {
+//					Balle b = BallFactory.get(machine.lance(), machine.getTranslateX(), machine.getTranslateY());
+//					b.animateBall(true);
+//					balles.add(b);
+//					gameView.addNode(b);
+//				}
+//			}
+//		}
 
 		for (Machine machine : machines) {
 			if (machine.isThrowBall()) {
@@ -120,7 +147,7 @@ public class GameCtrl {
 				tmp.add(b);
 			}
 		}
-
+		
 		tmp.forEach(e -> gameView.removeNode(e));
 		balles.removeAll(tmp);
 
@@ -179,6 +206,12 @@ public class GameCtrl {
 		for (Machine m : machines) {
 			if (m.getIsDestroy().get()) {
 				engine.add(m);
+				
+				for(PathTransition pt : paths) {
+					if(pt.getNode().equals(m)) {
+						pt.stop();
+					}
+				}
 			}
 		}
 

@@ -1,0 +1,6 @@
+#Zone : Type, taille, forme, sa position
+#Machine : Type, position
+#Les tailles : tres petite, petite, normal, grand, geante
+Simple:600,500	Simple:coin_bas_gauche:Normal:400,400
+Move:path_carre:Simple	Simple:coin_bas_gauche:Normal:200,200
+Move:carre:Simple	Move:carre:Simple:coin_bas_gauche:Normal:200,200

@@ -28,7 +28,7 @@ public class Niveau implements Cloneable {
 
 	private LevelInfo levelInfo;
 
-	private List<Stage> stages;
+	private BuildLevel build;
 
 	/**
 	 * Constructeur de Niveau
@@ -56,9 +56,7 @@ public class Niveau implements Cloneable {
 
 		this.levelInfo = new LevelInfo();
 
-		this.stages = new ArrayList<>();
-
-		readLevel();
+		this.build = new BuildLevel(levelPath);
 	}
 
 	/**
@@ -68,138 +66,17 @@ public class Niveau implements Cloneable {
 	 */
 	public int getProgress() { return levelInfo.calculProgress(); }
 
-	public void readLevel() {
-		
-		stages.clear();
-
-		ArrayList<GameColor> colors = new ArrayList<>(Arrays.asList(GameColor.values()));
-
-		boolean firstLine = true;
-		Stage stage = new Stage();
-
-		try {
-
-			String l;
-			BufferedReader in;
-			in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(levelPath)));
-
-			while ((l = in.readLine()) != null) {
-
-				String[] line = l.split(":");
-
-				// Add and create stage
-				if (line[0].equals("Stage")) {
-
-					if (firstLine) {
-						stage = new Stage();
-						firstLine = false;
-					} else {
-						this.stages.add(stage);
-						stage = new Stage();
-					}
-				}
-
-				else
-					createNode(line, stage, randomColor(colors));
-
-			}
-
-			this.stages.add(stage);
-
-			in.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Lit la ligne passer en parametre est construit les éléments
-	 * 
-	 * @param line   Ligne à traiter
-	 * @param stage  Stage auquel ajouter les éléments
-	 * @param colors
-	 */
-	private void createNode(String[] line, Stage stage, Color color) {
-
-		ArrayList<Zone> zoneToBind = new ArrayList<>();
-
-		Machine m = null;
-
-		// Avancer de deux en deux
-		for (int i = 0; i < line.length / 2; i++) {
-
-			// Récuperation des coordonnées de l'élément
-			int x = Integer.parseInt(line[2 * i + 1].split(",")[0]);
-			int y = Integer.parseInt(line[2 * i + 1].split(",")[1]);
-
-			String type = line[2 * i].toUpperCase(); // Type de l'élément
-
-			if (i == 0) { // C'est la machine
-
-				m = MachineFactory.get(TypeMachine.valueOf(type), x, y, color);
-				stage.addMachine(m);
-				levelInfo.addMachine();
-
-			} else { // Sinon c'est une zone
-
-				Zone z = ZoneFactory.get(TypeZone.valueOf(type), x, y, color);
-
-				m.bindToDestroyMachine(z);
-
-				zoneToBind.add(z);
-				stage.addZone(z);
-			}
-		}
-
-		if (m != null)
-			m.bindEnteredZone(builBinding(zoneToBind, zoneToBind.size() - 1));
-	}
 
 
 	public void destroyMachine() {
 		levelInfo.destroyMachine();
 	}
 
-	/**
-	 * Renvoie un BooleanBinding. Lie tous les propriétés Entered de toutes les
-	 * zones de la liste </br>
-	 * Méthode récursif
-	 * 
-	 * @param list Liste des zone tester
-	 * @param i    Taille de la liste
-	 * @return
-	 */
-	private BooleanBinding builBinding(ArrayList<Zone> list, int i) {
+	public void readLevel() {
+		build.readLevel();
 
-		if (i < 0) {
-			return new BooleanBinding() {
-
-				@Override
-				protected boolean computeValue() {
-					return false;
-				}
-			};
-
-		} else
-			return list.get(i).getEntered().or(builBinding(list, i - 1));
 	}
 
-	/**
-	 * Retourne une couleur en la retirant de la liste
-	 * 
-	 * @param list Liste des couleurs
-	 * @return Color
-	 */
-	public Color randomColor(List<GameColor> list) {
-
-		int index = new Random().nextInt(list.size());
-		GameColor pickColor = list.remove(index);
-
-		return Color.valueOf(pickColor.getColorName());
-	}
 
 	public ArrayList<Stage> getCopyStage() { return new ArrayList<Stage>(this.getStages()); }
 
@@ -211,7 +88,7 @@ public class Niveau implements Cloneable {
 
 	public String getLevelPath() { return levelPath; }
 
-	public List<Stage> getStages() { return stages; }
+	public List<Stage> getStages() { return build.getStages(); }
 }
 
 class LevelInfo {

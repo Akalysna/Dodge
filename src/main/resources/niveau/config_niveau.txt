@@ -2,3 +2,4 @@ New Word:cuby_rose.png: :lvl1.txt
 Begin:cuby_bleu.png: :lvl2.txt
 Ghost Town:cuby_ghost.png: :lvl3.txt
 TENET:cuby_jaune.png: :lvl4.txt
+Just Move:cuby_red.png: :lvl7.txt

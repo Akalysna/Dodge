@@ -125,8 +125,8 @@ public class Machine extends StackPane{
 
 	public void initNode() {
 
-		this.setLayoutX(x-(taille));
-		this.setLayoutY(y-(taille));
+		this.setLayoutX(x);
+		this.setLayoutY(y);
 
 		this.anneauGen = new Circle(this.taille);
 		this.centreGen = new Circle(this.taille - 10);
@@ -281,9 +281,8 @@ public class Machine extends StackPane{
 	public int getX() { return x; }
 
 	public int getY() { return y; }
-	
-	public int getCenterX() { return x; }
 
-	public int getCenterY() { return y; }
+	public double getCenterX() { return getTranslateX()+taille; }
 
+	public double getCenterY() { return getTranslateY()+taille; }
 }
