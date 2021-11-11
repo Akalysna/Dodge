@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class MachineFactory {
 
 	public enum TypeMachine {
-		SIMPLE, SNAKE, SIZE;
+		SIMPLE, SNAKE, SIZE, GHOST;
 	}
 
 	public static Machine get(TypeMachine tm, int x, int y, Color color) {
@@ -22,7 +22,9 @@ public class MachineFactory {
 		case SIZE:
 
 		return null;
-
+		
+		case GHOST:
+			return simpleMachineGhost(x, y, color);
 		default:
 			return null; 
 		}
@@ -30,6 +32,10 @@ public class MachineFactory {
 
 	public static Machine simpleMachine(int x, int y, Color color) {
 		return new Machine(x, y, 50, 5, color, Arrays.asList(TypeBalle.SIMPLE));
+	}
+	
+	public static Machine simpleMachineGhost(int x, int y, Color color) {
+		return new Machine(x, y, 50, 5, color, Arrays.asList(TypeBalle.GHOST));
 	}
 
 

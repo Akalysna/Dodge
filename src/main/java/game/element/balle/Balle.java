@@ -15,21 +15,19 @@ import util.StatObject;
  */
 public abstract class Balle extends Circle {
 
-	protected double vitesse;
-	protected int taille;
-
 	protected double x;
 	protected double y;
 
+	protected int taille;
 	protected Color color;
-
-	protected AnimationTimer animBall;
+	protected double vitesse;
 
 	protected TypeBalle typeBalle;
-	
-	protected StatObject<Integer> life; 
-	protected boolean isDestroy; 
-	
+	protected AnimationTimer animBall;
+
+	protected StatObject<Integer> life;
+	protected boolean isDestroy;
+
 	// ---------------------
 	// Constructeur
 	// ---------------------
@@ -43,6 +41,7 @@ public abstract class Balle extends Circle {
 	 * @param rayon   Rayon de la balle
 	 * @param vitesse Vitesse de déplacement de la balle
 	 * @param type    Type de la balle
+	 * @param life    Durée de vie de la balle en terme de rebond
 	 */
 	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type, int life) {
 
@@ -53,16 +52,16 @@ public abstract class Balle extends Circle {
 		this.y = y;
 
 		this.color = Color.WHITE;
-		this.life = new StatObject<>(life); 
+		this.life = new StatObject<>(life);
 
 		init();
 		initAnimBall();
-		this.isDestroy = false; 
+		this.isDestroy = false;
 
 	}
-	
+
 	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type) {
-		this(x, y, rayon, vitesse, type, 10); 
+		this(x, y, rayon, vitesse, type, 10);
 	}
 
 	// ---------------------
@@ -91,7 +90,18 @@ public abstract class Balle extends Circle {
 	 * 
 	 * @param b Boolean
 	 */
-	public abstract void animateBall(Boolean b);
+	public void animateBall(Boolean b) {
+
+		if (b)
+			animBall.start();
+		else
+			animBall.stop();
+	}
+	
+	protected void destroy() {
+		isDestroy = true; 
+		animateBall(false);
+	}
 
 
 
@@ -101,23 +111,31 @@ public abstract class Balle extends Circle {
 
 
 	public double getVitesse() { return vitesse; }
+
 	public int getTaille() { return taille; }
 
 	public double getX() { return x; }
+
 	public double getY() { return y; }
 
 	public AnimationTimer getAnimBall() { return animBall; }
+
 	public TypeBalle getTypeBalle() { return typeBalle; }
+
 	public Color getColor() { return color; }
 
 	public void setVitesse(int vitesse) { this.vitesse = vitesse; }
+
 	public void setTaille(int taille) { this.taille = taille; }
 
 	public void setX(int x) { this.x = x; }
+
 	public void setY(int y) { this.y = y; }
 
 	public void setAnimBall(AnimationTimer animBall) { this.animBall = animBall; }
+
 	public void setTypeBalle(TypeBalle typeBalle) { this.typeBalle = typeBalle; }
+
 	public void setColor(Color color) { this.color = color; }
 
 	public StatObject<Integer> getLife() { return life; }
@@ -125,7 +143,7 @@ public abstract class Balle extends Circle {
 	public boolean isDestroy() { return isDestroy; }
 
 	public void setDestroy(boolean isDestroy) { this.isDestroy = isDestroy; }
-	
-	
+
+
 
 }

@@ -25,8 +25,8 @@ public class SimpleBall extends Balle {
 
 		animBall = new AnimationTimer() {
 
-			double dx = Math.cos(DataCtrl.negNb(45)) * vitesse;
-			double dy = Math.sin(DataCtrl.negNb(45)) * vitesse;
+			double dx = DataCtrl.negNb(Math.cos(45)) * vitesse;
+			double dy = DataCtrl.negNb(Math.sin(45)) * vitesse;
 
 			@Override
 			public void handle(long arg0) {
@@ -55,18 +55,5 @@ public class SimpleBall extends Balle {
 		};
 	}
 	
-	private void destroy() {
-		isDestroy = true; 
-		animateBall(false);
-	}
-
-	@Override
-	public void animateBall(Boolean b) {
-
-		if (b)
-			animBall.start();
-		else 
-			animBall.stop();
-	}
-
+	
 }

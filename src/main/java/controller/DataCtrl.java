@@ -40,11 +40,11 @@ public class DataCtrl {
 	/**
 	 * Transforme un nombre en nombre négatif de façon aléatoire
 	 * 
-	 * @param nb Nombre à transformer
+	 * @param d Nombre à transformer
 	 * @return int
 	 */
-	public static int negNb(int nb) {
-		return (new Random().nextInt(100)) > 50 ? -nb : nb;
+	public static double negNb(double d) {
+		return (new Random().nextInt(100)) > 50 ? -d : d;
 	}
 
 	/**

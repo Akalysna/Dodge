@@ -1,0 +1,2 @@
+Stage
+GHOST:400,300:Simple:300,500

@@ -5,7 +5,6 @@ import java.util.Random;
 
 import game.element.factory.BallFactory.TypeBalle;
 import game.element.zone.Zone;
-import game.view.Initialisable;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -122,10 +121,6 @@ public class Machine extends StackPane{
 	}
 
 	// ------------------------------------
-	
-	private double getCenter() {
-		return taille /2.0; 
-	}
 
 
 	public void initNode() {
@@ -286,10 +281,9 @@ public class Machine extends StackPane{
 	public int getX() { return x; }
 
 	public int getY() { return y; }
+	
+	public int getCenterX() { return x; }
 
-	public double getCenterX() { return x+(taille/2); }
-
-	public double getCenterY() { return y+(taille/2); }
-
+	public int getCenterY() { return y; }
 
 }
