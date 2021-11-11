@@ -137,7 +137,7 @@ public class GestionnaireNiveau {
 
 	public boolean nextStage() {
 
-		if (indexCurentStage() > getStageOfCurrentLevel().size() - 1) {
+		if (indexCurentStage() >= getStageOfCurrentLevel().size() - 1) {
 			return false;
 		} else {
 			currentStage = getStageOfCurrentLevel().get(indexCurentLevel() + 1);

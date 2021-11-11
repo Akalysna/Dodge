@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class MachineFactory {
 
 	public enum TypeMachine {
-		SIMPLE, SNAKE, SIZE;
+		SIMPLE, SNAKE, SIZE, MOVE;
 	}
 
 	public static Machine get(TypeMachine tm, int x, int y, Color color) {

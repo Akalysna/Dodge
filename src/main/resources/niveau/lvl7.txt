@@ -1,0 +1,3 @@
+# Niveau avec des zones qui bouge
+Stage
+MOVE:path_carre:SIMPLE	SIMPLE:coin_bas_gauche:NORMAL:500,300

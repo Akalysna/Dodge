@@ -1,5 +1,7 @@
 package game.element.zone;
 
+import java.util.ArrayList;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -21,13 +23,13 @@ public class Zone extends Polyline {
 	private double x;
 	private double y;
 	
-	private Forme shape; 
+	private ArrayList<Double> points;
 	private double taille; 
 
-	public Zone(Forme shape, double taille, int x, int y, Color color) {
+	public Zone(ArrayList<Double> points, double taille, int x, int y, Color color) {
 
 		this.taille = taille; 
-		this.shape = shape; 
+		this.points = points; 
 		this.x = x;
 		this.y = y;
 		this.couleur = color;
@@ -35,7 +37,7 @@ public class Zone extends Polyline {
 		this.entered = new SimpleBooleanProperty(false);
 		this.disable = new SimpleBooleanProperty(false);
 
-		for (Double point : shape.getPoints()) {
+		for (Double point : points) {
 			this.getPoints().add(point * taille);
 		}
 		
@@ -49,8 +51,8 @@ public class Zone extends Polyline {
 
 	public void init() {
 
-		this.setLayoutX(x - ((shape.getForme().getWidth() * taille)/2));
-		this.setLayoutY(y - ((shape.getForme().getHeight() * taille)/2));
+		this.setLayoutX(x);
+		this.setLayoutY(y);
 
 		this.getStrokeDashArray().addAll(20.0, 10.0);
 		this.setStroke(couleur);
