@@ -24,10 +24,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import node.zone.Zone;
-import util.Initialisable;
 import util.StatObject;
+import view.Initialisable;
 
-public class Machine extends StackPane implements Initialisable {
+public class Machine extends StackPane{
 
 	// ------------------------------------
 	// Attribut
@@ -127,7 +127,7 @@ public class Machine extends StackPane implements Initialisable {
 		return taille /2.0; 
 	}
 
-	@Override
+
 	public void initNode() {
 
 		this.setLayoutX(x-(taille));

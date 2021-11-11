@@ -20,7 +20,7 @@ public class GameView extends AnchorPane implements Initialisable {
 
 		//dodgeCtrl.hideCursor(true);
 		
-	dodgeCtrl.hidedCursor(this);
+	dodgeCtrl.invisibleCursor(this);
 		
 		
 
@@ -77,6 +77,12 @@ public class GameView extends AnchorPane implements Initialisable {
 
 	public void stopUpdate() {
 		this.update.stop();
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -40,12 +40,12 @@ public class SimpleBall extends Balle {
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= DodgeCtrl.sceneWidth - taille)) {
+				if ((getCenterX() <= taille) || (getCenterX() >= DodgeCtrl.SCENE_WIDTH - taille)) {
 					dx = -dx; // Direction inverse
 					life.setCurrent(life.getCurrent() - 1);
 				}
 
-				if ((getCenterY() >= DodgeCtrl.sceneHeight - taille) || (getCenterY() <= taille)) {
+				if ((getCenterY() >= DodgeCtrl.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
 					dy = -dy;
 					life.setCurrent(life.getCurrent() - 1);
 				}

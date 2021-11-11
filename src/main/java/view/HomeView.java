@@ -64,10 +64,17 @@ public class HomeView extends BorderPane implements Initialisable {
 		design();
 		action();
 		
+		
+	}
+	
+	@Override
+	public void load() {
+		
 		FadeTransition fd = new FadeTransition(Duration.millis(700), this);
 		fd.setFromValue(0);
 		fd.setToValue(1);
 		fd.playFromStart();
+		
 	}
 
 	
@@ -256,5 +263,9 @@ public class HomeView extends BorderPane implements Initialisable {
 				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
 
 	}
+
+
+
+
 
 }

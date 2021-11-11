@@ -1,24 +1,17 @@
 package app;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 
 import ctrl.CD;
-
-import game.niveau.Niveau;
-
+import ctrl.CtrlView;
+import ctrl.CtrlView.ScreenName;
+import ctrl.GestionnaireNiveau;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
-
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -33,41 +26,45 @@ import util.EmptyLevelException;
 import util.KeyTouch;
 import view.GameView;
 import view.HomeView;
+import view.Initialisable;
 import view.MapView;
-
-import ctrl.CtrlView;
-import ctrl.CtrlView.ScreenName;
 
 public class DodgeCtrl {
 
+	public static final int SCENE_WIDTH = 800;
+	public static final int SCENE_HEIGHT = 600;
+
+	private static Scene scene = new Scene(new BorderPane(), SCENE_WIDTH, SCENE_HEIGHT);
+	public static final CtrlView ctrlView = new CtrlView(scene);;
+
 	private Stage stage;
-	private Scene scene;
-
-	private CtrlView ctrlView;
-
-	public static final int sceneWidth = 800;
-	public static final int sceneHeight = 600;
-
-	private Niveau currentLevel;
 
 	private ArrayList<Cuby> cubyPlayer;
-	private List<Niveau> niveaux;
 
-	private static double xOffset = 0;
-	private static double yOffset = 0;
+	private double xOffset = 0;
+	private double yOffset = 0;
 
-	public DodgeCtrl(Stage stage) {
+	private GestionnaireNiveau gestionNiveau;
 
-		BorderPane root = new BorderPane();
-		this.scene = new Scene(root, sceneWidth, sceneHeight);
-		this.ctrlView = new CtrlView(scene);
+	public DodgeCtrl(Stage stage) throws EmptyLevelException {
+
 		this.stage = stage;
 
 		this.cubyPlayer = new ArrayList<>();
-		this.niveaux = new ArrayList<>();
 
-		this.currentLevel = null;
+		this.gestionNiveau = new GestionnaireNiveau();
+
 		curseur();
+		dragWindow();
+		action();
+	}
+
+	/**
+	 * Permet de déplacer la fenetre du jeu quand le style du stage est UNDECORATED
+	 * 
+	 * @see StageStyle#UNDECORATED
+	 */
+	private void dragWindow() {
 
 		scene.setOnMousePressed(e -> {
 
@@ -80,12 +77,9 @@ public class DodgeCtrl {
 			stage.setX(e.getScreenX() - xOffset);
 			stage.setY(e.getScreenY() - yOffset);
 		});
-
 	}
 
-	public void run() throws EmptyLevelException {
-
-		uploadLevel();
+	public void run() {
 
 		this.stage.setResizable(false);
 		this.stage.setTitle("Dodge");
@@ -94,63 +88,26 @@ public class DodgeCtrl {
 
 		this.stage.show();
 
-		this.ctrlView.saveScreens(ScreenName.HOME, new HomeView(this));
-		this.ctrlView.goTo(ScreenName.HOME);
+		ctrlView.saveAndGoto(ScreenName.HOME, new HomeView(this));
 	}
 
-	private void move() {
+	private void action() {
 
-		this.scene.setOnKeyPressed(event -> {
+		scene.setOnKeyPressed(event -> {
 			this.cubyPlayer.forEach(e -> e.move(event, true));
 
 			if (event.getCode().equals(KeyCode.H)) {
 				ctrlView.goTo(ScreenName.MAP);
 			}
 		});
-		this.scene.setOnKeyReleased(event -> this.cubyPlayer.forEach(e -> e.move(event, false)));
+
+		scene.setOnKeyReleased(event -> this.cubyPlayer.forEach(e -> e.move(event, false)));
 	}
 
-	private void uploadLevel() throws EmptyLevelException {
 
-		String l;
-		BufferedReader in;
-
-		try {
-
-			in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/niveau/config_niveau.txt")));
-
-			while ((l = in.readLine()) != null) {
-
-				String[] line = l.split(":");
-
-				Niveau n = new Niveau(line[0], CD.PATH_CUBY + line[1], line[2],
-						CD.PATH_NIVEAU + line[3]);
-
-				this.niveaux.add(n);
-			}
-
-			in.close();
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		// TODO Lever une exception si la liste est vide, s'il n'y a aucun niveau de lu
-
-
-
-		if (!niveaux.isEmpty())
-			currentLevel = niveaux.get(0);
-		else
-			throw new EmptyLevelException("Aucun niveau n'a pu être lu");
-	}
 
 	public void startGame() {
-		move();
-		this.ctrlView.saveScreens(ScreenName.GAME, new GameView(this));
-		ctrlView.goTo(ScreenName.GAME);
+		ctrlView.saveAndGoto(ScreenName.GAME, new GameView(this));
 	}
 
 	public void gameModes(ScreenName sn) {
@@ -163,8 +120,7 @@ public class DodgeCtrl {
 		case MAP:
 
 			createPlayer(false);
-
-			this.ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
+			ctrlView.saveScreens(ScreenName.MAP, new MapView(this));
 			ctrlView.goTo(ScreenName.MAP);
 
 			break;
@@ -195,72 +151,21 @@ public class DodgeCtrl {
 
 
 
-	/**
-	 * Récupère le niveau qui suit le niveau courant
-	 * 
-	 * @return Niveau suivant
-	 * @see DodgeCtrl#currentLevel
-	 */
-	public boolean nextLevel() {
+	// ---------
 
-		if (currentLevel != null) {
-
-			int index = this.niveaux.indexOf(currentLevel);
-			if (index < niveaux.size() - 1) {
-				currentLevel = niveaux.get(index + 1);
-				return true;
-			}
-		}
-
-		return false;
-
-		// TODO Ajouter une exception ?
-	}
-
-	/**
-	 * Récupère le niveau precedent le niveau courant
-	 * 
-	 * @return Niveau precedent
-	 * @see DodgeCtrl#currentLevel
-	 */
-	public boolean lastLevel() {
-		
-		if (currentLevel != null) {
-
-			int index = this.niveaux.indexOf(currentLevel);
-			
-			if (index > 0) {
-
-				currentLevel = niveaux.get(index - 1);
-				return true;
-			} 
-		}
-
-		return false;
-
-		// TODO Ajouter une exception ?
-
-	}
-
-	public Niveau getCurrentLevel() { return currentLevel; }
-
-
-	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }
-
-	public List<Niveau> getNiveaux() { return niveaux; }
-
-	public void goTo(ScreenName sn) {
+	public static void goTo(ScreenName sn) {
 		ctrlView.goTo(sn);
 	}
 
-	public void goToNewView(ScreenName sn, Parent p) {
-		ctrlView.goToNewView(sn, p);
+	public static void loadAndGoto(ScreenName sn) {
+		ctrlView.loadAndGoto(sn);
 	}
-	
-	public void goToNewScreen(ScreenName sn, Parent p) {
-		ctrlView.saveScreens(sn, p);
-		ctrlView.goTo(sn);
+
+	public static void saveAndGoto(ScreenName sn, Initialisable i) {
+		ctrlView.saveAndGoto(sn, i);
 	}
+
+	// ---------
 
 	private void curseur() {
 
@@ -269,19 +174,19 @@ public class DodgeCtrl {
 
 		scene.setCursor(new ImageCursor(img));
 	}
-	
+
 	private void hideCursor(boolean b) {
 		InputStream input = getClass().getResourceAsStream(CD.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
-		
-		if(b)
+
+		if (b)
 			scene.setCursor(Cursor.NONE);
-		else 
+		else
 			scene.setCursor(new ImageCursor(img));
-		
+
 	}
-	
-	public void hidedCursor(Parent p) {
+
+	public void invisibleCursor(Parent p) {
 		p.setOnMouseMoved(event -> {
 
 			hideCursor(false);
@@ -289,25 +194,13 @@ public class DodgeCtrl {
 			Timeline timelineChrono = new Timeline(new KeyFrame(Duration.seconds(2), ev -> hideCursor(true)));
 
 			timelineChrono.play();
-
 		});
 	}
-	
-	public boolean isFirstLevel() {
-		return niveaux.indexOf(currentLevel) == 0;
-	}
-	
-	public boolean isLastLevel() {
-		return niveaux.indexOf(currentLevel) == niveaux.size() -1;
-	}
-	
-	public int nbLevel() {
-		return this.niveaux.size(); 
-	}
-	
-	public int indexCurentLevel() {
-		return this.niveaux.indexOf(currentLevel); 
-	}
-	
+
+	public GestionnaireNiveau getGestionNiveau() { return gestionNiveau; }
+
+	public ArrayList<Cuby> getCubyPlayer() { return cubyPlayer; }
+
+
 
 }

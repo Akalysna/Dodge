@@ -66,11 +66,11 @@ public class Cuby extends Rectangle {
 					setY(getY() - vitesse);
 				}
 
-				if (keyTouch.isPressed(MoveDirection.RIGHT) && (getX() < DodgeCtrl.sceneWidth - taille)) {
+				if (keyTouch.isPressed(MoveDirection.RIGHT) && (getX() < DodgeCtrl.SCENE_WIDTH - taille)) {
 					setX(getX() + vitesse);
 				}
 
-				if (keyTouch.isPressed(MoveDirection.DOWN) && (getY() < DodgeCtrl.sceneHeight -taille)) {
+				if (keyTouch.isPressed(MoveDirection.DOWN) && (getY() < DodgeCtrl.SCENE_HEIGHT -taille)) {
 					setY(getY() + vitesse);
 				}
 

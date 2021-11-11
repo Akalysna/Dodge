@@ -1,13 +1,18 @@
 package view;
 
 import javafx.scene.layout.BorderPane;
-import util.Initialisable;
 
 public class SettingView extends BorderPane implements Initialisable{
 
 	@Override
 	public void initNode() {
 		
+		
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
 		
 	}
 

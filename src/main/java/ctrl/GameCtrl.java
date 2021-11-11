@@ -6,8 +6,6 @@ import java.util.List;
 import app.DodgeCtrl;
 import ctrl.CtrlView.ScreenName;
 import factory.BallFactory;
-import game.niveau.Niveau;
-import game.niveau.Stage;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,17 +16,11 @@ import node.balle.Balle;
 import node.machine.Machine;
 import node.zone.Zone;
 import view.GameView;
-import view.MapView;
 
 public class GameCtrl {
 
 	private GameView gameView;
 	private DodgeCtrl dodgeCtrl;
-
-	private Niveau currentLevel;
-	private Stage currentStage;
-
-	private int indexCurrentStage;
 
 	private BooleanProperty allMachineDestroy;
 
@@ -36,27 +28,25 @@ public class GameCtrl {
 	private ArrayList<Machine> machines;
 	private ArrayList<Zone> zones;
 	private ArrayList<Balle> balles;
-	
-	private ArrayList<Stage> stages;
-	
+
+	private GestionnaireNiveau gestionNiveau;
 
 	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
-		
+
 		this.dodgeCtrl = dodgeCtrl;
 		this.gameView = gameView;
 
-		this.indexCurrentStage = 0;
+		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
 
-		this.currentLevel = dodgeCtrl.getCurrentLevel();
-		this.currentLevel.readLevel();
-		this.stages = (ArrayList<Stage>) currentLevel.getStages(); 
+		this.gestionNiveau.getCurrentLevel().readLevel();
+		this.gestionNiveau.setCurrentStage(0);
 
 		this.allMachineDestroy = new SimpleBooleanProperty(false);
-	
+
 		initListOfElement();
 
 		this.allMachineDestroy.addListener((obs, o, n) -> {
-			if (n.booleanValue()) 
+			if (n.booleanValue())
 				nextStage();
 		});
 	}
@@ -64,10 +54,9 @@ public class GameCtrl {
 	private void initListOfElement() {
 
 		clear();
-		
-		this.currentStage = stages.get(indexCurrentStage);
-		this.machines.addAll(currentStage.getMachines());
-		this.zones.addAll(currentStage.getZones());
+
+		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
+		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
 		this.cubys.addAll(dodgeCtrl.getCubyPlayer());
 
 		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
@@ -159,14 +148,11 @@ public class GameCtrl {
 
 	private void nextStage() {
 
-		if (indexCurrentStage > stages.size() - 1) {
-			endLevel();
-		} else {
-			indexCurrentStage++;
+		if (gestionNiveau.nextStage()) {
 			initListOfElement();
 			gameView.clear();
-		}
-
+		} else
+			endLevel();
 	}
 
 	private BooleanBinding builBindingEndGame(ArrayList<Machine> zbind, int i) {
@@ -188,17 +174,17 @@ public class GameCtrl {
 
 	public void updateStageStats() {
 
-		ArrayList<Machine> engine = new ArrayList<Machine>(); 
+		ArrayList<Machine> engine = new ArrayList<>();
 
 		for (Machine m : machines) {
 			if (m.getIsDestroy().get()) {
-				engine.add(m); 
+				engine.add(m);
 			}
 		}
-		
+
 		for (Machine m : engine) {
 			machines.remove(m);
-			dodgeCtrl.getCurrentLevel().destroyMachine();
+			gestionNiveau.getCurrentLevel().destroyMachine();
 		}
 
 	}
@@ -207,11 +193,11 @@ public class GameCtrl {
 
 		clear();
 		gameView.stopUpdate();
-		
-		dodgeCtrl.goToNewView(ScreenName.MAP, new MapView(dodgeCtrl));
+
+		DodgeCtrl.loadAndGoto(ScreenName.MAP);
 	}
 
 	public boolean isEndGame() {
-		return (indexCurrentStage > currentLevel.getStages().size() - 1) || cubys.isEmpty();
+		return (gestionNiveau.indexCurentStage() > gestionNiveau.nbStage() - 1) || cubys.isEmpty();
 	}
 }

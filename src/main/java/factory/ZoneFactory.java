@@ -2,7 +2,6 @@ package factory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 import javafx.scene.paint.Color;
 import node.zone.Zone;
