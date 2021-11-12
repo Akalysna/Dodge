@@ -40,9 +40,9 @@ public class I18N {
 
 
 	/**
-	 * R�cup�re le texte associ� dans la langue courante
-	 * @param key
-	 * @return
+	 * Récupére le texte associé dans la langue courante
+	 * @param key Mot clé
+	 * @return Mot associé à la key
 	 */
 	public static String get(String key) {
 		

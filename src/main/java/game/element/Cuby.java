@@ -38,7 +38,7 @@ public class Cuby extends Rectangle {
 	}
 
 	public Cuby(Color color, KeyTouch kt) {
-		this(0, 0, color, 15,5, kt);
+		this(0, 0, color, 15,6, kt);
 	}
 	
 

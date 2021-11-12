@@ -144,7 +144,7 @@ public class DodgeCtrl {
 		KeyTouch kt2 = new KeyTouch(Arrays.asList(KeyCode.Z, KeyCode.D, KeyCode.S, KeyCode.Q));
 
 		if (isMultiPalyer)
-			this.cubyPlayer.addAll(Arrays.asList(new Cuby(Color.WHITE, kt2), new Cuby(Color.WHITE, kt)));
+			this.cubyPlayer.addAll(Arrays.asList(new Cuby(Color.CORAL, kt2), new Cuby(Color.DEEPSKYBLUE, kt)));
 		else
 			this.cubyPlayer.add(new Cuby(Color.WHITE, kt));
 	}
