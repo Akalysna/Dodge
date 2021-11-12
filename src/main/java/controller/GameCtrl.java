@@ -118,19 +118,6 @@ public class GameCtrl {
 
 	public void balls() {
 		
-//		for(PathTransition pt : paths) {
-//			if(pt.getNode() instanceof Machine) {
-//				Machine machine = (Machine) pt.getNode(); 
-//				
-//				if (machine.isThrowBall()) {
-//					Balle b = BallFactory.get(machine.lance(), machine.getTranslateX(), machine.getTranslateY());
-//					b.animateBall(true);
-//					balles.add(b);
-//					gameView.addNode(b);
-//				}
-//			}
-//		}
-
 		for (Machine machine : machines) {
 			if (machine.isThrowBall()) {
 				Balle b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
