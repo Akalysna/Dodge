@@ -33,10 +33,7 @@ public class GameView extends AnchorPane implements Initialisable {
 		this.getChildren().addAll(gameCtrl.getElement());
 		this.setMouseTransparent(true);
 
-
-
 		update();
-
 	}
 
 	public void update() {
@@ -49,6 +46,7 @@ public class GameView extends AnchorPane implements Initialisable {
 					gameCtrl.zoneEntered();
 					gameCtrl.balls();
 					gameCtrl.cubyColision();
+					gameCtrl.stopPathMove();
 					gameCtrl.updateStageStats();
 				} else {
 

@@ -34,15 +34,15 @@ public class BallFactory {
 	}
 
 	public static Balle simpleBalle(double x, double y) {
-		return new SimpleBall(x, y, 8, 5.0);
+		return new SimpleBall(x, y, 8, 8);
 	}
 	
 	public static Balle ghostBalle(double x, double y) {
-		return new GhostBall(x, y, 8, 5.0);
+		return new GhostBall(x, y, 8, 8);
 	}
 	
 	public static Balle invertBalle(double x, double y) {
-		return new InvertBall(x, y, 8, 5.0, true);
+		return new InvertBall(x, y, 8, 8, true);
 	}
 
 

@@ -59,17 +59,17 @@ public class GameCtrl {
 
 		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
 		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
-		
+
 		this.cubys.addAll(dodgeCtrl.getCubyPlayer());
-		
+
 		double x = gestionNiveau.getCurrentStage().getCubyPosition().getX();
 		double y = gestionNiveau.getCurrentStage().getCubyPosition().getY();
-		
+
 		for (Cuby cuby : cubys) {
 			cuby.setX(x);
 			cuby.setY(y);
 		}
-		
+
 		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
 
 		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
@@ -91,12 +91,12 @@ public class GameCtrl {
 
 	public List<Node> getElement() {
 		ArrayList<Node> n = new ArrayList<>();
-		
+
 		paths.forEach(e -> {
 			n.add(e.getPath());
 			e.play();
 		});
-		
+
 		n.addAll(machines);
 		n.addAll(zones);
 		n.addAll(cubys);
@@ -127,14 +127,14 @@ public class GameCtrl {
 	}
 
 	public void balls() {
-		
+
 		for (Machine machine : machines) {
 			if (machine.isThrowBall()) {
-				
+
 				Balle b;
-				
-				//if(machine.getX() == 0 && machine.getY() == 0)
-					b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
+
+				// if(machine.getX() == 0 && machine.getY() == 0)
+				b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
 //				else 
 //					b = BallFactory.get(machine.lance(), machine.getX(), machine.getY());
 				b.animateBall(true);
@@ -150,7 +150,7 @@ public class GameCtrl {
 				tmp.add(b);
 			}
 		}
-		
+
 		tmp.forEach(e -> gameView.removeNode(e));
 		balles.removeAll(tmp);
 
@@ -202,6 +202,30 @@ public class GameCtrl {
 
 	}
 
+	public void stopPathMove() {
+
+		for (Machine m : machines) {
+			if (m.getIsDestroy().get()) {
+				for (PathTransition pt : paths) {
+					if (pt.getNode().equals(m)) {
+						pt.stop();
+					}
+				}
+			}
+		}
+		
+		for (Zone z : zones) {
+			if (z.getDisable().get()) {
+				for (PathTransition pt : paths) {
+					if (pt.getNode().equals(z)) {
+						pt.stop();
+					}
+				}
+			}
+		}
+
+	}
+
 	public void updateStageStats() {
 
 		ArrayList<Machine> engine = new ArrayList<>();
@@ -209,12 +233,6 @@ public class GameCtrl {
 		for (Machine m : machines) {
 			if (m.getIsDestroy().get()) {
 				engine.add(m);
-				
-				for(PathTransition pt : paths) {
-					if(pt.getNode().equals(m)) {
-						pt.stop();
-					}
-				}
 			}
 		}
 
