@@ -59,7 +59,17 @@ public class GameCtrl {
 
 		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
 		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
+		
 		this.cubys.addAll(dodgeCtrl.getCubyPlayer());
+		
+		double x = gestionNiveau.getCurrentStage().getCubyPosition().getX();
+		double y = gestionNiveau.getCurrentStage().getCubyPosition().getY();
+		
+		for (Cuby cuby : cubys) {
+			cuby.setX(x);
+			cuby.setY(y);
+		}
+		
 		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
 
 		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
@@ -120,7 +130,13 @@ public class GameCtrl {
 		
 		for (Machine machine : machines) {
 			if (machine.isThrowBall()) {
-				Balle b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
+				
+				Balle b;
+				
+				//if(machine.getX() == 0 && machine.getY() == 0)
+					b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
+//				else 
+//					b = BallFactory.get(machine.lance(), machine.getX(), machine.getY());
 				b.animateBall(true);
 				balles.add(b);
 				gameView.addNode(b);

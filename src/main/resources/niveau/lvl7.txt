@@ -1,3 +1,5 @@
 # Niveau avec des zones qui bouge
 Stage
+Cuby:400,300
 MOVE:path_carre:SIMPLE	SIMPLE:coin_bas_gauche:NORMAL:500,300
+SIMPLE:700,100	SIMPLE:carre:NORMAL:100,400

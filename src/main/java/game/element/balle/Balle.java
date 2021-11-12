@@ -72,7 +72,7 @@ public abstract class Balle extends Circle {
 	}
 
 	protected Balle(double x, double y, int rayon, double vitesse, TypeBalle type) {
-		this(x, y, rayon, vitesse, type, 5);
+		this(x, y, rayon, vitesse, type, 10);
 	}
 
 	// ---------------------
@@ -163,7 +163,5 @@ public abstract class Balle extends Circle {
 	public boolean isDestroy() { return isDestroy; }
 
 	public void setDestroy(boolean isDestroy) { this.isDestroy = isDestroy; }
-
-
 
 }

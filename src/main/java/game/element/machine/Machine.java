@@ -1,5 +1,6 @@
 package game.element.machine;
 
+import java.awt.Frame;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import util.StatObject;
 
-public class Machine extends StackPane{
+public class Machine extends StackPane {
 
 	// ------------------------------------
 	// Attribut
@@ -43,6 +44,8 @@ public class Machine extends StackPane{
 	private int delayThrow;
 
 	// -----
+
+	private boolean isMoving = false;
 
 	private Color couleur;
 
@@ -95,8 +98,8 @@ public class Machine extends StackPane{
 	 */
 	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono,
 			List<TypeBalle> typeBalle) {
-		
-		this.timeLbl = new Label(); 
+
+		this.timeLbl = new Label();
 
 		this.couleur = color;
 		this.x = x;
@@ -111,8 +114,10 @@ public class Machine extends StackPane{
 		this.isThrowBall = false;
 		this.isDestroy = new SimpleBooleanProperty(false);
 		this.isActived = new SimpleBooleanProperty(false);
-		
+
 		this.typeBalle = typeBalle;
+		
+		new Timeline(new KeyFrame(Duration.seconds(1), e-> this.isThrowBall = true)).play();;
 
 		initNode();
 		animMachine();
@@ -130,10 +135,10 @@ public class Machine extends StackPane{
 
 		this.anneauGen = new Circle(this.taille);
 		this.centreGen = new Circle(this.taille - 10);
-		//this.timeLbl = new Label();
+		// this.timeLbl = new Label();
 
-		
-		
+
+
 		this.anneauGen.getStrokeDashArray().addAll(20.0, 10.0);
 		this.anneauGen.setStrokeWidth(5);
 		this.anneauGen.setStroke(couleur);
@@ -239,6 +244,7 @@ public class Machine extends StackPane{
 
 	/**
 	 * Lie la zone à la machine. Si la machine est détruite la zone le sera aussi
+	 * 
 	 * @param z Zone à lier à la machine pour la destruction
 	 */
 	public void bindToDestroyMachine(Zone z) {
@@ -251,14 +257,15 @@ public class Machine extends StackPane{
 		this.isActived.bind(n);
 		this.isActived.addListener((observable, oldValue, newValue) -> setActived(newValue));
 	}
-	
+
 	/**
 	 * Retourne le type de balle a lancer. isthrow = false
-	 * @return 
+	 * 
+	 * @return
 	 */
 	public TypeBalle lance() {
-		
-		this.isThrowBall = false; 
+
+		this.isThrowBall = false;
 		return this.typeBalle.get(new Random().nextInt(typeBalle.size()));
 	}
 
@@ -282,7 +289,11 @@ public class Machine extends StackPane{
 
 	public int getY() { return y; }
 
-	public double getCenterX() { return getTranslateX()+taille; }
+	public double getCenterX() { return isMoving?getTranslateX() + taille:x+taille; }
 
-	public double getCenterY() { return getTranslateY()+taille; }
+	public double getCenterY() { return isMoving?getTranslateY() + taille:y+taille; }
+
+	//public boolean isMoving() { return isMoving; }
+
+	public void setMoving(boolean isMoving) { this.isMoving = isMoving; }
 }

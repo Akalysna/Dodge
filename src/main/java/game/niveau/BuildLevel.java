@@ -21,6 +21,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.PathTransition.OrientationType;
 import javafx.beans.binding.BooleanBinding;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -34,10 +35,12 @@ public class BuildLevel {
 
 	private List<Stage> stages;
 	private String levelPath;
-	
+
 	private Stage stage;
 
 	private int nbMachine;
+
+	
 
 	private ArrayList<GameColor> colors;
 	private Color currentColor;
@@ -48,15 +51,15 @@ public class BuildLevel {
 
 		this.levelPath = path;
 
-		this.stages = new ArrayList<>(); 
-		this.stage = new Stage(); 
+		this.stages = new ArrayList<>();
+		this.stage = new Stage();
 		this.forme = new Forme();
-		
+
 		this.nbMachine = 0;
 		this.colors = new ArrayList<>(Arrays.asList(GameColor.values()));
-		
+
 		randomColor();
-		
+
 		readLevel();
 	}
 
@@ -79,6 +82,8 @@ public class BuildLevel {
 
 					String[] line = l.split("\t");
 
+
+
 					// Add and create stage
 					if (line[0].equals("Stage")) {
 
@@ -89,26 +94,31 @@ public class BuildLevel {
 							this.stages.add(stage);
 							stage = new Stage();
 						}
+					} else if (l.startsWith("Cuby")) {
+
+						String s = l.split(":")[1];
+						Point2D cubyPosition = new Point2D(Integer.valueOf(s.split(",")[0]), Integer.valueOf(s.split(",")[1]));
+						stage.setCubyPosition(cubyPosition);
 					}
 
 					else {
-						
+
 						ArrayList<Zone> zoneToBind = new ArrayList<>();
 						Machine m = createMachine(line[0]);
-						
+
 						nbMachine++;
-						
+
 						for (int i = 1; i < line.length; i++) {
-							
-							Zone z  =createZone(line[i]);
+
+							Zone z = createZone(line[i]);
 							zoneToBind.add(z);
 							m.bindToDestroyMachine(z);
 						}
-						
+
 						m.bindEnteredZone(builBinding(zoneToBind, zoneToBind.size() - 1));
-						
+
 					}
-					
+
 					randomColor();
 				}
 			}
@@ -123,31 +133,33 @@ public class BuildLevel {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	private Zone createZone(String l) {
-		
-		Zone z; 
+
+		Zone z;
 		String[] line = l.split(":");
 
 		// Move machine
 		if (TypeMachine.valueOf(line[0]).equals(TypeMachine.MOVE)) {
-			
-			z = ZoneFactory.get(TypeZone.valueOf(line[2]), forme.getPoints(line[3], SizeShape.valueOf(line[4])), 0,0, currentColor);
+
+			z = ZoneFactory.get(TypeZone.valueOf(line[2]), forme.getPoints(line[3], SizeShape.valueOf(line[4])), 0, 0,
+					currentColor);
 
 			stage.addZone(z);
 			stage.addpathTransition(getPath(z, line[1]));
-			
+
 		} else {
-			
+
 			int x = Integer.parseInt(line[3].split(",")[0]);
 			int y = Integer.parseInt(line[3].split(",")[1]);
-			z = ZoneFactory.get(TypeZone.valueOf(line[0]), forme.getPoints(line[1], SizeShape.valueOf(line[2])), x, y, currentColor);
+			z = ZoneFactory.get(TypeZone.valueOf(line[0]), forme.getPoints(line[1], SizeShape.valueOf(line[2])), x, y,
+					currentColor);
 			stage.addZone(z);
-		
+
 		}
-		
-		return z; 
+
+		return z;
 
 	}
 
@@ -159,25 +171,29 @@ public class BuildLevel {
 		if (TypeMachine.valueOf(line[0]).equals(TypeMachine.MOVE)) {
 
 			machine = MachineFactory.get(TypeMachine.valueOf(line[2]), 0, 0, currentColor);
+			machine.setMoving(true);
 
 			stage.addMachine(machine);
 			stage.addpathTransition(getPath(machine, line[1]));
-			
-			
+
+
 		} else {
-			
+
 			int x = Integer.parseInt(line[1].split(",")[0]);
 			int y = Integer.parseInt(line[1].split(",")[1]);
-			 machine = MachineFactory.get(TypeMachine.valueOf(line[1]), x, y, currentColor);
-		
+			machine = MachineFactory.get(TypeMachine.valueOf(line[0]), x, y, currentColor);
+
+
+
 			stage.addMachine(machine);
 		}
 		return machine;
 	}
-	
-	
+
+
 	/**
-	 * Créer un chemin 
+	 * Créer un chemin
+	 * 
 	 * @param node
 	 * @param line
 	 * @return
@@ -195,27 +211,27 @@ public class BuildLevel {
 
 			if (i == 0)
 				path.getElements().add(new MoveTo(x, y));
-			
-			else 
+
+			else
 				path.getElements().add(new LineTo(x, y));
 		}
 
-		
-		
-		path.getStrokeDashArray().addAll(50.0,30.0);
+
+
+		path.getStrokeDashArray().addAll(50.0, 30.0);
 		path.setStroke(Color.rgb(40, 45, 54));
 		path.setStrokeWidth(5);
-		
-		PathTransition pathTransition = new PathTransition(); 
+
+		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.seconds(5));
 		pathTransition.setNode(node);
 		pathTransition.setPath(path);
-		
+
 		pathTransition.setOrientation(OrientationType.NONE);
 		pathTransition.setCycleCount(Animation.INDEFINITE);
 		pathTransition.setInterpolator(Interpolator.LINEAR);
-		
-		return pathTransition; 
+
+		return pathTransition;
 	}
 
 	/**
@@ -264,9 +280,5 @@ public class BuildLevel {
 	public String getLevelPath() { return levelPath; }
 
 	public int getNbMachine() { return nbMachine; }
-	
-	
 
-	
-	
 }
