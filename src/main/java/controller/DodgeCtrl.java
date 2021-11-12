@@ -113,6 +113,8 @@ public class DodgeCtrl {
 		switch (sn) {
 		case MULTI:
 			createPlayer(true);
+			viewCtrl.saveScreens(ScreenName.MAP, new MapView(this));
+			viewCtrl.goTo(ScreenName.MAP);
 			break;
 
 		case MAP:
@@ -174,6 +176,7 @@ public class DodgeCtrl {
 	}
 
 	private void hideCursor(boolean b) {
+		
 		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
 
@@ -181,7 +184,6 @@ public class DodgeCtrl {
 			scene.setCursor(Cursor.NONE);
 		else
 			scene.setCursor(new ImageCursor(img));
-
 	}
 
 	public void invisibleCursor(Parent p) {

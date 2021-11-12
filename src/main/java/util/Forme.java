@@ -13,7 +13,7 @@ public class Forme {
 
 	public enum SizeShape {
 
-		SMALLEST(30), SMALL(50), NORMAL(10), BIG(120), BIGBIG(150);
+		SMALLEST(3), SMALL(6), NORMAL(8), BIG(12), BIGEST(14);
 
 		private int taille;
 

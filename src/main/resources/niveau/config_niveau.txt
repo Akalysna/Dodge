@@ -1,1 +1,2 @@
-New Word:cuby_rose.png: :lvl7.txt
+Hello World!:cuby_rose.png: :lvl1.txt
+Just Move:cuby_jaune.png: :lvl3.txt

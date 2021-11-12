@@ -130,8 +130,8 @@ public class Machine extends StackPane {
 
 	public void initNode() {
 
-		this.setLayoutX(x);
-		this.setLayoutY(y);
+		this.setLayoutX(x-(taille));
+		this.setLayoutY(y-(taille));
 
 		this.anneauGen = new Circle(this.taille);
 		this.centreGen = new Circle(this.taille - 10);

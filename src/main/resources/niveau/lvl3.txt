@@ -1,2 +1,5 @@
+# Niveau avec des zones qui bouge
 Stage
-GHOST:400,300:Simple:300,500
+Cuby:400,300
+SIMPLE:400,120	MOVE:big_square_droite:SIMPLE:carre:NORMAL
+SIMPLE:400,480	MOVE:big_square_gauche:SIMPLE:carre:NORMAL
