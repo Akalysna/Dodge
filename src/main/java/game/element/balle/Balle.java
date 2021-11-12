@@ -33,8 +33,8 @@ public abstract class Balle extends Circle {
 	protected StatObject<Integer> life;
 	protected boolean isDestroy;
 	
-	protected double dx = DataCtrl.negNb(Math.cos(45)) * vitesse;
-	protected double dy = DataCtrl.negNb(Math.sin(45)) * vitesse;
+	protected double dx;
+	protected double dy;
 
 	// ---------------------
 	// Constructeur
@@ -58,6 +58,9 @@ public abstract class Balle extends Circle {
 		this.taille = rayon;
 		this.x = x;
 		this.y = y;
+		
+		this.dx = DataCtrl.negNb(Math.cos(45)) * vitesse;
+		this.dy  = DataCtrl.negNb(Math.sin(45)) * vitesse;
 
 		this.color = Color.WHITE;
 		this.life = new StatObject<>(life);
