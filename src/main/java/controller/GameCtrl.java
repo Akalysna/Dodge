@@ -2,21 +2,28 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import controller.ViewCtrl.ScreenName;
 import game.element.Cuby;
+import game.element.Ligne;
 import game.element.balle.Balle;
+import game.element.balle.FocusBall;
 import game.element.factory.BallFactory;
 import game.element.machine.Machine;
 import game.element.zone.Zone;
 import game.niveau.GestionnaireNiveau;
 import game.view.GameView;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 public class GameCtrl {
 
@@ -30,6 +37,7 @@ public class GameCtrl {
 	private ArrayList<Zone> zones;
 	private ArrayList<Balle> balles;
 	private ArrayList<PathTransition> paths;
+	private ArrayList<Line> ligne;
 
 	private GestionnaireNiveau gestionNiveau;
 
@@ -85,6 +93,7 @@ public class GameCtrl {
 		this.cubys = new ArrayList<>();
 		this.balles = new ArrayList<>();
 		this.paths = new ArrayList<>();
+		this.ligne = new ArrayList<>();
 
 		this.allMachineDestroy.unbind();
 	}
@@ -131,13 +140,12 @@ public class GameCtrl {
 		for (Machine machine : machines) {
 			if (machine.isThrowBall()) {
 
-				Balle b;
+				Balle b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
 
-				// if(machine.getX() == 0 && machine.getY() == 0)
-				b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
-//				else 
-//					b = BallFactory.get(machine.lance(), machine.getX(), machine.getY());
-				
+				if (b instanceof FocusBall) {
+					drawLine(b);
+				}
+
 				balles.add(b);
 				gameView.addNode(b);
 			}
@@ -153,6 +161,25 @@ public class GameCtrl {
 
 		tmp.forEach(e -> gameView.removeNode(e));
 		balles.removeAll(tmp);
+
+	}
+
+	private void drawLine(Balle b) {
+
+		FocusBall ball = (FocusBall) b;
+
+		Cuby cuby = cubys.get(new Random().nextInt(cubys.size()));
+
+
+		new Timeline(new KeyFrame(Duration.millis(3000), event -> {
+			ball.animateBall(true);
+			ball.setDirectionTarget(cuby.getX(), cuby.getY());
+			gameView.removeNode(this.ligne.remove(0));
+		})).play();
+
+		Ligne l = new Ligne(ball.getX(), ball.getY(), cuby.xProperty(), cuby.yProperty());
+		this.ligne.add(l);
+		gameView.addFirstNode(l);
 
 	}
 
@@ -213,7 +240,7 @@ public class GameCtrl {
 				}
 			}
 		}
-		
+
 		for (Zone z : zones) {
 			if (z.getDisable().get()) {
 				for (PathTransition pt : paths) {

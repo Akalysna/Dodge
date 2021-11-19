@@ -288,9 +288,9 @@ public class Machine extends StackPane {
 
 	public int getY() { return y; }
 
-	public double getCenterX() { return isMoving?getTranslateX() + taille:x+taille; }
+	public double getCenterX() { return isMoving?getTranslateX() + taille:x; }
 
-	public double getCenterY() { return isMoving?getTranslateY() + taille:y+taille; }
+	public double getCenterY() { return isMoving?getTranslateY() + taille:y; }
 
 	//public boolean isMoving() { return isMoving; }
 

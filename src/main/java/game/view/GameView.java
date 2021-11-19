@@ -63,6 +63,10 @@ public class GameView extends AnchorPane implements Initialisable {
 	public void addNode(Node n) {
 		this.getChildren().add(n);
 	}
+	
+	public void addFirstNode(Node n) {
+		this.getChildren().add(0,n);
+	}
 
 	public void removeNode(Node n) {
 		this.getChildren().remove(n);
