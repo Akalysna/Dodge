@@ -40,7 +40,7 @@ public class BuildLevel {
 
 	private int nbMachine;
 
-	
+
 
 	private ArrayList<GameColor> colors;
 	private Color currentColor;
@@ -97,7 +97,8 @@ public class BuildLevel {
 					} else if (l.startsWith("Cuby")) {
 
 						String s = l.split(":")[1];
-						Point2D cubyPosition = new Point2D(Integer.valueOf(s.split(",")[0]), Integer.valueOf(s.split(",")[1]));
+						Point2D cubyPosition = new Point2D(Integer.valueOf(s.split(",")[0]),
+								Integer.valueOf(s.split(",")[1]));
 						stage.setCubyPosition(cubyPosition);
 					}
 
@@ -259,10 +260,8 @@ public class BuildLevel {
 	}
 
 	/**
-	 * Retourne une couleur en la retirant de la liste
-	 * 
-	 * @param list Liste des couleurs
-	 * @return Color
+	 * Modifie la couleur courante. La couleur est choisi et retirer de la liste des
+	 * couleurs {@link BuildLevel#colors}
 	 */
 	public void randomColor() {
 

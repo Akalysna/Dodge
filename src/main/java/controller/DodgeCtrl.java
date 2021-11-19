@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -29,14 +30,21 @@ import util.KeyTouch;
 
 public class DodgeCtrl {
 
+	/** Taille de l'écran en largeur */
 	public static final int SCENE_WIDTH = 800;
+
+	/** Taille de l'écran en hauteur */
 	public static final int SCENE_HEIGHT = 600;
 
 	private static Scene scene = new Scene(new BorderPane(), SCENE_WIDTH, SCENE_HEIGHT);
-	public static final ViewCtrl viewCtrl = new ViewCtrl(scene);;
+	public static final ViewCtrl viewCtrl = new ViewCtrl(scene);
 
 	private Stage stage;
 
+	/**
+	 * Liste des joueurs dans le jeu. Varie en fonction du mode de jeu ( 1 ou 2
+	 * joueurs).
+	 */
 	private ArrayList<Cuby> cubyPlayer;
 
 	private double xOffset = 0;
@@ -58,7 +66,7 @@ public class DodgeCtrl {
 	}
 
 	/**
-	 * Permet de déplacer la fenetre du jeu quand le style du stage est UNDECORATED
+	 * Permet de déplacer la fenêtre du jeu quand le style du stage est UNDECORATED
 	 * 
 	 * @see StageStyle#UNDECORATED
 	 */
@@ -66,17 +74,32 @@ public class DodgeCtrl {
 
 		scene.setOnMousePressed(e -> {
 
+			// Position de la souris par rapport à la scene
 			xOffset = e.getSceneX();
 			yOffset = e.getSceneY();
-
 		});
 
 		scene.setOnMouseDragged(e -> {
+			// Déplacement du stage : Position de la souris par rapport à l'écran moins
+			// l'offset
 			stage.setX(e.getScreenX() - xOffset);
 			stage.setY(e.getScreenY() - yOffset);
 		});
 	}
 
+	/**
+	 * Déplace le cuby
+	 * @param event
+	 * @param b True 
+	 */
+	private void movingCuby(KeyEvent event, boolean b) {
+
+		this.cubyPlayer.forEach(e -> e.move(event.getCode(), b));
+	}
+
+	/**
+	 * Paramètrage de la fenêtre et affichage du menu du jeu.
+	 */
 	public void run() {
 
 		this.stage.setResizable(false);
@@ -90,16 +113,13 @@ public class DodgeCtrl {
 	}
 
 	private void action() {
-
 		scene.setOnKeyPressed(event -> {
-			this.cubyPlayer.forEach(e -> e.move(event, true));
-
-			if (event.getCode().equals(KeyCode.H)) {
-				viewCtrl.goTo(ScreenName.MAP);
-			}
+			movingCuby(event, false);
 		});
 
-		scene.setOnKeyReleased(event -> this.cubyPlayer.forEach(e -> e.move(event, false)));
+		scene.setOnKeyReleased(event -> movingCuby(event, false));
+
+
 	}
 
 
@@ -176,7 +196,7 @@ public class DodgeCtrl {
 	}
 
 	private void hideCursor(boolean b) {
-		
+
 		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "cursor.png");
 		Image img = new Image(input);
 
