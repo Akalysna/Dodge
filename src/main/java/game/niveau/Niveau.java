@@ -1,23 +1,7 @@
 package game.niveau;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-
-import controller.DataCtrl.GameColor;
-import game.element.factory.MachineFactory;
-import game.element.factory.ZoneFactory;
-import game.element.factory.MachineFactory.TypeMachine;
-import game.element.factory.ZoneFactory.TypeZone;
-import game.element.machine.Machine;
-import game.element.zone.Zone;
-import javafx.beans.binding.BooleanBinding;
-import javafx.scene.paint.Color;
 
 public class Niveau implements Cloneable {
 

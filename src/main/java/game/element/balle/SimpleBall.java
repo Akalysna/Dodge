@@ -1,6 +1,5 @@
 package game.element.balle;
 
-import controller.DataCtrl;
 import controller.DodgeCtrl;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
@@ -18,6 +17,7 @@ public class SimpleBall extends Balle {
 	 */
 	public SimpleBall(double x, double y, int rayon, double vitesse) {
 		super(x, y, rayon, vitesse, TypeBalle.SIMPLE);
+		animateBall(true);
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class SimpleBall extends Balle {
 					destroy();
 				}
 
-				SimpleBall.this.setCenterX(SimpleBall.this.getCenterX() + dx);
-				SimpleBall.this.setCenterY(SimpleBall.this.getCenterY() + dy);
+				setCenterX(getCenterX() + dx);
+				setCenterY(getCenterY() + dy);
 
 				// ---------------
 

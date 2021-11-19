@@ -11,7 +11,6 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
-import util.Forme;
 
 public class Zone extends Polyline {
 

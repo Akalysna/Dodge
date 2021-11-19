@@ -1,6 +1,5 @@
 package game.element.machine;
 
-import java.awt.Frame;
 import java.util.List;
 import java.util.Random;
 

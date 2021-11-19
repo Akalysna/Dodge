@@ -101,7 +101,7 @@ public abstract class Balle extends Circle {
 	 * 
 	 * @param b Boolean
 	 */
-	public void animateBall(Boolean b) {
+	public void animateBall(boolean b) {
 
 		if (b)
 			animBall.start();

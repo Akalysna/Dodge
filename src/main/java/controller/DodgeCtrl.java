@@ -62,7 +62,7 @@ public class DodgeCtrl {
 
 		curseur();
 		dragWindow();
-		action();
+		//action();
 	}
 
 	/**
@@ -89,8 +89,9 @@ public class DodgeCtrl {
 
 	/**
 	 * Déplace le cuby
+	 * 
 	 * @param event
-	 * @param b True 
+	 * @param b     True
 	 */
 	private void movingCuby(KeyEvent event, boolean b) {
 
@@ -112,19 +113,11 @@ public class DodgeCtrl {
 		viewCtrl.saveAndGoto(ScreenName.HOME, new HomeView(this));
 	}
 
-	private void action() {
-		scene.setOnKeyPressed(event -> {
-			movingCuby(event, false);
-		});
-
+	public void startGame() {
+		
+		scene.setOnKeyPressed(event -> movingCuby(event, false));
 		scene.setOnKeyReleased(event -> movingCuby(event, false));
 
-
-	}
-
-
-
-	public void startGame() {
 		viewCtrl.saveAndGoto(ScreenName.GAME, new GameView(this));
 	}
 
@@ -166,7 +159,8 @@ public class DodgeCtrl {
 		if (isMultiPalyer)
 			this.cubyPlayer.addAll(Arrays.asList(new Cuby(Color.CORAL, kt2), new Cuby(Color.DEEPSKYBLUE, kt)));
 		else
-			this.cubyPlayer.add(new Cuby(Color.WHITE, kt));
+			this.cubyPlayer.add(new Cuby(Color.WHITE, kt2));
+
 	}
 
 

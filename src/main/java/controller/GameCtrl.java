@@ -137,7 +137,7 @@ public class GameCtrl {
 				b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
 //				else 
 //					b = BallFactory.get(machine.lance(), machine.getX(), machine.getY());
-				b.animateBall(true);
+				
 				balles.add(b);
 				gameView.addNode(b);
 			}

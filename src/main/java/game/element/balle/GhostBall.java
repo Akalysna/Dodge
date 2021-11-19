@@ -13,6 +13,7 @@ public class GhostBall extends Balle {
 	public GhostBall(double x, double y, int rayon, double vitesse) {
 		super(x, y, rayon, vitesse, TypeBalle.GHOST);
 		this.halfLife = new StatObject<>(life.getInitial() / 2);
+		animateBall(true);
 	}
 
 

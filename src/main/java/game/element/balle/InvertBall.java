@@ -12,13 +12,7 @@ public class InvertBall extends Balle {
 		dy = isHorizontal?Math.sin(0) * vitesse: Math.cos(0) * vitesse;
 		dx = isHorizontal? Math.cos(0) * vitesse:Math.sin(0) * vitesse;
 		
-//		if (isHorizontal) {
-//			dy = Math.sin(0) * vitesse;
-//			dx = Math.cos(0) * vitesse;
-//		} else {
-//			dx = Math.sin(0) * vitesse;
-//			dy = Math.cos(0) * vitesse;
-//		}
+		animateBall(true);
 	}
 
 	@Override
