@@ -1,7 +1,6 @@
 package game.view;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 
 import controller.DataCtrl;
 import controller.DodgeCtrl;
@@ -28,21 +27,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
+import util.CirclePagination;
 
 
 /**
  * MapView represente la fenêtre de choix de niveau
+ * 
  * @author Llona André--Augustine
  */
-public class MapView extends BorderPane implements Initialisable {
-
-	private DodgeCtrl dodgeCtrl;
+public class MapView extends DodgeView {
 
 	private Button btnRetour;
 
@@ -56,36 +54,34 @@ public class MapView extends BorderPane implements Initialisable {
 	private ProgressBar pb;
 	private ImageView cubyImage;
 
-	private ArrayList<Circle> pagination;
-	
-	private GestionnaireNiveau gestionNiveau; 
+	private CirclePagination pagination;
+
+
+
+	private GestionnaireNiveau gestionNiveau;
 
 	/**
 	 * Constructeur de la fenêtre de choix de niveau
+	 * 
 	 * @param dodgeCtrl
 	 */
 
 	public MapView(DodgeCtrl dodgeCtrl) {
+		super(dodgeCtrl);
 
-		this.dodgeCtrl = dodgeCtrl; 
 		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
-
-		initNode();
-		initDesign();
-		initPagination();
-		action();
-
 	}
 
 	@Override
 	public void load() {
+		this.pagination.currentPage(gestionNiveau.indexCurentLevel());
 		updateLevelInfo();
 	}
-	
-	@Override
-	public void initNode() {
 
-		this.pagination = new ArrayList<>();
+	@Override
+	public void initialization() {
+
+		this.pagination = new CirclePagination(gestionNiveau.nbLevel(), 0, Color.WHITE, Color.GRAY);
 
 		this.btnPlay = new Button();
 		this.btnNextLevel = new Button();
@@ -114,6 +110,11 @@ public class MapView extends BorderPane implements Initialisable {
 
 		// TODO changeLevelInfo();
 
+		HBox hboxPagination = new HBox();
+		hboxPagination.getChildren().addAll(pagination.getPagination());
+		hboxPagination.setAlignment(Pos.CENTER);
+		hboxPagination.setSpacing(10);
+
 		HBox hbox = new HBox();
 		hbox.getChildren().addAll(this.cubyImage, this.titre);
 		hbox.setAlignment(Pos.CENTER);
@@ -135,6 +136,7 @@ public class MapView extends BorderPane implements Initialisable {
 		BorderPane.setAlignment(vbox, Pos.CENTER);
 		BorderPane.setAlignment(btnNextLevel, Pos.CENTER);
 		BorderPane.setAlignment(btnLastLevel, Pos.CENTER);
+		BorderPane.setAlignment(hboxPagination, Pos.CENTER);
 
 		this.setPadding(new Insets(30));
 
@@ -142,12 +144,11 @@ public class MapView extends BorderPane implements Initialisable {
 		this.setRight(btnNextLevel);
 		this.setTop(btnRetour);
 		this.setCenter(vbox);
+		this.setBottom(hboxPagination);
 	}
 
-	/**
-	 * Modifie l'aspect des éléments
-	 */
-	private void initDesign() {
+	@Override
+	protected void design() {
 
 		// Background de la fenêtre
 		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "lobby_fond.png");
@@ -179,41 +180,15 @@ public class MapView extends BorderPane implements Initialisable {
 
 	}
 
-	/**
-	 * Initialise les éléments necessaire à la pagination
-	 */
-	private void initPagination() {
-
-		// Création et ajout des cercles de pagination
-		for (int i = 0; i < gestionNiveau.nbLevel(); i++) {
-
-			Circle cercle = new Circle(10);
-			cercle.setFill(Color.GRAY);
-			this.pagination.add(cercle);
-		}
-
-		HBox page = new HBox();
-		page.getChildren().addAll(pagination);
-		page.setSpacing(20);
-		page.setAlignment(Pos.CENTER);
-
-		// Change la couleur du cercle du niveau courant
-		pagination.get(gestionNiveau.indexCurentLevel()).setFill(Color.WHITE);
-
-		BorderPane.setAlignment(page, Pos.CENTER);
-		this.setBottom(page);
-	}
-
-	/**
-	 * Action sur les éléments du jeu
-	 */
-	private void action() {
-
+	@Override
+	protected void events() {
+		
 		this.btnNextLevel.setOnMouseClicked(event -> {
 
+			//Si le niveau a été changer
 			if (gestionNiveau.nextLevel()) {
 
-				updatePageCircle();
+				this.pagination.nextPage();
 
 				if (gestionNiveau.isLastLevel())
 					navigationBtnDesign(true, false);
@@ -230,7 +205,7 @@ public class MapView extends BorderPane implements Initialisable {
 
 			if (gestionNiveau.lastLevel()) {
 
-				updatePageCircle();
+				this.pagination.previousPage();
 
 				if (gestionNiveau.isFirstLevel())
 					navigationBtnDesign(false, true);
@@ -243,8 +218,10 @@ public class MapView extends BorderPane implements Initialisable {
 		});
 
 		this.btnPlay.setOnMouseClicked(event -> dodgeCtrl.startGame());
-		this.btnPlay.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
-		this.btnPlay.setOnMouseExited(e -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay));
+		this.btnPlay
+				.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
+		this.btnPlay
+				.setOnMouseExited(e -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", btnPlay));
 
 
 		// TODO Trouver une alternative
@@ -252,20 +229,7 @@ public class MapView extends BorderPane implements Initialisable {
 
 		hoverScale(btnNextLevel, 1.1);
 		hoverScale(btnLastLevel, 1.1);
-	}
 
-	
-
-	/**
-	 * Met à jour la pagination
-	 */
-	private void updatePageCircle() {
-
-		for (Circle c : pagination) {
-			c.setFill(Color.GREY);
-		}
-
-		pagination.get(gestionNiveau.indexCurentLevel()).setFill(Color.WHITE);
 	}
 
 	/**
@@ -279,15 +243,13 @@ public class MapView extends BorderPane implements Initialisable {
 		this.cubyImage.setImage(img); // Change l'image
 		this.titre.setText(gestionNiveau.getCurrentLevel().getName()); // Change le nom du niveau
 		this.pb.setProgress(gestionNiveau.getCurrentLevel().getProgress()); // Change la progression du niveau
-	
-		updatePageCircle();
-		
+
 		if (gestionNiveau.isLastLevel())
 			navigationBtnDesign(true, false);
 
 		else if (gestionNiveau.isFirstLevel())
 			navigationBtnDesign(false, true);
-		
+
 		else
 			navigationBtnDesign(true, true);
 	}
@@ -336,6 +298,7 @@ public class MapView extends BorderPane implements Initialisable {
 		n.setOnMouseExited(event -> new Timeline(new KeyFrame(Duration.millis(200), new KeyValue(n.scaleXProperty(), 1),
 				new KeyValue(n.scaleYProperty(), 1))).play());
 	}
+	
 
 	// TODO factorisé cette méthode
 	public void backgroundImgBtn(String imgFile, Button btn) {
@@ -347,7 +310,6 @@ public class MapView extends BorderPane implements Initialisable {
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
 	}
-
 
 
 

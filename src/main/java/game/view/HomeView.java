@@ -3,17 +3,20 @@ package game.view;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import controller.DataCtrl;
 import controller.DodgeCtrl;
 import controller.ViewCtrl.ScreenName;
 import i18n.I18N;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -37,54 +40,71 @@ import javafx.util.Duration;
 
 
 /**
- * HomeView represente la fenêtre d'accueil du jeu 
+ * HomeView represente la fenêtre d'accueil du jeu
+ * 
  * @author Llona André--Augustine
  *
  */
-public class HomeView extends BorderPane implements Initialisable {
+public class HomeView extends DodgeView {
 
+	/** Accès au mode solo */
 	private Button btnOnePlayer;
+
+	/** Accès au mode multijoueur */
 	private Button btnTwoPlayer;
+
+	/** Accès au parametre du jeu */
 	private Button btnOption;
+
+	/** Bouton pour quitter le jeu */
 	private Button btnQuit;
 
+	/** Titre du jeu */
 	private Label title;
 
-	private DodgeCtrl dodgeCtrl;
+	/** Transition du noir au blanc */
+	private FadeTransition fadeTransition;
+
+	/** Construit les lignes animé de l'écran de jeu */
+	private BackgroundLineHome bgLineHome;
 
 	/**
 	 * Constructeur de la page de garde
-	 * @param dodgeCtrl
+	 * 
+	 * @param dodgeCtrl Controleur principal du jeu
 	 */
 	public HomeView(DodgeCtrl dodgeCtrl) {
-		
-		this.dodgeCtrl = dodgeCtrl;
-		
-		initNode();
+		super(dodgeCtrl);
+
+		initialization();
 		design();
-		action();
-		
-		
+		events();
 	}
-	
+
+
 	@Override
 	public void load() {
-		
-		FadeTransition fd = new FadeTransition(Duration.millis(700), this);
-		fd.setFromValue(0);
-		fd.setToValue(1);
-		fd.playFromStart();
-		
+
+		FadeTransition fade = new FadeTransition(Duration.seconds(1), this);
+		fade.setFromValue(0);
+		fade.setToValue(1);
+		fade.play();
+		this.bgLineHome.playAnimation();
 	}
 
-	
-	
-	@Override
-	public void initNode() {
 
-		//Padding de la fenêtre
+	@Override
+	public void initialization() {
+
+		this.bgLineHome = new BackgroundLineHome();
+
+		this.fadeTransition = new FadeTransition(Duration.seconds(1), this);
+		this.fadeTransition.setFromValue(1);
+		this.fadeTransition.setToValue(0);
+
+		// Padding de la fenêtre
 		this.setPadding(new Insets(20));
-		
+
 		this.btnOnePlayer = new Button();
 		this.btnTwoPlayer = new Button();
 		this.btnOption = new Button();
@@ -109,7 +129,8 @@ public class HomeView extends BorderPane implements Initialisable {
 	/**
 	 * Modifie l'aspect des éléments
 	 */
-	private void design() {
+	@Override
+	protected void design() {
 
 		// Background de la fenêtre
 		InputStream input = getClass().getResourceAsStream(DataCtrl.PATH_IMG_GAME + "menu_fond.png");
@@ -119,7 +140,6 @@ public class HomeView extends BorderPane implements Initialisable {
 						BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, false, true))));
 
 		// Titre
-
 		this.title.setFont(Font.font("Berlin Sans FB Demi", 80));
 		this.title.setTextFill(Color.WHITE);
 		this.title.setPadding(new Insets(80.0, 0.0, 30.0, 0.0));
@@ -134,56 +154,52 @@ public class HomeView extends BorderPane implements Initialisable {
 
 		btnOption.setPrefWidth(60);
 		btnOption.setPrefHeight(60);
-		
+
 
 		btnUi(btnOnePlayer);
 		btnUi(btnTwoPlayer);
 		btnUi(btnQuit);
 
 		// Crée les lignes animé en fond
-		createLigne(10, 150, Color.SKYBLUE, 50, 600, 2);
-		createLigne(15, 150, Color.DEEPPINK, 200, 600, 4);
-		createLigne(5, 150, Color.YELLOW, 600, 600, 1);
-		createLigne(10, 150, Color.YELLOW, -100, 600, 3);
+		this.bgLineHome.createLigne(10, 150, Color.SKYBLUE, 50, 600, 2);
+		this.bgLineHome.createLigne(15, 150, Color.DEEPPINK, 200, 600, 4);
+		this.bgLineHome.createLigne(5, 150, Color.YELLOW, 600, 600, 1);
+		this.bgLineHome.createLigne(10, 150, Color.YELLOW, -100, 600, 3);
+
+		this.getChildren().addAll(0, this.bgLineHome.getLine());
 
 	}
 
 	/**
-	 * Action sur les éléments du jeu
+	 * Gestion des evenements de l'acceuil
 	 */
-	private void action() {
+	@Override
+	protected void events() {
 
 		this.btnQuit.setOnMouseClicked(event -> {
 
-			FadeTransition fd = new FadeTransition(Duration.millis(500), this);
-			fd.setFromValue(1);
-			fd.setToValue(0);
-
-			fd.setOnFinished(e -> Platform.exit());
-
-			fd.play();
+			fadeTransition.setOnFinished(e -> Platform.exit());
+			fadeTransition.play();
 		});
 
 		this.btnOnePlayer.setOnMouseClicked(event -> {
 
-			FadeTransition fd = new FadeTransition(Duration.seconds(1), this);
-			fd.setFromValue(1);
-			fd.setToValue(0);
+			fadeTransition.setOnFinished(e -> {
+				this.bgLineHome.stopAnimation();
+				this.dodgeCtrl.gameModes(ScreenName.MAP);
+			});
 
-			fd.setOnFinished(e -> dodgeCtrl.gameModes(ScreenName.MAP));
-
-			fd.play();
+			fadeTransition.play();
 		});
 
 		this.btnTwoPlayer.setOnMouseClicked(event -> {
 
-			FadeTransition fd = new FadeTransition(Duration.seconds(1), this);
-			fd.setFromValue(1);
-			fd.setToValue(0);
+			fadeTransition.setOnFinished(e -> {
+				this.bgLineHome.stopAnimation();
+				this.dodgeCtrl.gameModes(ScreenName.MULTI);
+			});
 
-			fd.setOnFinished(e -> dodgeCtrl.gameModes(ScreenName.MULTI));
-
-			fd.play();
+			fadeTransition.play();
 		});
 
 
@@ -193,42 +209,12 @@ public class HomeView extends BorderPane implements Initialisable {
 
 		for (Button b : btn) {
 
-			b.setOnMouseEntered(event -> {
-				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b);
-			});
-
-			b.setOnMouseExited(event -> {
-				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b);
-			});
+			b.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b));
+			b.setOnMouseExited(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b));
 		}
 	}
 
-	
-	
-	/**
-	 * Créer une ligne pour l'animation de fond
-	 * 
-	 * @param longueur Longueur de la ligne
-	 * @param largeur  Largeur de la ligne
-	 * @param color    Couleur de la ligne
-	 * @param x        Position en X
-	 * @param y        Position en Y
-	 * @param vitesse  Vitesse de déplacement
-	 */
-	private void createLigne(int longueur, int largeur, Color color, int x, int y, int vitesse) {
 
-		Rectangle rectangle = new Rectangle(longueur, largeur);
-		rectangle.setFill(color);
-		rectangle.setRotate(35);
-
-		this.getChildren().add(0, rectangle);
-
-		Path path = new Path(new MoveTo(x, y), new LineTo(x, y), new LineTo(x + (50 * 10), y - (71.5 * 10)));
-		PathTransition pathAnimation = new PathTransition(Duration.seconds(vitesse), path, rectangle);
-		pathAnimation.setCycleCount(PathTransition.INDEFINITE);
-		pathAnimation.setInterpolator(Interpolator.LINEAR);
-		pathAnimation.play();
-	}
 
 	/**
 	 * Modifie l'apparence du bouton et du texte
@@ -261,11 +247,79 @@ public class HomeView extends BorderPane implements Initialisable {
 		btn.setBackground(new Background(new BackgroundImage(img, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
+	}
+}
 
+/**
+ * Permet de construire des lignes animés qui pourront être stoppé et animé
+ * 
+ * @author Llona
+ *
+ */
+class BackgroundLineHome {
+
+	/**
+	 * Liste des chemins de transitions
+	 */
+	private ArrayList<PathTransition> pathTransition;
+
+	public BackgroundLineHome() {
+		this.pathTransition = new ArrayList<>();
 	}
 
+	/**
+	 * Créer une ligne pour l'animation de fond. Les lignes sont des
+	 * {@link Rectangle} stylisé. L'animation de la ligne est lancé dès sa création
+	 * 
+	 * @param longueur Longueur de la ligne
+	 * @param largeur  Largeur de la ligne
+	 * @param color    Couleur de la ligne
+	 * @param x        Position en X
+	 * @param y        Position en Y
+	 * @param vitesse  Vitesse de déplacement
+	 */
+	public void createLigne(int longueur, int largeur, Color color, int x, int y, int vitesse) {
 
+		Rectangle rectangle = new Rectangle(longueur, largeur);
+		rectangle.setFill(color);
+		rectangle.setRotate(35);
 
+		Path path = new Path(new MoveTo(x, y), new LineTo(x, y), new LineTo(x + (50 * 10.0), y - (71.5 * 10)));
 
+		PathTransition pathAnimation = new PathTransition(Duration.seconds(vitesse), path, rectangle);
+		pathAnimation.setCycleCount(Animation.INDEFINITE);
+		pathAnimation.setInterpolator(Interpolator.LINEAR);
+		pathAnimation.play();
 
+		pathTransition.add(pathAnimation);
+	}
+
+	/**
+	 * Stop l'animation de toutes les lignes de la classe
+	 */
+	public void stopAnimation() {
+		pathTransition.forEach(event -> event.stop());
+	}
+
+	/**
+	 * Joue l'animation de toutes les lignes de la classe
+	 */
+	public void playAnimation() {
+		pathTransition.forEach(event -> event.play());
+	}
+
+	/**
+	 * Récupère toutes les lignes de la classe
+	 * 
+	 * @return Liste des rectangles (ligne)
+	 */
+	public List<Node> getLine() {
+
+		ArrayList<Node> shapes = new ArrayList<>();
+		for (PathTransition pt : pathTransition) {
+			shapes.add(pt.getNode());
+		}
+		
+		return shapes;
+	}
 }

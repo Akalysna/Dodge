@@ -1,17 +1,34 @@
 package game.view;
 
-import javafx.scene.layout.BorderPane;
+import controller.DodgeCtrl;
 
-public class SettingView extends BorderPane implements Initialisable{
+public class SettingView extends DodgeView {
+
+	public SettingView(DodgeCtrl dodgeCtrl) {
+		super(dodgeCtrl);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	public void initNode() {
-		
-		
+	public void initialization() {
+
+
 	}
 
 	@Override
 	public void load() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void design() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void events() {
 		// TODO Auto-generated method stub
 		
 	}

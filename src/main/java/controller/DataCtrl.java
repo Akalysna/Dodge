@@ -2,9 +2,11 @@ package controller;
 
 import java.util.Random;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 /**
  * Classe regroupant les données utiles au jeu
@@ -12,7 +14,7 @@ import javafx.scene.paint.Color;
  * @author Llona
  */
 public class DataCtrl {
-	
+
 
 	/**
 	 * Enulération des couleurs utilisés pour le jeu
@@ -78,10 +80,33 @@ public class DataCtrl {
 	 * Inverse le signe d'un réel de façon aléatoire
 	 * 
 	 * @param d Nombre à transformer
-	 * @return int 
+	 * @return double
 	 */
 	public static double negNb(double d) {
 		return (new Random().nextInt(100)) > 50 ? -d : d;
 	}
 
+	/**
+	 * Construit une ligne de suivi, lorsqu'une machine lance une FocusBall
+	 * 
+	 * @param startX Position du début de la ligne en X
+	 * @param startY Position du début de la ligne en Y
+	 * @param endX   Position de la fin de la ligne en X
+	 * @param endY   Position de la fin de la ligne en X
+	 * @return Line
+	 */
+	public static Line createLine(double startX, double startY, DoubleProperty endX, DoubleProperty endY) {
+		Line line = new Line();
+
+		line.setStartX(startX);
+		line.setStartY(startY);
+		line.endXProperty().bind(endX);
+		line.endYProperty().bind(endY);
+
+		line.getStrokeDashArray().addAll(50.0, 30.0);
+		line.setStroke(Color.rgb(40, 45, 54)); // Couleur gris
+		line.setStrokeWidth(5);
+
+		return line;
+	}
 }

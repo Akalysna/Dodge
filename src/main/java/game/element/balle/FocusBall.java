@@ -66,6 +66,10 @@ public class FocusBall extends Balle {
 
 	public void setThrow(boolean isThrow) {
 		this.isThrow = isThrow;
+		
+		if(isThrow) {
+			
+		}
 	}
 
 }

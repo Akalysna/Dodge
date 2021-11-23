@@ -2,7 +2,7 @@ package game.view;
 
 public interface Initialisable {
 	
-	public void initNode(); 
+	/**Charge les données de l'écran*/
 	public void load();
 
 }

@@ -6,7 +6,6 @@ import java.util.Random;
 
 import controller.ViewCtrl.ScreenName;
 import game.element.Cuby;
-import game.element.Ligne;
 import game.element.balle.Balle;
 import game.element.balle.FocusBall;
 import game.element.factory.BallFactory;
@@ -26,10 +25,19 @@ import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 public class GameCtrl {
+	
+	//TODO Penser a stop les animation de chaque élément et de la boucle du jeu 
 
+	/**Classe représentant l'interface graphique du niveau. Cette interface possède la boucle du jeu*/
 	private GameView gameView;
+	
+	/**Controleur principal du jeu */
 	private DodgeCtrl dodgeCtrl;
-
+	
+	/**Permet de récupérer les informations relatif au niveau*/
+	private GestionnaireNiveau gestionNiveau;
+	
+	/**Propriété qui lie l'état des machine. Si elles sont toutes détruites la valeur sera égale à true*/
 	private BooleanProperty allMachineDestroy;
 
 	private ArrayList<Cuby> cubys;
@@ -39,12 +47,11 @@ public class GameCtrl {
 	private ArrayList<PathTransition> paths;
 	private ArrayList<Line> ligne;
 
-	private GestionnaireNiveau gestionNiveau;
 
 	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
 
-		this.dodgeCtrl = dodgeCtrl;
 		this.gameView = gameView;
+		this.dodgeCtrl = dodgeCtrl;
 
 		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
 
@@ -174,10 +181,11 @@ public class GameCtrl {
 		new Timeline(new KeyFrame(Duration.millis(3000), event -> {
 			ball.animateBall(true);
 			ball.setDirectionTarget(cuby.getX(), cuby.getY());
-			gameView.removeNode(this.ligne.remove(0));
+			if (!ligne.isEmpty())
+				gameView.removeNode(this.ligne.remove(0));
 		})).play();
 
-		Ligne l = new Ligne(ball.getX(), ball.getY(), cuby.xProperty(), cuby.yProperty());
+		Line l = DataCtrl.createLine(ball.getX(), ball.getY(), cuby.xProperty(), cuby.yProperty());
 		this.ligne.add(l);
 		gameView.addFirstNode(l);
 
@@ -207,7 +215,7 @@ public class GameCtrl {
 
 		if (gestionNiveau.nextStage()) {
 			initListOfElement();
-			gameView.clear();
+			gameView.loadLevel();
 		} else
 			endLevel();
 	}
