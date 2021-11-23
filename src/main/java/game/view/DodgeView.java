@@ -10,10 +10,6 @@ public abstract class DodgeView extends BorderPane implements Initialisable{
 
 	protected DodgeView(DodgeCtrl dodgeCtrl) {
 		this.dodgeCtrl = dodgeCtrl;
-		
-		initialization();
-		design();
-		events();
 	}
 	
 	protected abstract void initialization(); 

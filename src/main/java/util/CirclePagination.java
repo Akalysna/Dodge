@@ -26,7 +26,7 @@ public class CirclePagination {
 
 
 	public CirclePagination(int nbPage, int indexCurrentPage, Color hoverColor, Color primaryColor) {
-		super();
+
 		this.pagination = new ArrayList<>();
 		this.nbPage = nbPage;
 		this.hoverColor = hoverColor;
@@ -48,17 +48,23 @@ public class CirclePagination {
 			this.pagination.add(new Circle(10, primaryColor));
 		}
 	}
+	
+	
 
 	public void nextPage() {
 
-		if (indexCurrentPage + 1 < nbPage)
-			currentPage(indexCurrentPage++);
+		if (indexCurrentPage < nbPage-1) {
+			indexCurrentPage++;
+			currentPage(indexCurrentPage);
+		}
 	}
 
 	public void previousPage() {
 
-		if (indexCurrentPage + 1 < nbPage)
-			currentPage(indexCurrentPage--);
+		if (indexCurrentPage >= 0) {
+			indexCurrentPage--;
+			currentPage(indexCurrentPage);
+		}
 	}
 
 

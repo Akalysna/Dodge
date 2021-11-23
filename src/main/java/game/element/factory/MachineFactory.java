@@ -35,7 +35,7 @@ public class MachineFactory {
 	}
 
 	public static Machine simpleMachine(int x, int y, Color color) {
-		return new Machine(x, y, 50, 5, color, Arrays.asList(TypeBalle.FIRE));
+		return new Machine(x, y, 50, 5, color, Arrays.asList(TypeBalle.SIMPLE));
 	}
 
 	public static Machine simpleMachineGhost(int x, int y, Color color) {

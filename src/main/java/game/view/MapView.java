@@ -70,6 +70,10 @@ public class MapView extends DodgeView {
 		super(dodgeCtrl);
 
 		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
+
+		initialization();
+		design();
+		events();
 	}
 
 	@Override
@@ -81,7 +85,8 @@ public class MapView extends DodgeView {
 	@Override
 	public void initialization() {
 
-		this.pagination = new CirclePagination(gestionNiveau.nbLevel(), 0, Color.WHITE, Color.GRAY);
+		this.pagination = new CirclePagination(this.gestionNiveau.nbLevel(), 0, Color.WHITE, Color.GRAY);
+		this.pagination.currentPage(this.gestionNiveau.indexCurentLevel());
 
 		this.btnPlay = new Button();
 		this.btnNextLevel = new Button();
