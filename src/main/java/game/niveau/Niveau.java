@@ -5,13 +5,22 @@ import java.util.List;
 
 public class Niveau implements Cloneable {
 
+	/**Nom du niveau*/
 	private String name;
+	
+	/**Chemin vers l'image du niveau*/
 	private String cubyPath;
+	
+	/**Chemin vers la musique du niveau*/
 	private String musicPath;
+	
+	/**Chemin vers le fichier de lecture du niveau*/
 	private String levelPath;
 
+	/**Information sur le niveau*/
 	private LevelInfo levelInfo;
 
+	/**Permet de contruire un niveau*/
 	private BuildLevel build;
 
 	/**
@@ -61,7 +70,6 @@ public class Niveau implements Cloneable {
 
 	}
 
-
 	public ArrayList<Stage> getCopyStage() { return new ArrayList<Stage>(this.getStages()); }
 
 	public String getName() { return name; }
@@ -76,6 +84,7 @@ public class Niveau implements Cloneable {
 }
 
 class LevelInfo {
+	
 	private int totalMachine = 0;
 	private int totalMachineDestroy = 0;
 
