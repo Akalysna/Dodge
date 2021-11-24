@@ -254,7 +254,7 @@ public class BuildLevel {
 			};
 
 		} else
-			return list.get(i).getEntered().or(builBinding(list, i - 1));
+			return list.get(i).getIsHovered().or(builBinding(list, i - 1));
 	}
 
 	/**

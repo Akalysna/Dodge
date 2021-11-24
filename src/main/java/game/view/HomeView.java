@@ -13,10 +13,7 @@ import i18n.I18N;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -71,6 +68,10 @@ public class HomeView extends DodgeView {
 
 	/** Construit les lignes animé de l'écran de jeu */
 	private BackgroundLineHome bgLineHome;
+	
+	private ArrayList<SoundCtrl> sounds; 
+	private SoundCtrl home_music; 
+	private SoundCtrl btn_hover_sound; 
 
 	/**
 	 * Constructeur de la page de garde
@@ -80,7 +81,7 @@ public class HomeView extends DodgeView {
 	public HomeView(DodgeCtrl dodgeCtrl) {
 		super(dodgeCtrl);
 		
-		DodgeCtrl.soundCtrl.play(SoundCtrl.HOME);
+		
 
 		initialization();
 		design();
@@ -96,11 +97,26 @@ public class HomeView extends DodgeView {
 		fade.setToValue(1);
 		fade.play();
 		this.bgLineHome.playAnimation();
+		
+		this.sounds.forEach(e -> e.play());
 	}
+	
+	private void initSounds() {
 
+		this.sounds = new ArrayList<>(); 
+		home_music = new SoundCtrl(DataCtrl.HOME); 
+		btn_hover_sound = new SoundCtrl(DataCtrl.HOVER_BTN); 
+		
+		home_music.play();
+		
+		this.sounds.addAll(Arrays.asList(home_music, btn_hover_sound)); 
+
+	}
 
 	@Override
 	public void initialization() {
+		
+		initSounds();
 
 		this.bgLineHome = new BackgroundLineHome();
 
@@ -184,7 +200,7 @@ public class HomeView extends DodgeView {
 
 		this.btnQuit.setOnMouseClicked(event -> {
 
-			DodgeCtrl.soundCtrl.fadeStop(); 
+			home_music.fadeStop();  
 			
 			fadeTransition.setOnFinished(e -> Platform.exit());
 			fadeTransition.play();
@@ -194,6 +210,7 @@ public class HomeView extends DodgeView {
 
 			fadeTransition.setOnFinished(e -> {
 				this.bgLineHome.stopAnimation();
+				this.sounds.forEach(sound -> sound.stop());
 				this.dodgeCtrl.gameModes(ScreenName.MAP);
 			});
 
@@ -204,6 +221,7 @@ public class HomeView extends DodgeView {
 
 			fadeTransition.setOnFinished(e -> {
 				this.bgLineHome.stopAnimation();
+				this.sounds.forEach(sound -> sound.stop());
 				this.dodgeCtrl.gameModes(ScreenName.MULTI);
 			});
 
@@ -219,11 +237,11 @@ public class HomeView extends DodgeView {
 
 			b.setOnMouseEntered(event -> {
 				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b);
-				DodgeCtrl.soundCtrl.playSound(SoundCtrl.HOVER_BTN);
+				btn_hover_sound.play(); 
 			});
 			b.setOnMouseExited(event -> {
 				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b);
-				DodgeCtrl.soundCtrl.stopSound(); 
+				btn_hover_sound.stop();  
 			});
 		}
 	}
@@ -263,6 +281,11 @@ public class HomeView extends DodgeView {
 				new BackgroundSize(btn.getPrefWidth(), btn.getPrefHeight(), true, true, true, false))));
 	}
 }
+
+
+
+
+
 
 /**
  * Permet de construire des lignes animés qui pourront être stoppé et animé

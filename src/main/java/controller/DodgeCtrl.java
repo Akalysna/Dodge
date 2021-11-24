@@ -44,8 +44,6 @@ public class DodgeCtrl {
 
 	private GestionnaireNiveau gestionNiveau;
 	
-	public static SoundCtrl soundCtrl = new SoundCtrl();; 
-
 	public DodgeCtrl(Stage stage) throws EmptyLevelException {
 
 		this.stage = stage;

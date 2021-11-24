@@ -28,14 +28,15 @@ public class GameView extends DodgeView {
 	 */
 	public GameView(DodgeCtrl dodgeCtrl) {
 		super(dodgeCtrl);
+
 		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
-		this.setBackground(DataCtrl.BG_COLOR_DARK);
 
 		initialization();
 	}
 
 	public void initialization() {
 
+		this.setBackground(DataCtrl.BG_COLOR_DARK);
 		this.getChildren().addAll(gameCtrl.getElement());
 		this.setMouseTransparent(true);
 
@@ -90,23 +91,24 @@ public class GameView extends DodgeView {
 		stopUpdate();
 		this.getChildren().clear();
 
-		fadeRect = new Rectangle(); 
+		fadeRect = new Rectangle();
 		fadeRect.setFill(Color.rgb(27, 30, 35, 0));
 		fadeRect.setHeight(DodgeCtrl.SCENE_HEIGHT);
 		fadeRect.setWidth(DodgeCtrl.SCENE_WIDTH);
-		
+
 		this.getChildren().add(fadeRect);
-		
-		FillTransition fill = new FillTransition(Duration.millis(1100), fadeRect, Color.rgb(27, 30, 35, 0), Color.rgb(27, 30, 35, 1));
+
+		FillTransition fill = new FillTransition(Duration.millis(900), fadeRect, Color.rgb(27, 30, 35, 0),
+				Color.rgb(27, 30, 35, 1));
 		fill.play();
-		
+
 		fill.setOnFinished(event -> {
 			this.getChildren().addAll(gameCtrl.getElement());
 			update.start();
-			
+
 		});
 	}
-	
+
 
 	/** Stop la boucle du jeu */
 	public void stopUpdate() {
