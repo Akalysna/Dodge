@@ -40,8 +40,6 @@ public class BuildLevel {
 
 	private int nbMachine;
 
-
-
 	private ArrayList<GameColor> colors;
 	private Color currentColor;
 

@@ -4,8 +4,11 @@ import controller.DataCtrl;
 import controller.DodgeCtrl;
 import controller.GameCtrl;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FillTransition;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 
 public class GameView extends DodgeView {
@@ -16,13 +19,15 @@ public class GameView extends DodgeView {
 	/** Boucle de mise a jour du jeu */
 	private AnimationTimer update;
 
+	private Rectangle fadeRect;
+
 	/**
 	 * Constructeur permettant de crée une interface graphique du jeu
 	 * 
 	 * @param dodgeCtrl Controleur principal
 	 */
 	public GameView(DodgeCtrl dodgeCtrl) {
-		super(dodgeCtrl); 
+		super(dodgeCtrl);
 		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
 		this.setBackground(DataCtrl.BG_COLOR_DARK);
 
@@ -81,9 +86,27 @@ public class GameView extends DodgeView {
 	 * niveau
 	 */
 	public void loadLevel() {
+
+		stopUpdate();
 		this.getChildren().clear();
-		this.getChildren().addAll(gameCtrl.getElement());
+
+		fadeRect = new Rectangle(); 
+		fadeRect.setFill(Color.rgb(27, 30, 35, 0));
+		fadeRect.setHeight(DodgeCtrl.SCENE_HEIGHT);
+		fadeRect.setWidth(DodgeCtrl.SCENE_WIDTH);
+		
+		this.getChildren().add(fadeRect);
+		
+		FillTransition fill = new FillTransition(Duration.millis(1100), fadeRect, Color.rgb(27, 30, 35, 0), Color.rgb(27, 30, 35, 1));
+		fill.play();
+		
+		fill.setOnFinished(event -> {
+			this.getChildren().addAll(gameCtrl.getElement());
+			update.start();
+			
+		});
 	}
+	
 
 	/** Stop la boucle du jeu */
 	public void stopUpdate() {
@@ -99,13 +122,13 @@ public class GameView extends DodgeView {
 	@Override
 	protected void design() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void events() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
