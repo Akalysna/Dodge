@@ -57,6 +57,8 @@ public class GameCtrl {
 
 		this.gestionNiveau.getCurrentLevel().readLevel();
 		this.gestionNiveau.setCurrentStage(0);
+		
+		DodgeCtrl.soundCtrl.play(gestionNiveau.getCurrentLevel().getMusicPath());
 
 		this.allMachineDestroy = new SimpleBooleanProperty(false);
 

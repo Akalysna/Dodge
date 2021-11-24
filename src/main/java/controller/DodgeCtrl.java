@@ -43,6 +43,8 @@ public class DodgeCtrl {
 	private double yOffset = 0;
 
 	private GestionnaireNiveau gestionNiveau;
+	
+	public static SoundCtrl soundCtrl = new SoundCtrl();; 
 
 	public DodgeCtrl(Stage stage) throws EmptyLevelException {
 
@@ -51,6 +53,7 @@ public class DodgeCtrl {
 		this.cubyPlayer = new ArrayList<>();
 
 		this.gestionNiveau = new GestionnaireNiveau();
+		
 
 		curseur();
 		dragWindow();

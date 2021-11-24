@@ -7,12 +7,16 @@ import java.util.List;
 
 import controller.DataCtrl;
 import controller.DodgeCtrl;
+import controller.SoundCtrl;
 import controller.ViewCtrl.ScreenName;
 import i18n.I18N;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -75,6 +79,8 @@ public class HomeView extends DodgeView {
 	 */
 	public HomeView(DodgeCtrl dodgeCtrl) {
 		super(dodgeCtrl);
+		
+		DodgeCtrl.soundCtrl.play(SoundCtrl.HOME);
 
 		initialization();
 		design();
@@ -178,6 +184,8 @@ public class HomeView extends DodgeView {
 
 		this.btnQuit.setOnMouseClicked(event -> {
 
+			DodgeCtrl.soundCtrl.fadeStop(); 
+			
 			fadeTransition.setOnFinished(e -> Platform.exit());
 			fadeTransition.play();
 		});
@@ -209,8 +217,14 @@ public class HomeView extends DodgeView {
 
 		for (Button b : btn) {
 
-			b.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b));
-			b.setOnMouseExited(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b));
+			b.setOnMouseEntered(event -> {
+				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", b);
+				DodgeCtrl.soundCtrl.playSound(SoundCtrl.HOVER_BTN);
+			});
+			b.setOnMouseExited(event -> {
+				backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "transparent_menu_btn.png", b);
+				DodgeCtrl.soundCtrl.stopSound(); 
+			});
 		}
 	}
 
