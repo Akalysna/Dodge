@@ -1,11 +1,7 @@
-package util;
+package game.element;
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

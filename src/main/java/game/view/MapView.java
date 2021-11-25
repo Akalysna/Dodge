@@ -5,6 +5,7 @@ import java.io.InputStream;
 import controller.DataCtrl;
 import controller.DodgeCtrl;
 import controller.ViewCtrl.ScreenName;
+import game.element.CirclePagination;
 import game.niveau.GestionnaireNiveau;
 import i18n.I18N;
 import javafx.animation.KeyFrame;
@@ -32,7 +33,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import util.CirclePagination;
 
 
 /**

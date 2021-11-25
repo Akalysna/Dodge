@@ -11,6 +11,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
+import util.Position;
 
 public class Zone extends Polyline {
 
@@ -19,8 +20,7 @@ public class Zone extends Polyline {
 	private BooleanProperty entered;
 	private BooleanProperty disable;
 
-	private double x;
-	private double y;
+	private Position position; 
 	
 	private ArrayList<Double> points;
 	private double taille; 
@@ -29,8 +29,7 @@ public class Zone extends Polyline {
 
 		this.taille = taille; 
 		this.points = points; 
-		this.x = x;
-		this.y = y;
+		this.position = new Position(x, y); 
 		this.couleur = color;
 
 		this.entered = new SimpleBooleanProperty(false);
@@ -50,8 +49,8 @@ public class Zone extends Polyline {
 
 	public void init() {
 
-		this.setLayoutX(x);
-		this.setLayoutY(y);
+		this.setLayoutX(this.position.getX());
+		this.setLayoutY(this.position.getY());
 
 		this.getStrokeDashArray().addAll(20.0, 10.0);
 		this.setStroke(couleur);

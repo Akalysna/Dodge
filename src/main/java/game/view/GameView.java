@@ -5,7 +5,6 @@ import controller.DodgeCtrl;
 import controller.GameCtrl;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
-import javafx.scene.layout.AnchorPane;
 
 
 public class GameView extends DodgeView {

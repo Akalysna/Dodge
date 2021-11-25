@@ -7,16 +7,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import util.KeyTouch;
 import util.KeyTouch.MoveDirection;
+import util.Position;
 
 /**
  * Classe représentant le cube controlé par le joueur
  * 
- * @author Llona
+ * @author Llona André--Augustine
  */
 public class Cuby extends Rectangle {
 
-	private double x;
-	private double y;
+	private Position position; 
+	
 	private double vitesse;
 
 	private int taille;
@@ -39,8 +40,7 @@ public class Cuby extends Rectangle {
 	 */
 	public Cuby(double x, double y, Color color, int width, double vitesse, KeyTouch kt) {
 
-		this.x = x;
-		this.y = y;
+		this.position = new Position(x, y); 
 		this.vitesse = vitesse;
 		this.color = color;
 		this.taille = width;
@@ -71,8 +71,8 @@ public class Cuby extends Rectangle {
 		this.setWidth(taille);
 		this.setHeight(taille);
 
-		this.setX(x);
-		this.setY(y);
+		this.setX(this.position.getX());
+		this.setY(this.position.getY());
 
 		this.setFill(color);
 
