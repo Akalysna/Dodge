@@ -47,6 +47,7 @@ public class GameCtrl {
 	private ArrayList<PathTransition> paths;
 	private ArrayList<Line> ligne;
 
+	private SoundCtrl home_music; 
 
 	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
 
@@ -57,6 +58,9 @@ public class GameCtrl {
 
 		this.gestionNiveau.getCurrentLevel().readLevel();
 		this.gestionNiveau.setCurrentStage(0);
+		
+		this.home_music = new SoundCtrl(gestionNiveau.getCurrentLevel().getMusicPath()); 
+		this.home_music.play();
 
 		this.allMachineDestroy = new SimpleBooleanProperty(false);
 
@@ -106,6 +110,7 @@ public class GameCtrl {
 	}
 
 	public List<Node> getElement() {
+		
 		ArrayList<Node> n = new ArrayList<>();
 
 		paths.forEach(e -> {
@@ -119,9 +124,11 @@ public class GameCtrl {
 		n.addAll(balles);
 
 		return n;
-
 	}
 
+	/**
+	 * 
+	 */
 	public void zoneEntered() {
 
 		// Pour chaque zones
@@ -250,7 +257,7 @@ public class GameCtrl {
 		}
 
 		for (Zone z : zones) {
-			if (z.getDisable().get()) {
+			if (z.getIsDisable().get()) {
 				for (PathTransition pt : paths) {
 					if (pt.getNode().equals(z)) {
 						pt.stop();

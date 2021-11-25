@@ -1,2 +1,2 @@
-Hello World!:cuby_rose.png: :lvl1.txt
-Just Move:cuby_jaune.png: :lvl3.txt
+Hello World!:cuby_rose.png:/sounds/Ghostrifter-Deflector.mp3:lvl1.txt
+Just Move:cuby_jaune.png:/sounds/Transforyou.mp3:lvl3.txt

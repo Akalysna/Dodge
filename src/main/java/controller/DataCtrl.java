@@ -69,6 +69,10 @@ public class DataCtrl {
 
 	/** Chemin d'accès aux image du jeu */
 	public static final String PATH_IMG_GAME = "/img/game/";
+	
+	
+	public static final String HOVER_BTN = "/sounds/Hover_btn.wav";
+	public static final String HOME = "/sounds/Dance.mp3";
 
 
 

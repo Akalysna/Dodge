@@ -43,7 +43,7 @@ public class DodgeCtrl {
 	private double yOffset = 0;
 
 	private GestionnaireNiveau gestionNiveau;
-
+	
 	public DodgeCtrl(Stage stage) throws EmptyLevelException {
 
 		this.stage = stage;
@@ -51,6 +51,7 @@ public class DodgeCtrl {
 		this.cubyPlayer = new ArrayList<>();
 
 		this.gestionNiveau = new GestionnaireNiveau();
+		
 
 		curseur();
 		dragWindow();

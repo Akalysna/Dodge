@@ -248,7 +248,7 @@ public class Machine extends StackPane {
 	 */
 	public void bindToDestroyMachine(Zone z) {
 
-		z.getDisable().bind(isDestroy);
+		z.getIsDisable().bind(isDestroy);
 	}
 
 	public void bindEnteredZone(BooleanBinding n) {
