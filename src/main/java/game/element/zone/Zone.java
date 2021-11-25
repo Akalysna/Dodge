@@ -23,6 +23,8 @@ public class Zone extends Polyline {
 	/** Couleur de la zone */
 	private Color couleur;
 
+	// ---------------------------
+
 	/**
 	 * Constructeur de zone
 	 * 
@@ -33,6 +35,7 @@ public class Zone extends Polyline {
 	 * @param color  Couleur de la zone
 	 */
 	public Zone(List<Double> points, double taille, int x, int y, Color color) {
+
 		this.couleur = color;
 
 		this.isHovered = new SimpleBooleanProperty(false);
@@ -47,11 +50,17 @@ public class Zone extends Polyline {
 				disable();
 		});
 
-		init();
+		init(x, y);
 	}
 
-	
-	private void init() {
+	// ---------------------------
+
+	private void init(int x, int y) {
+
+		// Position de la zone
+
+		this.setLayoutX(x);
+		this.setLayoutY(y);
 
 		// Modification du countour de la zone
 
@@ -68,7 +77,6 @@ public class Zone extends Polyline {
 
 		this.setEffect(ombre);
 	}
-
 
 	/**
 	 * Change l'état de la zone si elle n'est pas désactivé ({@link #isHovered}). La
