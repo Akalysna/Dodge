@@ -1,6 +1,6 @@
 package game.element.balle;
 
-import controller.DataCtrl;
+import controler.DataCtrl;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;

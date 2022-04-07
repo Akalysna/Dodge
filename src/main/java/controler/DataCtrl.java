@@ -1,7 +1,9 @@
-package controller;
+package controler;
 
 import java.util.Random;
 
+import event.EventRegister;
+import event.GameEvent;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -57,7 +59,12 @@ public class DataCtrl {
 		public Color getColor() { return Color.valueOf(colorName); }
 	}
 
+	public enum ScreenName {
+		HOME, MAP, GAME, SETTING, MULTI, GAMEOVER; 
+	}
 
+	
+	
 	/** Chemin d'accès aux images des niveaux */
 	public static final String PATH_CUBY = "/img/cuby/";
 
@@ -70,12 +77,13 @@ public class DataCtrl {
 	/** Chemin d'accès aux image du jeu */
 	public static final String PATH_IMG_GAME = "/img/game/";
 	
-	
 	public static final String HOVER_BTN = "/sounds/Hover_btn.wav";
 	public static final String HOME = "/sounds/Dance.mp3";
 
+	public static EventRegister<GameEvent> GAME_EVENT = new EventRegister<>(); 
 
-
+	
+	
 	/** Background de couleur foncé */
 	public static final Background BG_COLOR_DARK = new Background(
 			new BackgroundFill(Color.rgb(27, 30, 35), null, null));

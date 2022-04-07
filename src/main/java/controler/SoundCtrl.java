@@ -1,4 +1,4 @@
-package controller;
+package controler;
 
 import java.net.URL;
 

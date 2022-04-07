@@ -1,6 +1,6 @@
 package game.element.balle;
 
-import controller.DodgeCtrl;
+import app.Dodge;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
@@ -35,7 +35,7 @@ public class GhostBall extends Balle {
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= DodgeCtrl.SCENE_WIDTH - taille)) {
+				if ((getCenterX() <= taille) || (getCenterX() >= Dodge.SCENE_WIDTH - taille)) {
 					dx = -dx; // Direction inverse
 					life.setCurrent(life.getCurrent() - 1);
 
@@ -45,7 +45,7 @@ public class GhostBall extends Balle {
 						setNormalStyle();
 				}
 
-				if ((getCenterY() >= DodgeCtrl.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
+				if ((getCenterY() >= Dodge.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
 					dy = -dy;
 					life.setCurrent(life.getCurrent() - 1);
 

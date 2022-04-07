@@ -1,18 +1,20 @@
 package game.view;
 
-import controller.DataCtrl;
-import controller.DodgeCtrl;
-import controller.GameCtrl;
+import app.Dodge;
+import control.view.View;
+import controler.DataCtrl;
+import controler.DodgeCtrl;
+import controler.GameCtrl;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 
-
-public class GameView extends DodgeView {
+public class GameView extends AnchorPane implements View {
 
 	/** Controleur du jeu. Ce charge de toutes les opérations et calcul du jeu */
 	private GameCtrl gameCtrl;
@@ -28,7 +30,6 @@ public class GameView extends DodgeView {
 	 * @param dodgeCtrl Controleur principal
 	 */
 	public GameView(DodgeCtrl dodgeCtrl) {
-		super(dodgeCtrl);
 
 		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
 
@@ -51,9 +52,9 @@ public class GameView extends DodgeView {
 			public void handle(long now) {
 
 				if (!gameCtrl.isEndGame()) {
-					gameCtrl.zoneEntered();
+					//gameCtrl.zoneEntered();
 					gameCtrl.balls();
-					gameCtrl.cubyColision();
+					//gameCtrl.cubyColision();
 					gameCtrl.stopPathMove();
 					gameCtrl.updateStageStats();
 				} else {
@@ -94,8 +95,8 @@ public class GameView extends DodgeView {
 
 		fadeRect = new Rectangle();
 		fadeRect.setFill(Color.rgb(27, 30, 35, 0));
-		fadeRect.setHeight(DodgeCtrl.SCENE_HEIGHT);
-		fadeRect.setWidth(DodgeCtrl.SCENE_WIDTH);
+		fadeRect.setHeight(Dodge.SCENE_HEIGHT);
+		fadeRect.setWidth(Dodge.SCENE_WIDTH);
 
 		this.getChildren().add(fadeRect);
 
@@ -119,21 +120,6 @@ public class GameView extends DodgeView {
 	@Override
 	public void load() {
 		// TODO Auto-generated method stub
-
+		
 	}
-
-	@Override
-	protected void design() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void events() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-
 }

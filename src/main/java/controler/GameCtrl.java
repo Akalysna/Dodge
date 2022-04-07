@@ -1,10 +1,11 @@
-package controller;
+package controler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import controller.ViewCtrl.ScreenName;
+import app.Dodge;
+import controler.DataCtrl.ScreenName;
 import game.element.Cuby;
 import game.element.balle.Balle;
 import game.element.balle.FocusBall;
@@ -25,19 +26,25 @@ import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 public class GameCtrl {
-	
-	//TODO Penser a stop les animation de chaque élément et de la boucle du jeu 
 
-	/**Classe représentant l'interface graphique du niveau. Cette interface possède la boucle du jeu*/
+	// TODO Penser a stop les animation de chaque élément et de la boucle du jeu
+
+	/**
+	 * Classe représentant l'interface graphique du niveau. Cette interface possède
+	 * la boucle du jeu
+	 */
 	private GameView gameView;
-	
-	/**Controleur principal du jeu */
+
+	/** Controleur principal du jeu */
 	private DodgeCtrl dodgeCtrl;
-	
-	/**Permet de récupérer les informations relatif au niveau*/
+
+	/** Permet de récupérer les informations relatif au niveau */
 	private GestionnaireNiveau gestionNiveau;
-	
-	/**Propriété qui lie l'état des machine. Si elles sont toutes détruites la valeur sera égale à true*/
+
+	/**
+	 * Propriété qui lie l'état des machine. Si elles sont toutes détruites la
+	 * valeur sera égale à true
+	 */
 	private BooleanProperty allMachineDestroy;
 
 	private ArrayList<Cuby> cubys;
@@ -47,7 +54,7 @@ public class GameCtrl {
 	private ArrayList<PathTransition> paths;
 	private ArrayList<Line> ligne;
 
-	private SoundCtrl home_music; 
+	private SoundCtrl home_music;
 
 	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
 
@@ -58,18 +65,37 @@ public class GameCtrl {
 
 		this.gestionNiveau.getCurrentLevel().readLevel();
 		this.gestionNiveau.setCurrentStage(0);
-		
-		this.home_music = new SoundCtrl(gestionNiveau.getCurrentLevel().getMusicPath()); 
+
+		this.home_music = new SoundCtrl(gestionNiveau.getCurrentLevel().getMusicPath());
 		this.home_music.play();
 
 		this.allMachineDestroy = new SimpleBooleanProperty(false);
 
+		init();
 		initListOfElement();
 
 		this.allMachineDestroy.addListener((obs, o, n) -> {
 			if (n.booleanValue())
 				nextStage();
 		});
+
+
+		zone();
+		ball();
+	}
+
+	/**
+	 * 
+	 */
+	private void init() {
+
+		this.machines = new ArrayList<>();
+		this.zones = new ArrayList<>();
+		this.cubys = new ArrayList<>();
+		this.balles = new ArrayList<>();
+		this.paths = new ArrayList<>();
+		this.ligne = new ArrayList<>();
+
 	}
 
 	private void initListOfElement() {
@@ -78,8 +104,8 @@ public class GameCtrl {
 
 		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
 		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
-
-		this.cubys.addAll(dodgeCtrl.getCubyPlayer());
+		this.cubys.addAll(dodgeCtrl.getPlayers(1));
+		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
 
 		double x = gestionNiveau.getCurrentStage().getCubyPosition().getX();
 		double y = gestionNiveau.getCurrentStage().getCubyPosition().getY();
@@ -89,8 +115,6 @@ public class GameCtrl {
 			cuby.setY(y);
 		}
 
-		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
-
 		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
 	}
 
@@ -99,18 +123,18 @@ public class GameCtrl {
 		if (paths != null)
 			this.paths.forEach(e -> e.stop());
 
-		this.machines = new ArrayList<>();
-		this.zones = new ArrayList<>();
-		this.cubys = new ArrayList<>();
-		this.balles = new ArrayList<>();
-		this.paths = new ArrayList<>();
-		this.ligne = new ArrayList<>();
+		this.machines.clear();
+		this.zones.clear();
+		this.cubys.clear();
+		this.balles.clear();
+		this.paths.clear();
+		this.ligne.clear();
 
 		this.allMachineDestroy.unbind();
 	}
 
 	public List<Node> getElement() {
-		
+
 		ArrayList<Node> n = new ArrayList<>();
 
 		paths.forEach(e -> {
@@ -126,32 +150,48 @@ public class GameCtrl {
 		return n;
 	}
 
-	/**
-	 * 
-	 */
-	public void zoneEntered() {
+	// ----
 
-		// Pour chaque zones
-		for (Zone z : this.zones) {
+	private void zone() {
 
-			boolean intersect = false;
+		for (Cuby cuby : this.cubys) {
 
-			// Si un cuby est dans la zone
-			for (Cuby c : this.cubys) {
+			cuby.layoutXProperty().addListener((obj, oldV, newV) -> {
 
-				if (!Shape.intersect(z, c).getBoundsInLocal().isEmpty())
-					intersect = true;
-			}
+				this.zones.forEach((zone) -> zone.hover(!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()));
+			});
 
-			// --------------
-
-			z.hover(intersect);
+			cuby.layoutYProperty().addListener((obj, oldV, newV) -> {
+				this.zones.forEach((zone) -> zone.hover(!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()));
+			});
 		}
 	}
+
+	private void ball() {
+
+		ArrayList<Cuby> tmp = new ArrayList<>();
+
+		for (Balle ball : this.balles) {
+
+			ball.layoutYProperty().addListener((obj, oldV, newV) -> {
+				this.cubys.forEach(cuby -> {
+
+					if (!Shape.intersect(ball, cuby).getBoundsInLocal().isEmpty()) {
+						tmp.add(cuby);
+					}
+				});
+
+				this.cubys.removeAll(tmp);
+			});
+		}
+	}
+
+	// ----
 
 	public void balls() {
 
 		for (Machine machine : machines) {
+			
 			if (machine.isThrowBall()) {
 
 				Balle b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
@@ -290,7 +330,7 @@ public class GameCtrl {
 		clear();
 		gameView.stopUpdate();
 
-		DodgeCtrl.loadAndGoto(ScreenName.MAP);
+		Dodge.goTo(ScreenName.MAP);
 	}
 
 	public boolean isEndGame() {

@@ -1,6 +1,6 @@
 package game.view;
 
-import controller.DodgeCtrl;
+import controler.DodgeCtrl;
 
 public class SettingView extends DodgeView {
 

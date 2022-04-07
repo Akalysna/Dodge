@@ -1,9 +1,10 @@
 package game.view;
 
-import controller.DodgeCtrl;
+import control.view.View;
+import controler.DodgeCtrl;
 import javafx.scene.layout.BorderPane;
 
-public abstract class DodgeView extends BorderPane implements Initialisable{
+public abstract class DodgeView extends BorderPane implements View{
 	
 	/**Controleur principal du jeu*/
 	protected DodgeCtrl dodgeCtrl;

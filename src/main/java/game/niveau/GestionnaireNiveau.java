@@ -7,8 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.DataCtrl;
-import controller.DodgeCtrl;
+import controler.DataCtrl;
+import controler.DodgeCtrl;
 import util.EmptyLevelException;
 
 public class GestionnaireNiveau {

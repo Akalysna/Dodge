@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import controller.DataCtrl;
-import controller.DodgeCtrl;
-import controller.SoundCtrl;
-import controller.ViewCtrl.ScreenName;
+import app.Dodge;
+import control.view.View;
+import controler.DataCtrl;
+import controler.DataCtrl.ScreenName;
+import controler.SoundCtrl;
 import i18n.I18N;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -46,7 +47,7 @@ import javafx.util.Duration;
  * @author Llona André--Augustine
  *
  */
-public class HomeView extends DodgeView {
+public class HomeView extends BorderPane implements View {
 
 	/** Accès au mode solo */
 	private Button btnOnePlayer;
@@ -74,14 +75,9 @@ public class HomeView extends DodgeView {
 	private SoundCtrl btn_hover_sound; 
 
 	/**
-	 * Constructeur de la page de garde
-	 * 
-	 * @param dodgeCtrl Controleur principal du jeu
+	 * Constructeur de la page de menu
 	 */
-	public HomeView(DodgeCtrl dodgeCtrl) {
-		super(dodgeCtrl);
-		
-		
+	public HomeView() {
 
 		initialization();
 		design();
@@ -113,7 +109,6 @@ public class HomeView extends DodgeView {
 
 	}
 
-	@Override
 	public void initialization() {
 		
 		initSounds();
@@ -151,7 +146,6 @@ public class HomeView extends DodgeView {
 	/**
 	 * Modifie l'aspect des éléments
 	 */
-	@Override
 	protected void design() {
 
 		// Background de la fenêtre
@@ -195,7 +189,6 @@ public class HomeView extends DodgeView {
 	/**
 	 * Gestion des evenements de l'acceuil
 	 */
-	@Override
 	protected void events() {
 
 		this.btnQuit.setOnMouseClicked(event -> {
@@ -211,7 +204,7 @@ public class HomeView extends DodgeView {
 			fadeTransition.setOnFinished(e -> {
 				this.bgLineHome.stopAnimation();
 				this.sounds.forEach(sound -> sound.stop());
-				this.dodgeCtrl.gameModes(ScreenName.MAP);
+				Dodge.goTo(ScreenName.MAP);
 			});
 
 			fadeTransition.play();
@@ -222,7 +215,7 @@ public class HomeView extends DodgeView {
 			fadeTransition.setOnFinished(e -> {
 				this.bgLineHome.stopAnimation();
 				this.sounds.forEach(sound -> sound.stop());
-				this.dodgeCtrl.gameModes(ScreenName.MULTI);
+				Dodge.goTo(ScreenName.MULTI);
 			});
 
 			fadeTransition.play();
@@ -230,7 +223,6 @@ public class HomeView extends DodgeView {
 
 
 		// Hover des boutons
-
 		ArrayList<Button> btn = new ArrayList<>(Arrays.asList(btnOnePlayer, btnTwoPlayer, btnQuit));
 
 		for (Button b : btn) {

@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import controller.DataCtrl;
+import controler.DataCtrl;
 
 public class Forme {
 

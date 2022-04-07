@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import controller.DataCtrl.GameColor;
+import controler.DataCtrl.GameColor;
 import game.element.factory.MachineFactory;
 import game.element.factory.MachineFactory.TypeMachine;
 import game.element.factory.ZoneFactory;

@@ -3,6 +3,8 @@ package game.element.machine;
 import java.util.List;
 import java.util.Random;
 
+import controler.DataCtrl;
+import event.ThrowEvent;
 import game.element.factory.BallFactory.TypeBalle;
 import game.element.zone.Zone;
 import javafx.animation.Animation;
@@ -47,10 +49,8 @@ public class Machine extends StackPane {
 	private boolean isMoving = false;
 
 	private Color couleur;
-
 	private int x;
 	private int y;
-
 	private double taille;
 
 
@@ -98,8 +98,6 @@ public class Machine extends StackPane {
 	public Machine(int x, int y, int taille, int lifePoint, Color color, int delayThrow, int speedLifePointChrono,
 			List<TypeBalle> typeBalle) {
 
-		this.timeLbl = new Label();
-
 		this.couleur = color;
 		this.x = x;
 		this.y = y;
@@ -115,48 +113,51 @@ public class Machine extends StackPane {
 		this.isActived = new SimpleBooleanProperty(false);
 
 		this.typeBalle = typeBalle;
-		
-		new Timeline(new KeyFrame(Duration.seconds(1), e-> this.isThrowBall = true)).play();;
 
-		initNode();
-		animMachine();
-		delayThrowBall();
-		lifePointChrono();
+		new Timeline(new KeyFrame(Duration.seconds(1), e -> this.isThrowBall = true)).play();
+
+		initialisation();
+		rotationAnimation();
+		throwBall();
+		lifePoint();
 	}
 
 	// ------------------------------------
 
+	/** Initialisation de la machine */
+	private void initialisation() {
 
-	public void initNode() {
+		// Position de la machine
+		this.setLayoutX(x - (taille));
+		this.setLayoutY(y - (taille));
 
-		this.setLayoutX(x-(taille));
-		this.setLayoutY(y-(taille));
+		// ---
 
-		this.anneauGen = new Circle(this.taille);
-		this.centreGen = new Circle(this.taille - 10);
-		// this.timeLbl = new Label();
-
-
-
-		this.anneauGen.getStrokeDashArray().addAll(20.0, 10.0);
-		this.anneauGen.setStrokeWidth(5);
-		this.anneauGen.setStroke(couleur);
-		this.anneauGen.setFill(Color.TRANSPARENT);
-
-		this.centreGen.setStroke(couleur);
-		this.centreGen.setStrokeWidth(1);
-		this.centreGen.setFill(Color.TRANSPARENT);
-
+		// Effet de néon
 		DropShadow glow = new DropShadow();
 		glow.setWidth(50);
 		glow.setHeight(50);
 		glow.setColor(couleur);
 
+		// Anneau de la machine
+		this.anneauGen = new Circle(this.taille);
+		this.anneauGen.getStrokeDashArray().addAll(20.0, 10.0);
+		this.anneauGen.setStrokeWidth(5);
+		this.anneauGen.setStroke(couleur);
+		this.anneauGen.setFill(Color.TRANSPARENT);
 		this.anneauGen.setEffect(glow);
 
+		// Centre de la machine
+		this.centreGen = new Circle(this.taille - 10);
+		this.centreGen.setStroke(couleur);
+		this.centreGen.setStrokeWidth(1);
+		this.centreGen.setFill(Color.TRANSPARENT);
+
+		// Point de vie de la machine
+		this.timeLbl = new Label();
 		this.timeLbl.setTextFill(couleur);
 		this.timeLbl.setFont(Font.font("Agency FB", FontWeight.BOLD, 24));
-		chronoLbl();
+		time();
 
 		StackPane.setAlignment(anneauGen, Pos.CENTER);
 		StackPane.setAlignment(centreGen, Pos.CENTER);
@@ -166,7 +167,10 @@ public class Machine extends StackPane {
 
 	}
 
-	private void animMachine() {
+	//--- Boucle
+	
+	/** Initialisation de la rotation de l'anneau exterieur de la machine */
+	private void rotationAnimation() {
 
 		this.animRotation = new RotateTransition();
 
@@ -180,17 +184,42 @@ public class Machine extends StackPane {
 		animRotation.play();
 	}
 
-	private void delayThrowBall() {
+	/** Initialisation du chronomètre permettant de lancer les balles de la machine */
+	private void throwBall() {
 
-		timelineBall = new Timeline(
-				new KeyFrame(Duration.millis(this.delayThrow * 1000.0), ev -> this.isThrowBall = true));
+		timelineBall = new Timeline(new KeyFrame(Duration.millis(this.delayThrow * 1000.0), ev -> {
+			TypeBalle type = this.typeBalle.get(new Random().nextInt(typeBalle.size()));
+			DataCtrl.GAME_EVENT.handle(new ThrowEvent(type, this.x, this.y));
+		}));
+
 		timelineBall.setCycleCount(Animation.INDEFINITE);
 		timelineBall.play();
 	}
 
-	// -----------
+	/**Initialisation du chronomètre des points de vie de la machine*/
+	private void lifePoint() {
 
-	public void destroyMachine() {
+		// Chrono de la machine
+
+		timelineChrono = new Timeline(new KeyFrame(Duration.millis(speedLifePointChrono * 1000.0), ev -> {
+			lifePoint.setCurrent(lifePoint.getCurrent() - 1);
+			time();
+
+			if (lifePoint.getCurrent() <= 0)
+				destroy();
+
+		}));
+
+		timelineChrono.setCycleCount(Animation.INDEFINITE);
+	}
+
+	// ----
+
+	/**
+	 * Détruit la machine. Stop l'animation de rotation, le chrono et le lancer de
+	 * balle
+	 */
+	public void destroy() {
 
 		this.isDestroy.set(true);
 
@@ -207,23 +236,8 @@ public class Machine extends StackPane {
 
 	}
 
-	private void lifePointChrono() {
-
-		// Chrono de la machine
-
-		timelineChrono = new Timeline(new KeyFrame(Duration.millis(speedLifePointChrono * 1000.0), ev -> {
-			lifePoint.setCurrent(lifePoint.getCurrent() - 1);
-			chronoLbl();
-
-			if (lifePoint.getCurrent() <= 0)
-				destroyMachine();
-
-		}));
-
-		timelineChrono.setCycleCount(Animation.INDEFINITE);
-	}
-
-	private void chronoLbl() {
+	/**Mets à jour la vie de la machine*/
+	private void time() {
 		this.timeLbl.setText(this.lifePoint.getCurrent().toString());
 	}
 
@@ -236,7 +250,7 @@ public class Machine extends StackPane {
 			else {
 				timelineChrono.stop();
 				this.lifePoint.reset();
-				chronoLbl();
+				time();
 			}
 		}
 	}
@@ -274,25 +288,45 @@ public class Machine extends StackPane {
 	// ------------------------------------
 
 
-	public double getTaille() { return taille; }
+	public double getTaille() {
+		return taille;
+	}
 
-	public Color getCouleur() { return couleur; }
+	public Color getCouleur() {
+		return couleur;
+	}
 
-	public boolean isThrowBall() { return isThrowBall; }
+	public boolean isThrowBall() {
+		return isThrowBall;
+	}
 
-	public BooleanProperty getIsDestroy() { return isDestroy; }
+	public BooleanProperty getIsDestroy() {
+		return isDestroy;
+	}
 
-	public BooleanProperty getIsActived() { return isActived; }
+	public BooleanProperty getIsActived() {
+		return isActived;
+	}
 
-	public int getX() { return x; }
+	public int getX() {
+		return x;
+	}
 
-	public int getY() { return y; }
+	public int getY() {
+		return y;
+	}
 
-	public double getCenterX() { return isMoving?getTranslateX() + taille:x; }
+	public double getCenterX() {
+		return isMoving ? getTranslateX() + taille : x;
+	}
 
-	public double getCenterY() { return isMoving?getTranslateY() + taille:y; }
+	public double getCenterY() {
+		return isMoving ? getTranslateY() + taille : y;
+	}
 
-	//public boolean isMoving() { return isMoving; }
+	// public boolean isMoving() { return isMoving; }
 
-	public void setMoving(boolean isMoving) { this.isMoving = isMoving; }
+	public void setMoving(boolean isMoving) {
+		this.isMoving = isMoving;
+	}
 }

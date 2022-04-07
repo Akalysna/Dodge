@@ -2,9 +2,11 @@ package game.view;
 
 import java.io.InputStream;
 
-import controller.DataCtrl;
-import controller.DodgeCtrl;
-import controller.ViewCtrl.ScreenName;
+import app.Dodge;
+import control.view.View;
+import controler.DataCtrl;
+import controler.DodgeCtrl;
+import controler.DataCtrl.ScreenName;
 import game.element.CirclePagination;
 import game.niveau.GestionnaireNiveau;
 import i18n.I18N;
@@ -40,12 +42,10 @@ import javafx.util.Duration;
  * 
  * @author Llona André--Augustine
  */
-public class MapView extends DodgeView {
+public class MapView extends BorderPane implements View {
 
 	private Button btnRetour;
-
 	private Button btnPlay;
-
 	private Button btnNextLevel;
 	private Button btnLastLevel;
 
@@ -55,9 +55,6 @@ public class MapView extends DodgeView {
 	private ImageView cubyImage;
 
 	private CirclePagination pagination;
-
-
-
 	private GestionnaireNiveau gestionNiveau;
 
 	/**
@@ -65,9 +62,7 @@ public class MapView extends DodgeView {
 	 * 
 	 * @param dodgeCtrl
 	 */
-
 	public MapView(DodgeCtrl dodgeCtrl) {
-		super(dodgeCtrl);
 
 		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
 
@@ -82,7 +77,6 @@ public class MapView extends DodgeView {
 		updateLevelInfo();
 	}
 
-	@Override
 	public void initialization() {
 
 		this.pagination = new CirclePagination(this.gestionNiveau.nbLevel(), 0, Color.WHITE, Color.GRAY);
@@ -152,7 +146,6 @@ public class MapView extends DodgeView {
 		this.setBottom(hboxPagination);
 	}
 
-	@Override
 	protected void design() {
 
 		// Background de la fenêtre
@@ -185,7 +178,6 @@ public class MapView extends DodgeView {
 
 	}
 
-	@Override
 	protected void events() {
 		
 		this.btnNextLevel.setOnMouseClicked(event -> {
@@ -222,7 +214,7 @@ public class MapView extends DodgeView {
 			}
 		});
 
-		this.btnPlay.setOnMouseClicked(event -> dodgeCtrl.startGame());
+		this.btnPlay.setOnMouseClicked(event -> Dodge.goTo(ScreenName.GAME));
 		this.btnPlay
 				.setOnMouseEntered(event -> backgroundImgBtn(DataCtrl.PATH_IMG_GAME + "hover_menu_btn.png", btnPlay));
 		this.btnPlay
@@ -230,7 +222,7 @@ public class MapView extends DodgeView {
 
 
 		// TODO Trouver une alternative
-		this.btnRetour.setOnMouseClicked(event -> DodgeCtrl.loadAndGoto(ScreenName.HOME));
+		//this.btnRetour.setOnMouseClicked(event -> DodgeCtrl.loadAndGoto(ScreenName.HOME));
 
 		hoverScale(btnNextLevel, 1.1);
 		hoverScale(btnLastLevel, 1.1);
