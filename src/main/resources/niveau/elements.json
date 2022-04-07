@@ -1,0 +1,97 @@
+{
+  "machines": [
+    {
+      "name": "SimpleMachine",
+      "shape": "ROND",
+      "lifePoint": 6,
+      "throwDelay": 1500,
+      "balls": [
+        1
+      ]
+    },
+    {
+      "name": "SnakeMachine",
+      "shape": "DOUBLE_ROND",
+      "lifePoint": 5,
+      "throwDelay": 3000,
+      "balls": [
+        1
+      ]
+    },
+    {
+      "name": "FireMachine",
+      "shape": "FILL",
+      "lifePoint": 6,
+      "throwDelay": 1500,
+      "balls": [
+        2
+      ]
+    },
+    {
+      "name": "GhostMachine",
+      "shape": "STROKE",
+      "lifePoint": 4,
+      "throwDelay": 2000,
+      "balls": [
+        3
+      ]
+    },
+    {
+      "name": "MixteMachine",
+      "shape": "CROSS",
+      "lifePoint": 8,
+      "throwDelay": 2000,
+      "balls": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "SizeMachine",
+      "shape": "MULTI_ROND",
+      "lifePoint": 6,
+      "throwDelay": 2000,
+      "balls": [
+        1,
+        2
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": 1,
+      "name": "SimpleZone"
+    },
+    {
+      "id": 2,
+      "name": "MovingZone"
+    },
+    {
+      "id": 3,
+      "name": "LockZone"
+    }
+  ],
+  "balls": [
+    {
+      "id": 1,
+      "name": "SimpleBall"
+    },
+    {
+      "id": 2,
+      "name": "FireBall"
+    },
+    {
+      "id": 3,
+      "name": "GhostBall"
+    },
+    {
+      "id": 4,
+      "name": "BoomBall "
+    },
+    {
+      "id": 5,
+      "name": "SizeBall "
+    }
+  ]
+}

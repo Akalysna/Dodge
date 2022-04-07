@@ -1,12 +1,12 @@
 /**
  * 
  */
-package controller;
+package game.element.zone;
 
 /**
  * @author Llona André--Augustine
  *
  */
-public class GameCtrl {
+public class SimpleZone extends Zone{
 
 }

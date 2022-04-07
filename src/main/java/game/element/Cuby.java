@@ -1,126 +1,83 @@
+/**
+ * 
+ */
 package game.element;
 
-import controller.DodgeCtrl;
-import javafx.animation.AnimationTimer;
-import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import util.KeyTouch;
-import util.KeyTouch.MoveDirection;
+import controller.DataCtrl.DodgeColor;
+import controller.DataCtrl.DodgeShape;
 import util.Position;
 
 /**
- * Classe représentant le cube controlé par le joueur
- * 
  * @author Llona André--Augustine
+ *
  */
-public class Cuby extends Rectangle {
-
-	private Position position; 
+public class Cuby {
 	
-	private double vitesse;
-
-	private int taille;
-
-	private Color color;
-
-	private KeyTouch keyTouch;
-	private AnimationTimer animTimer;
-
+	private Position position; 
+	private DodgeColor color; 
+	
+	private double speed; 
+	
+	private double size;
+	
 
 	/**
-	 * Constructeur du cuby
-	 * 
-	 * @param x       Position en X du Cuby
-	 * @param y       Position en Y du Cuby
-	 * @param color   Couleur du cuby
-	 * @param width   Largeur du cuby (Largeur = Longueur)
-	 * @param vitesse Vitesse de déplacement du cuby
-	 * @param kt      Touche directionnel associé
+	 * @param position
+	 * @param color
+	 * @param speed
+	 * @param size
 	 */
-	public Cuby(double x, double y, Color color, int width, double vitesse, KeyTouch kt) {
-
-		this.position = new Position(x, y); 
-		this.vitesse = vitesse;
+	public Cuby(Position position, DodgeColor color, double speed, double size) {
+		
+		this.position = position;
 		this.color = color;
-		this.taille = width;
-
-		this.keyTouch = kt;
-
-		init();
-		anim();
-		animTimer.start();
+		this.speed = speed;
+		this.size = size;
 	}
-
-	/***
-	 * Constructeur du cuby
-	 * <p>
-	 * La position en x et y est par defaut a 0. La taille a 15 et la vitesse à 6
-	 * </p>
-	 * 
-	 * @param color Couleur du cuby
-	 * @param kt    Touche directionnel associé
+	
+	/**
+	 * @param position
+	 * @param color
+	 * @param speed
+	 * @param size
 	 */
-	public Cuby(Color color, KeyTouch kt) {
-		this(0, 0, color, 15, 6, kt);
+	public Cuby(DodgeColor color) {
+		
+		this.position = new Position(0, 0);
+		this.color = color;
+		this.speed = 10;
+		this.size = 8;
 	}
-
-
-	private void init() {
-
-		this.setWidth(taille);
-		this.setHeight(taille);
-
-		this.setX(this.position.getX());
-		this.setY(this.position.getY());
-
-		this.setFill(color);
-
-	}
-
-	private void anim() {
-
-		animTimer = new AnimationTimer() {
-
-
-			@Override
-			public void handle(long now) {
-
-				if (keyTouch.isPressed(MoveDirection.UP) && (getY() > 0))
-					setY(getY() - vitesse);
-
-
-				if (keyTouch.isPressed(MoveDirection.RIGHT) && (getX() < DodgeCtrl.SCENE_WIDTH - taille))
-					setX(getX() + vitesse);
-
-
-				if (keyTouch.isPressed(MoveDirection.DOWN) && (getY() < DodgeCtrl.SCENE_HEIGHT - taille))
-					setY(getY() + vitesse);
-
-
-				if (keyTouch.isPressed(MoveDirection.LEFT) && (getX() > 0))
-					setX(getX() - vitesse);
-
-			}
-		};
-	}
-
+	
 	/**
 	 * 
-	 * @param keyCode Code la touche
-	 * @param b       true : la touche est pressé <br>
-	 *                false : la touche est relaché
 	 */
-	public void move(KeyCode keyCode, boolean b) {
-
-		// Pour chaque direction
-		for (MoveDirection md : MoveDirection.values()) {
-
-			// Si touche passé en parametre est egale la touche associé a la direction
-			if (keyCode.equals(keyTouch.getKeyCode(md))) {
-				keyTouch.setPressed(md, b);
-			}
-		}
+	public void moveToX(int i) {
+		this.position.addCoordinate(speed*i, 0);
 	}
+	
+	public void moveToY(int i) {
+		this.position.addCoordinate(0, speed*i);
+	}
+
+	/** 
+	 * Retourne
+	 * @return the position
+	 */
+	public Position getPosition() { return position; }
+
+	/** 
+	 * Retourne
+	 * @return the color
+	 */
+	public DodgeColor getColor() { return color; }
+
+	/** 
+	 * Retourne
+	 * @return the speed
+	 */
+	public double getSpeed() { return speed; } 
+	
+	
 
 }

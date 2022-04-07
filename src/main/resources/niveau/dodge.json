@@ -1,0 +1,326 @@
+{
+  "worlds": [
+    {
+      "worldName": "Hello world !",
+      "music": "Ghostrifter-Deflector.mp3",
+      "icon": "cuby_rose.png",
+      "stages": [
+        {
+          "cubyPosition": {
+            "x": 200,
+            "y": 600
+          },
+          "throwballs": [
+            {
+              "type": 1,
+              "position": {
+                "x": 200,
+                "y": 200
+              },
+              "zones": [
+                {
+                  "type": 1,
+                  "shape": 0,
+                  "size": 0,
+                  "position": {
+                    "x": 600,
+                    "y": 300
+                  }
+                },
+                {
+                  "type": 1,
+                  "shape": 0,
+                  "size": 0,
+                  "position": {
+                    "x": 100,
+                    "y": 100
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "shapes": [
+    {
+      "name": "carre",
+      "coordinate": [
+        0,
+        0,
+        3,
+        0,
+        3,
+        3,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "rectangle_v",
+      "coordinate": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        4,
+        0,
+        4,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "rectangle_h",
+      "coordinate": [
+        0,
+        0,
+        4,
+        0,
+        4,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "coin_bas_gauche",
+      "coordinate": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        2,
+        3,
+        2,
+        3,
+        3,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "coin_bas_droite",
+      "coordinate": [
+        2,
+        0,
+        3,
+        0,
+        3,
+        3,
+        0,
+        3,
+        0,
+        2,
+        2,
+        2,
+        2,
+        0
+      ]
+    },
+    {
+      "name": "coin_haut_gauche",
+      "coordinate": [
+        0,
+        0,
+        3,
+        0,
+        3,
+        1,
+        1,
+        1,
+        1,
+        3,
+        0,
+        3,
+        0,
+        0
+      ]
+    },
+    {
+      "name": "coin_haut_droit",
+      "coordinate": [
+        0,
+        0,
+        3,
+        0,
+        3,
+        3,
+        2,
+        3,
+        2,
+        1,
+        0,
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "paths": [
+    {
+      "name": "path_carre",
+      "coordinate": [
+        200,
+        200,
+        400,
+        200,
+        400,
+        400,
+        200,
+        400,
+        200,
+        200
+      ]
+    },
+    {
+      "name": "path_h_ligne",
+      "coordinate": [
+        200,
+        80,
+        600,
+        80,
+        200,
+        80
+      ]
+    },
+    {
+      "name": "big_square_droite",
+      "coordinate": [
+        120,
+        300,
+        120,
+        120,
+        680,
+        120,
+        680,
+        480,
+        120,
+        480,
+        120,
+        300
+      ]
+    },
+    {
+      "name": "coin_haut_droit",
+      "coordinate": [
+        680,
+        300,
+        680,
+        480,
+        120,
+        480,
+        120,
+        120,
+        680,
+        120,
+        680,
+        300
+      ]
+    }
+  ],
+  "machines": [
+    {
+      "name": "SimpleMachine",
+      "shape": "ROND",
+      "lifePoint": 6,
+      "throwDelay": 1500,
+      "balls": [
+        1
+      ]
+    },
+    {
+      "name": "SnakeMachine",
+      "shape": "DOUBLE_ROND",
+      "lifePoint": 5,
+      "throwDelay": 3000,
+      "balls": [
+        1
+      ]
+    },
+    {
+      "name": "FireMachine",
+      "shape": "FILL",
+      "lifePoint": 6,
+      "throwDelay": 1500,
+      "balls": [
+        2
+      ]
+    },
+    {
+      "name": "GhostMachine",
+      "shape": "STROKE",
+      "lifePoint": 4,
+      "throwDelay": 2000,
+      "balls": [
+        3
+      ]
+    },
+    {
+      "name": "MixteMachine",
+      "shape": "CROSS",
+      "lifePoint": 8,
+      "throwDelay": 2000,
+      "balls": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "SizeMachine",
+      "shape": "MULTI_ROND",
+      "lifePoint": 6,
+      "throwDelay": 2000,
+      "balls": [
+        1,
+        2
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "id": 1,
+      "name": "SimpleZone"
+    },
+    {
+      "id": 2,
+      "name": "MovingZone"
+    },
+    {
+      "id": 3,
+      "name": "LockZone"
+    }
+  ],
+  "balls": [
+    {
+      "id": 1,
+      "name": "SimpleBall"
+    },
+    {
+      "id": 2,
+      "name": "FireBall"
+    },
+    {
+      "id": 3,
+      "name": "GhostBall"
+    },
+    {
+      "id": 4,
+      "name": "BoomBall "
+    },
+    {
+      "id": 5,
+      "name": "SizeBall "
+    }
+  ]
+}

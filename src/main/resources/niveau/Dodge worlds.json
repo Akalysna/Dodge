@@ -1,0 +1,46 @@
+{
+  "worlds": [
+    {
+      "worldName": "Hello world !",
+      "music": "Ghostrifter-Deflector.mp3",
+      "icon": "cuby_rose.png",
+      "stages": [
+        {
+          "cubyPosition": {
+            "x": 200,
+            "y": 600
+          },
+          "throwballs": [
+            {
+              "type": 1,
+              "position": {
+                "x": 200,
+                "y": 200
+              },
+              "zones": [
+                {
+                  "type": 1,
+                  "shape": 0,
+                  "size": 0,
+                  "position": {
+                    "x": 600,
+                    "y": 300
+                  }
+                },
+                {
+                  "type": 1,
+                  "shape": 0,
+                  "size": 0,
+                  "position": {
+                    "x": 100,
+                    "y": 100
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

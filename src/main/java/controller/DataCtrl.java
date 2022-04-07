@@ -11,52 +11,65 @@ import javafx.scene.shape.Line;
 /**
  * Classe regroupant les données utiles au jeu
  * 
- * @author Llona
+ * @author Llona André--Augustine
  */
 public class DataCtrl {
 
-
 	/**
-	 * Enulération des couleurs utilisés pour le jeu
+	 * Couleur du jeu
 	 * 
-	 * @author Llona
+	 * @author Llona André--Augustine
+	 *
 	 */
-	public enum GameColor {
+	public enum DodgeColor {
 
-		RED("RED"), ORANGE("DARKORANGE"), YELLOW("YELLOW"), GREEN("LAWNGREEN"), BLUE("DEEPSKYBLUE"), PINK("DEEPPINK");
+		RED("RED"), ORANGE("DARKORANGE"), YELLOW("YELLOW"), GREEN("LAWNGREEN"), BLUE("DEEPSKYBLUE"), PINK("DEEPPINK"), WHITE("WHITE");
 
-		/**
-		 * Nom de la couleur
-		 * 
-		 * @see Color
-		 */
+		/** Nom de la couleur */
 		private String colorName;
 
 		/**
-		 * Constructeur de l'énumération qui prend en paramètre le nom de la couleur à
-		 * associé
+		 * Constructeur de GameColor
 		 * 
 		 * @param name Nom de la couleur
 		 */
-		private GameColor(String name) {
+		private DodgeColor(String name) {
 			this.colorName = name;
 		}
 
+		//------
+		
 		/**
 		 * Retourne le nom de la couleur
 		 * 
-		 * @return String
+		 * @return Nom de couleur utilisé dans la classe {@link Color}
 		 */
-		public String getColorName() { return colorName; }
+		public String getColorName() {
+			return colorName;
+		}
 
 		/**
-		 * Retourne la couleur associé à l'énumération
+		 * Retourne la couleur
 		 * 
 		 * @return {@link Color}
 		 */
-		public Color getColor() { return Color.valueOf(colorName); }
+		public Color getColor() {
+			return Color.valueOf(colorName);
+		}
+	}
+	
+	public enum DodgeShape{
+		ROUND, DOUBLE_ROUND, FILL, STROKE, CROSS, MULTI_ROUND;
+	}
+	
+	public enum TypeElement{
+		SIMPLE, GHOST, BOOM, FIRE, SIZING;
 	}
 
+	
+	//------------------
+	
+	public static final String JSON = "/niveau/dodge.json";
 
 	/** Chemin d'accès aux images des niveaux */
 	public static final String PATH_CUBY = "/img/cuby/";
@@ -69,26 +82,18 @@ public class DataCtrl {
 
 	/** Chemin d'accès aux image du jeu */
 	public static final String PATH_IMG_GAME = "/img/game/";
-	
-	
+
+
 	public static final String HOVER_BTN = "/sounds/Hover_btn.wav";
 	public static final String HOME = "/sounds/Dance.mp3";
-
 
 
 	/** Background de couleur foncé */
 	public static final Background BG_COLOR_DARK = new Background(
 			new BackgroundFill(Color.rgb(27, 30, 35), null, null));
 
-	/**
-	 * Inverse le signe d'un réel de façon aléatoire
-	 * 
-	 * @param d Nombre à transformer
-	 * @return double
-	 */
-	public static double negNb(double d) {
-		return (new Random().nextInt(100)) > 50 ? -d : d;
-	}
+	public static final double HEIGHT = 800; 
+	public static final double WIDTH = 600; 
 
 	/**
 	 * Construit une ligne de suivi, lorsqu'une machine lance une FocusBall
