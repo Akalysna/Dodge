@@ -3,7 +3,7 @@
  */
 package event;
 
-import game.element.balle.Balle;
+import game.element.balle.Ball;
 import game.element.factory.BallFactory;
 import game.element.factory.BallFactory.TypeBalle;
 
@@ -13,13 +13,13 @@ import game.element.factory.BallFactory.TypeBalle;
  */
 public class ThrowEvent extends GameEvent {
 	
-	private Balle balle; 
+	private Ball balle; 
 
 	public ThrowEvent(TypeBalle type, int x, int y) {
 		balle = BallFactory.get(type, x, y);
 	}
 
-	public Balle getBalle() {
+	public Ball getBalle() {
 		return balle;
 	}
 

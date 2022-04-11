@@ -1,4 +1,4 @@
-package game.element;
+package ihm.componant;
 
 import java.util.ArrayList;
 import java.util.List;

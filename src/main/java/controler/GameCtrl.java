@@ -7,13 +7,13 @@ import java.util.Random;
 import app.Dodge;
 import controler.DataCtrl.ScreenName;
 import game.element.Cuby;
-import game.element.balle.Balle;
+import game.element.balle.Ball;
 import game.element.balle.FocusBall;
 import game.element.factory.BallFactory;
 import game.element.machine.Machine;
 import game.element.zone.Zone;
 import game.niveau.GestionnaireNiveau;
-import game.view.GameView;
+import ihm.GameView;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -50,7 +50,7 @@ public class GameCtrl {
 	private ArrayList<Cuby> cubys;
 	private ArrayList<Machine> machines;
 	private ArrayList<Zone> zones;
-	private ArrayList<Balle> balles;
+	private ArrayList<Ball> balles;
 	private ArrayList<PathTransition> paths;
 	private ArrayList<Line> ligne;
 
@@ -171,7 +171,7 @@ public class GameCtrl {
 
 		ArrayList<Cuby> tmp = new ArrayList<>();
 
-		for (Balle ball : this.balles) {
+		for (Ball ball : this.balles) {
 
 			ball.layoutYProperty().addListener((obj, oldV, newV) -> {
 				this.cubys.forEach(cuby -> {
@@ -194,7 +194,7 @@ public class GameCtrl {
 			
 			if (machine.isThrowBall()) {
 
-				Balle b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
+				Ball b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
 
 				if (b instanceof FocusBall) {
 					drawLine(b);
@@ -207,7 +207,7 @@ public class GameCtrl {
 
 		List<Node> tmp = new ArrayList<>();
 
-		for (Balle b : balles) {
+		for (Ball b : balles) {
 			if (b.isDestroy()) {
 				tmp.add(b);
 			}
@@ -218,7 +218,7 @@ public class GameCtrl {
 
 	}
 
-	private void drawLine(Balle b) {
+	private void drawLine(Ball b) {
 
 		FocusBall ball = (FocusBall) b;
 
@@ -242,7 +242,7 @@ public class GameCtrl {
 
 		ArrayList<Cuby> tmp = new ArrayList<>();
 
-		for (Balle z : this.balles) {
+		for (Ball z : this.balles) {
 
 			// Si un cuby est dans la zone
 			for (Cuby c : this.cubys) {

@@ -1,91 +1,59 @@
 package game.element.balle;
 
-import app.Dodge;
-import game.element.factory.BallFactory.TypeBalle;
+import controler.DataCtrl;
+import controler.DataCtrl.TypeElement;
 import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
-import util.StatObject;
+import util.Position;
+import util.Stats;
 
-public class GhostBall extends Balle {
+public class GhostBall extends Ball {
 
-	private StatObject<Integer> halfLife;
+	private Stats<Integer> halfLife;
 
-	public GhostBall(double x, double y, int rayon, double vitesse) {
-		super(x, y, rayon, vitesse, TypeBalle.GHOST);
-		this.halfLife = new StatObject<>(life.getInitial() / 2);
-		animateBall(true);
+	public GhostBall(Position pos, int life) {
+		super(pos, TypeElement.GHOST, life);
+
+		this.halfLife = new Stats<>(super.life.getInitial() / 2);
 	}
 
 
-
 	@Override
-	protected void initAnimBall() {
-
-		animBall = new AnimationTimer() {
+	protected void initBallMouvement() {
+		this.mouvementTimeline = new AnimationTimer() {
 
 			@Override
-			public void handle(long arg0) {
+			public void handle(long now) {
 
+				// Disparition
 				if (life.getCurrent() == 0) {
-					destroy();
+					hasDisappeared = true;
 				}
 
-				setCenterX(getCenterX() + dx);
-				setCenterY(getCenterY() + dy);
+				position.setX(position.getX() + dx);
+				position.setY(position.getY() + dy);
+
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= Dodge.SCENE_WIDTH - taille)) {
-					dx = -dx; // Direction inverse
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inXInterval(0, DataCtrl.WIDTH)) {
+					dx = -dx; // Direction inversé
+					changeLifePoint(-1);
 
-					if (halfLife.getCurrent() > 0)
-						setGhostStyle();
-					else
-						setNormalStyle();
+					if (halfLife.getCurrent() > 0) {
+						// send event to ghost style
+					}
 				}
 
-				if ((getCenterY() >= Dodge.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
-					dy = -dy;
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inYInterval(0, DataCtrl.HEIGHT)) {
+					dy = -dy; // Direction inversé
+					changeLifePoint(-1);
 
-					if (halfLife.getCurrent() > 0)
-						setGhostStyle();
-					else
-						setNormalStyle();
+					if (halfLife.getCurrent() > 0) {
+						// send event to ghost style
+					}
 				}
-
-
 			}
 		};
 
 	}
-
-	private void setGhostStyle() {
-		
-		halfLife.setCurrent(halfLife.getCurrent() - 1);
-		
-		double purcent = life.getInitial()*2 / 100.0;
-		if (color.getOpacity() - purcent < 0) {
-			color = Color.color(color.getRed(), color.getGreen(), color.getBlue(), 0);
-			this.setFill(color);
-		}
-		else {
-			color = Color.color(color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity() - purcent);
-			this.setFill(color);
-		}
-	}
-
-	private void setNormalStyle() {
-		double purcent = life.getInitial()*2 / 100.0;
-		if (color.getOpacity() + purcent > 1) {
-			color = Color.color(color.getRed(), color.getGreen(), color.getBlue(), 1); 
-			this.setFill(color);
-		}
-		else {
-			color = Color.color(color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity() + purcent); 
-			this.setFill(color);
-		}
-	}
-
 }

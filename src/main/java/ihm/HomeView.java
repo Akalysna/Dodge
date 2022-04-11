@@ -1,4 +1,4 @@
-package game.view;
+package ihm;
 
 import java.io.InputStream;
 import java.util.ArrayList;

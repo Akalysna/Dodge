@@ -1,10 +1,11 @@
 package game.element.balle;
 
-import app.Dodge;
-import game.element.factory.BallFactory.TypeBalle;
+import controler.DataCtrl;
+import controler.DataCtrl.TypeElement;
 import javafx.animation.AnimationTimer;
+import util.Position;
 
-public class SimpleBall extends Balle {
+public class SimpleBall extends Ball {
 
 	/**
 	 * Constructeur de Balle
@@ -15,36 +16,37 @@ public class SimpleBall extends Balle {
 	 * @param rayon   Rayon de la balle
 	 * @param vitesse Vitesse de déplacement de la balle
 	 */
-	public SimpleBall(double x, double y, int rayon, double vitesse) {
-		super(x, y, rayon, vitesse, TypeBalle.SIMPLE);
-		animateBall(true);
+	public SimpleBall(Position pos, int life) {
+		super(pos, TypeElement.SIMPLE, life);
 	}
 
 	@Override
-	protected void initAnimBall() {
+	protected void initBallMouvement() {
 
-		animBall = new AnimationTimer() {
+		this.mouvementTimeline = new AnimationTimer() {
 
 			@Override
-			public void handle(long arg0) {
-				
-				if(life.getCurrent() == 0) {
-					destroy();
+			public void handle(long now) {
+
+				// Disparition
+				if (life.getCurrent() == 0) {
+					hasDisappeared = true;
 				}
 
-				setCenterX(getCenterX() + dx);
-				setCenterY(getCenterY() + dy);
+				position.setX(position.getX() + dx);
+				position.setY(position.getY() + dy);
+
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= Dodge.SCENE_WIDTH - taille)) {
-					dx = -dx; // Direction inverse
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inXInterval(0, DataCtrl.WIDTH)) {
+					dx = -dx; // Direction inversé
+					changeLifePoint(-1);
 				}
 
-				if ((getCenterY() >= Dodge.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
-					dy = -dy;
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inYInterval(0, DataCtrl.HEIGHT)) {
+					dy = -dy; // Direction inversé
+					changeLifePoint(-1);
 				}
 			}
 		};

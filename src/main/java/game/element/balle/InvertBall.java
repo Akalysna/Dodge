@@ -1,48 +1,50 @@
 package game.element.balle;
 
-import app.Dodge;
-import game.element.factory.BallFactory.TypeBalle;
+import controler.DataCtrl;
+import controler.DataCtrl.TypeElement;
 import javafx.animation.AnimationTimer;
+import util.Position;
 
-public class InvertBall extends Balle {
+public class InvertBall extends Ball {
 
-	public InvertBall(double x, double y, int rayon, double vitesse, boolean isHorizontal) {
-		super(x, y, rayon, vitesse, TypeBalle.INVERT);
+	public InvertBall(Position pos, int life, boolean isHorizontal) {
+		super(pos, TypeElement.INVERT, life);
 
-		dy = isHorizontal?Math.sin(0) * vitesse: Math.cos(0) * vitesse;
-		dx = isHorizontal? Math.cos(0) * vitesse:Math.sin(0) * vitesse;
+		dy = isHorizontal?Math.sin(0) * speed: Math.cos(0) * speed;
+		dx = isHorizontal? Math.cos(0) * speed:Math.sin(0) * speed;
 		
-		animateBall(true);
 	}
 
+
 	@Override
-	protected void initAnimBall() {
-		animBall = new AnimationTimer() {
+	protected void initBallMouvement() {
+		this.mouvementTimeline = new AnimationTimer() {
 
 			@Override
-			public void handle(long arg0) {
+			public void handle(long now) {
 
+				// Disparition
 				if (life.getCurrent() == 0) {
-					destroy();
+					hasDisappeared = true;
 				}
 
-				setCenterX(getCenterX() + dx);
-				setCenterY(getCenterY() + dy);
+				position.setX(position.getX() + dx);
+				position.setY(position.getY() + dy);
+
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= Dodge.SCENE_WIDTH - taille)) {
-					dx = -dx; // Direction inverse
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inXInterval(0, DataCtrl.WIDTH)) {
+					dx = -dx; // Direction inversé
+					changeLifePoint(-1);
 				}
 
-				if ((getCenterY() >= Dodge.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
-					dy = -dy;
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inYInterval(0, DataCtrl.HEIGHT)) {
+					dy = -dy; // Direction inversé
+					changeLifePoint(-1);
 				}
 			}
 		};
-
 	}
 
 }

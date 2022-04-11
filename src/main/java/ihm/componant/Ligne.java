@@ -1,5 +1,6 @@
-package game.element;
+package ihm.componant;
 
+import game.element.Cuby;
 import game.element.balle.FocusBall;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.paint.Color;

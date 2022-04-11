@@ -9,7 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import controler.FormeManager;
+import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.GameColor;
+import controler.FormeManager.SizeShape;
 import game.element.factory.MachineFactory;
 import game.element.factory.MachineFactory.TypeMachine;
 import game.element.factory.ZoneFactory;
@@ -28,8 +31,6 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-import util.Forme;
-import util.Forme.SizeShape;
 
 public class BuildLevel {
 
@@ -40,10 +41,10 @@ public class BuildLevel {
 
 	private int nbMachine;
 
-	private ArrayList<GameColor> colors;
+	private ArrayList<DodgeColor> colors;
 	private Color currentColor;
 
-	private Forme forme;
+	private FormeManager forme;
 
 	public BuildLevel(String path) {
 
@@ -51,7 +52,7 @@ public class BuildLevel {
 
 		this.stages = new ArrayList<>();
 		this.stage = new Stage();
-		this.forme = new Forme();
+		this.forme = new FormeManager();
 
 		this.nbMachine = 0;
 		this.colors = new ArrayList<>(Arrays.asList(GameColor.values()));

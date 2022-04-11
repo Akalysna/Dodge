@@ -1,4 +1,4 @@
-package game.view;
+package ihm;
 
 import java.io.InputStream;
 
@@ -7,9 +7,9 @@ import control.view.View;
 import controler.DataCtrl;
 import controler.DodgeCtrl;
 import controler.DataCtrl.ScreenName;
-import game.element.CirclePagination;
 import game.niveau.GestionnaireNiveau;
 import i18n.I18N;
+import ihm.componant.CirclePagination;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;

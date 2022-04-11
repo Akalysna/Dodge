@@ -1,62 +1,51 @@
 package game.element.balle;
 
 import app.Dodge;
+import controler.DataCtrl;
+import controler.DataCtrl.TypeElement;
 import game.element.factory.BallFactory.TypeBalle;
 import javafx.animation.AnimationTimer;
+import util.Position;
 
-public class FocusBall extends Balle {
+public class FocusBall extends Ball {
 	
 	private boolean isThrow; 
 	
-	public FocusBall(double x, double y, int rayon, double vitesse) {
-		super(x, y, rayon, vitesse, TypeBalle.FIRE);
+	public FocusBall(Position pos, int life) {
+		super(pos, TypeElement.FIRE, life);
 		this.setThrow(false); 
 	}
-
+	
 	@Override
-	protected void initAnimBall() {
+	protected void initBallMouvement() {
 		
-		animBall = new AnimationTimer() {
+		this.mouvementTimeline = new AnimationTimer() {
 
 			@Override
-			public void handle(long arg0) {
-				
-				if(life.getCurrent() == 0) {
-					destroy();
+			public void handle(long now) {
+
+				// Disparition
+				if (life.getCurrent() == 0) {
+					hasDisappeared = true;
 				}
 
-				setCenterX(getCenterX() + dx);
-				setCenterY(getCenterY() + dy);
+				position.setX(position.getX() + dx);
+				position.setY(position.getY() + dy);
+
 
 				// ---------------
 
-				if ((getCenterX() <= taille) || (getCenterX() >= Dodge.SCENE_WIDTH - taille)) {
-					dx = -dx; // Direction inverse
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inXInterval(0, DataCtrl.WIDTH)) {
+					dx = -dx; // Direction inversé
+					changeLifePoint(-1);
 				}
 
-				if ((getCenterY() >= Dodge.SCENE_HEIGHT - taille) || (getCenterY() <= taille)) {
-					dy = -dy;
-					life.setCurrent(life.getCurrent() - 1);
+				if (!position.inYInterval(0, DataCtrl.HEIGHT)) {
+					dy = -dy; // Direction inversé
+					changeLifePoint(-1);
 				}
 			}
 		};
-		
-	}
-
-	// Change la trajectoire de la balle
-	public void setDirectionTarget(double x, double y) {
-
-		x = x - getCenterX(); 
-		y = y -getCenterY();
-		
-		// √((x2-x1)²+(y2-y1)²)
-
-		double normX = x / (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
-		double normY = y / (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
-
-		this.dx = normX *vitesse;
-		this.dy = normY * vitesse;
 		
 	}
 
@@ -67,9 +56,8 @@ public class FocusBall extends Balle {
 	public void setThrow(boolean isThrow) {
 		this.isThrow = isThrow;
 		
-		if(isThrow) {
-			
-		}
 	}
+
+
 
 }

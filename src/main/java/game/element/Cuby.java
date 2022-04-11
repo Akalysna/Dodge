@@ -1,22 +1,20 @@
 package game.element;
 
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import util.KeyTouch;
+import controler.DataCtrl.DodgeColor;
+import util.Position;
 
 /**
  * Classe représentant le cube controlé par le joueur
  * 
  * @author Llona André--Augustine
  */
-public class Cuby extends Rectangle {
+public class Cuby{
 
-	private double vitesse;
-	private int taille;
-	private Color color;
+	private double speed;
+	private double size;
+	private DodgeColor color;
 
-	private double x; 
-	private double y; 
+	private Position position;  
 
 	/**
 	 * Constructeur du cuby
@@ -28,72 +26,72 @@ public class Cuby extends Rectangle {
 	 * @param vitesse Vitesse de déplacement du cuby
 	 * @param kt      Touche directionnel associé
 	 */
-	public Cuby(double x, double y, Color color, int width, double vitesse, KeyTouch kt) {
+	public Cuby(Position pos, DodgeColor color, int width, double vitesse) {
 
-		this.vitesse = vitesse;
+		this.speed = vitesse;
 		this.color = color;
-		this.taille = width;
+		this.size = width;
 		
-		this.x = x; 
-		this.y = y;
+		this.position = pos; 
 
-		init();
 	}
 	
 	/**
-	 * Constructeur de cuby
+	 * 
+	 * @param pos
 	 * @param color
 	 */
-	public Cuby(Color color) {
-
-		this.vitesse = 6;
-		this.color = color;
-		this.taille = 15;
-		
-		this.x = 0; 
-		this.y = 0;
-
-		init();
+	public Cuby(Position pos,DodgeColor color) {
+		this(pos, color, 15, 6); 
 	}
-
-	/***
-	 * Constructeur du cuby
-	 * <p>
-	 * La position en x et y est par defaut a 0. La taille a 15 et la vitesse à 6
-	 * </p>
+	
+	/**
 	 * 
-	 * @param color Couleur du cuby
-	 * @param kt    Touche directionnel associé
+	 * @param color
 	 */
-	public Cuby(Color color, KeyTouch kt) {
-		this(0, 0, color, 15, 6, kt);
+	public Cuby(DodgeColor color) {
+		this(new Position(0, 0), color, 15, 6); 
 	}
 
-
-	private void init() {
-
-		this.setWidth(taille);
-		this.setHeight(taille);
-
-		this.setX(x);
-		this.setY(y);
-
-		this.setFill(color);
-
-	}
+	//--------------------
 	
 	/**
 	 * Cahnge les coordonné du cuby
-	 * @param x
-	 * @param y
+	 * @param dx
+	 * @param dy
 	 */
-	public void move(double x, double y) {
-		
-		this.x += x*vitesse; 
-		this.y += y*vitesse; 
-		
-		this.setLayoutX(this.x);
-		this.setLayoutY(this.y);
+	public void move(double dx, double dy) {
+		this.position.addCoordinate(dx*speed, dy*speed);
 	}
 
+	//--------------------
+	
+	/** 
+	 * Retourne
+	 * @return the speed
+	 */
+	public double getSpeed() { return speed; }
+
+	/** 
+	 * Retourne
+	 * @return the size
+	 */
+	public double getSize() { return size; }
+
+	/** 
+	 * Retourne
+	 * @return the color
+	 */
+	public DodgeColor getColor() { return color; }
+
+	/** 
+	 * Retourne
+	 * @return the position
+	 */
+	public Position getPosition() { return position; }
+	
+	
+
+	
+	
 }

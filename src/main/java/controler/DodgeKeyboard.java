@@ -5,6 +5,7 @@ package controler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import control.Key;
 import control.Keyboard;
@@ -38,7 +39,7 @@ public class DodgeKeyboard {
 	 * @param code Haut - Bas - Gauche - Droite
 	 * @param cuby Cuby
 	 */
-	public void addCubyMove(ArrayList<KeyCode> code, Cuby cuby) {
+	public void addCubyMove(List<KeyCode> code, Cuby cuby) {
 
 		/*
 		 * 0 -1		Haut

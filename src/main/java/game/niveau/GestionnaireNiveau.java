@@ -14,8 +14,8 @@ import util.EmptyLevelException;
 public class GestionnaireNiveau {
 
 	private Stage currentStage;
-	private Niveau currentLevel;
-	private List<Niveau> niveaux;
+	private World currentLevel;
+	private List<World> niveaux;
 
 	public GestionnaireNiveau() throws EmptyLevelException {
 		this.setCurrentLevel(null);
@@ -27,9 +27,9 @@ public class GestionnaireNiveau {
 
 	public boolean isEmpty() { return this.niveaux.isEmpty(); }
 
-	public Niveau getCurrentLevel() { return currentLevel; }
+	public World getCurrentLevel() { return currentLevel; }
 
-	public void setCurrentLevel(Niveau currentLevel) { this.currentLevel = currentLevel; }
+	public void setCurrentLevel(World currentLevel) { this.currentLevel = currentLevel; }
 
 	public void setCurrentLevel(int index) {
 		if (index >= 0 && index <= niveaux.size() - 1)
@@ -49,7 +49,7 @@ public class GestionnaireNiveau {
 
 				String[] line = l.split(":");
 
-				Niveau n = new Niveau(line[0], DataCtrl.PATH_CUBY + line[1], line[2], DataCtrl.PATH_NIVEAU + line[3]);
+				World n = new World(line[0], DataCtrl.PATH_CUBY + line[1], line[2], DataCtrl.PATH_NIVEAU + line[3]);
 
 				this.niveaux.add(n);
 			}

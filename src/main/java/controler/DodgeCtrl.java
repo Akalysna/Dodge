@@ -1,18 +1,15 @@
 package controler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import control.Key;
-import controler.DataCtrl.GameColor;
+import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.ScreenName;
 import game.element.Cuby;
 import game.niveau.GestionnaireNiveau;
-import game.view.MapView;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 import util.EmptyLevelException;
 
 public class DodgeCtrl {
@@ -21,6 +18,7 @@ public class DodgeCtrl {
 
 	private GestionnaireNiveau gestionNiveau;
 	private DodgeKeyboard dodgeKeyboard;
+	public static final FormeManager formeManager = new FormeManager();
 
 
 	public DodgeCtrl(Scene scene) throws EmptyLevelException {
@@ -34,19 +32,20 @@ public class DodgeCtrl {
 		initPlayer();
 		initKeyBoard();
 	}
-	
-	/** 
+
+	/**
 	 * Retourne
+	 * 
 	 * @return the players
 	 */
 	public ArrayList<Cuby> getPlayers(int nb) {
-		
-		ArrayList<Cuby> cuby = new ArrayList<>(); 
-		
+
+		ArrayList<Cuby> cuby = new ArrayList<>();
+
 		for (int i = 0; i < nb; i++) {
-			cuby.add(players.get(i)); 
+			cuby.add(players.get(i));
 		}
-		
+
 		return cuby;
 	}
 
@@ -55,8 +54,8 @@ public class DodgeCtrl {
 	 */
 	private void initPlayer() {
 
-		Cuby player1 = new Cuby(GameColor.BLUE.getColor());
-		Cuby player2 = new Cuby(GameColor.PINK.getColor());
+		Cuby player1 = new Cuby(DodgeColor.BLUE);
+		Cuby player2 = new Cuby(DodgeColor.PINK);
 
 		players.add(player1);
 		players.add(player2);
@@ -70,7 +69,7 @@ public class DodgeCtrl {
 		// --- Cuby
 		dodgeKeyboard.addCubyMove(DodgeKeyboard.ARROW_MOVE, players.get(0));
 		dodgeKeyboard.addCubyMove(DodgeKeyboard.ZQSD_MOVE, players.get(1));
-		
+
 		// --- Quitter
 		dodgeKeyboard.addKey(KeyCode.ESCAPE, new Key("Quitter", false) {
 
@@ -110,15 +109,12 @@ public class DodgeCtrl {
 
 	// ---------
 
-	public GestionnaireNiveau getGestionNiveau() {
-		return gestionNiveau;
-	}
+	public GestionnaireNiveau getGestionNiveau() { return gestionNiveau; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the players
 	 */
-	public ArrayList<Cuby> getPlayers() {
-		return players;
-	}
+	public ArrayList<Cuby> getPlayers() { return players; }
 }

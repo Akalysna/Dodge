@@ -16,7 +16,7 @@ public class Position {
 
 	/** Coordonné en Y */
 	private DoubleProperty y;
-	
+
 	/**
 	 * Contructeur de la position
 	 * 
@@ -27,6 +27,35 @@ public class Position {
 		this.x = new SimpleDoubleProperty(x);
 		this.y = new SimpleDoubleProperty(y);
 	}
+
+	public void setX(double x) {
+		this.x.set(x);
+	}
+
+	public void setY(double y) {
+		this.y.set(y);
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean inXInterval(double x1, double x2) {
+		return getX() >= x1 && getX() <= x2;
+	}
+	
+	public boolean inYInterval(double y1, double y2) {
+		return getY() >= y1 && getY() <= y2;
+	}
+	
+	/**
+	 * 
+	 */
+	public void addCoordinate(double x, double y) {
+		setX(getX() + x);
+		setY(getY() + y);
+	}
+
+	// ----------------
 
 	public void setX(DoubleProperty x) { this.x = x; }
 
@@ -39,7 +68,4 @@ public class Position {
 	public DoubleProperty getXProperty() { return x; }
 
 	public DoubleProperty getYProperty() { return y; }
-
-
-
 }

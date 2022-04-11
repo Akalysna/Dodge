@@ -3,34 +3,24 @@ package game.niveau;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Niveau implements Cloneable {
+public class World {
 
 	/**Nom du niveau*/
 	private String name;
 	
 	/**Chemin vers l'image du niveau*/
-	private String cubyPath;
+	private String icon;
 	
 	/**Chemin vers la musique du niveau*/
-	private String musicPath;
+	private String music;
 	
-	/**Chemin vers le fichier de lecture du niveau*/
-	private String levelPath;
-
 	/**Information sur le niveau*/
 	private LevelInfo levelInfo;
 
 	/**Permet de contruire un niveau*/
 	private BuildLevel build;
-
-	/**
-	 * Constructeur de Niveau
-	 * 
-	 * @param levelPath
-	 */
-	public Niveau(String levelPath) {
-		this("", "", "", levelPath);
-	}
+	
+	private List<Stage> stages;
 
 	/**
 	 * Constructeur de Niveau
@@ -40,16 +30,25 @@ public class Niveau implements Cloneable {
 	 * @param musicPath chemin d'acces de la musique du niveau
 	 * @param levelPath chemin d'acces du niveau
 	 */
-	public Niveau(String name, String cubyPath, String musicPath, String levelPath) {
+	public World(String name, String cubyPath, String musicPath) {
 
 		this.name = name;
-		this.cubyPath = cubyPath;
-		this.musicPath = musicPath;
-		this.levelPath = levelPath;
+		this.icon = cubyPath;
+		this.music = musicPath;
 
 		this.levelInfo = new LevelInfo();
 
-		this.build = new BuildLevel(levelPath);
+		//this.build = new BuildLevel(levelPath);
+		
+		this.stages = new ArrayList<>(); 
+	}
+	
+	/**
+	 * 
+	 */
+	public void addStage() {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
@@ -74,11 +73,10 @@ public class Niveau implements Cloneable {
 
 	public String getName() { return name; }
 
-	public String getCubyPath() { return cubyPath; }
+	public String getCubyPath() { return icon; }
 
-	public String getMusicPath() { return musicPath; }
+	public String getMusicPath() { return music; }
 
-	public String getLevelPath() { return levelPath; }
 
 	public List<Stage> getStages() { return build.getStages(); }
 }

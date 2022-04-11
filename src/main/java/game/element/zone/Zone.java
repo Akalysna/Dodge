@@ -1,7 +1,10 @@
 package game.element.zone;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import controler.DataCtrl.DodgeColor;
+import game.element.Element;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -11,17 +14,21 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
+import util.Position;
 
-public class Zone extends Polyline {
+public class Zone implements Element {
 
 	/** Vrai si la zone est survolé */
-	private BooleanProperty isHovered;
+	private boolean isHovered;
 
 	/** Vrai si la zone est désactivé */
-	private BooleanProperty isDisable;
+	private boolean isDisable;
 
 	/** Couleur de la zone */
-	private Color couleur;
+	private DodgeColor color;
+
+	private List<Double> points;
+	private Position position;
 
 	// ---------------------------
 
@@ -34,82 +41,73 @@ public class Zone extends Polyline {
 	 * @param y      Coordonnée de la zone en Y
 	 * @param color  Couleur de la zone
 	 */
-	public Zone(List<Double> points, double taille, int x, int y, Color color) {
+	public Zone(Position pos, List<Double> points, double taille, DodgeColor color) {
 
-		this.couleur = color;
+		this.color = color;
 
-		this.isHovered = new SimpleBooleanProperty(false);
-		this.isDisable = new SimpleBooleanProperty(false);
+		this.isHovered = false;
+		this.isDisable = false;
 
-		for (Double point : points) {
-			this.getPoints().add(point * taille);
-		}
-
-		this.isDisable.addListener((observable, oldValue, newValue) -> {
-			if (newValue.booleanValue()) // Si la zone dans l'état désactivé changer automatiquement son apparence
-				disable();
-		});
-
-		init(x, y);
+		this.points = points;
 	}
 
 	// ---------------------------
 
-	private void init(int x, int y) {
+	@Override
+	public void active() {
+		if (!isDisable) {
+			this.isHovered = true;
+		}
 
-		// Position de la zone
-
-		this.setLayoutX(x);
-		this.setLayoutY(y);
-
-		// Modification du countour de la zone
-
-		this.getStrokeDashArray().addAll(20.0, 10.0);
-		this.setStroke(couleur);
-		this.setStrokeWidth(3);
-
-		// Ajout de l'effet lumineux (glow) sur la zone
-
-		DropShadow ombre = new DropShadow();
-		ombre.setWidth(50);
-		ombre.setHeight(50);
-		ombre.setColor(couleur);
-
-		this.setEffect(ombre);
 	}
 
-	/**
-	 * Change l'état de la zone si elle n'est pas désactivé ({@link #isHovered}). La
-	 * couleur de fond de la zone est modifié lorsqu'elle est survolé
-	 * 
-	 * @param b true : la zone est survolé
+	@Override
+	public void stop() {
+		if (!isDisable) {
+			this.isHovered = false;
+		}
+	}
+
+	@Override
+	public void destroy() {
+		isDisable = true;
+	}
+	
+	//-------------
+
+	/** 
+	 * Retourne
+	 * @return the isHovered
 	 */
-	public void hover(boolean b) {
+	public boolean isHovered() { return isHovered; }
 
-		if (!isDisable.get()) {
+	/** 
+	 * Retourne
+	 * @return the isDisable
+	 */
+	public boolean isDisable() { return isDisable; }
 
-			if (b)
-				this.setFill(couleur.deriveColor(couleur.getRed(), couleur.getGreen(), couleur.getBlue(), 0.3));
-			else
-				this.setFill(Color.TRANSPARENT);
+	/** 
+	 * Retourne
+	 * @return the color
+	 */
+	public DodgeColor getColor() { return color; }
 
-			this.isHovered.set(b);
-		}
-	}
+	/** 
+	 * Retourne
+	 * @return the points
+	 */
+	public List<Double> getPoints() { return points; }
 
-	/** Change le style de la zone lorsqu'elle se désactive. Devient grisatre */
-	private void disable() {
+	/** 
+	 * Retourne
+	 * @return the position
+	 */
+	public Position getPosition() { return position; }
 
-		new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(Zone.this.strokeProperty(), Color.GRAY),
-				new KeyValue(((DropShadow) Zone.this.getEffect()).colorProperty(), Color.GRAY),
-				new KeyValue(Zone.this.fillProperty(), Color.TRANSPARENT))).play();
-	}
-
-	// ---------------------------
-
-	public Color getCouleur() { return couleur; }
-
-	public BooleanProperty getIsHovered() { return isHovered; }
-
-	public BooleanProperty getIsDisable() { return isDisable; }
+	
+	
+	
+	
+	
 }

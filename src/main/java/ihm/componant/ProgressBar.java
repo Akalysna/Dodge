@@ -1,4 +1,4 @@
-package util;
+package ihm.componant;
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;

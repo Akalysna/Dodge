@@ -1,4 +1,4 @@
-package game.view;
+package ihm;
 
 import control.view.View;
 import controler.DodgeCtrl;

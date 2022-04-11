@@ -1,6 +1,6 @@
 package game.element.factory;
 
-import game.element.balle.Balle;
+import game.element.balle.Ball;
 import game.element.balle.FocusBall;
 import game.element.balle.GhostBall;
 import game.element.balle.InvertBall;
@@ -13,7 +13,7 @@ public class BallFactory {
 		FIRE, SIMPLE, BOMB, GHOST, INVERT;
 	}
 
-	public static Balle get(TypeBalle tm, double x, double y) {
+	public static Ball get(TypeBalle tm, double x, double y) {
 		switch (tm) {
 		case SIMPLE:
 			return simpleBalle(x, y);
@@ -33,19 +33,19 @@ public class BallFactory {
 		}
 	}
 
-	public static Balle simpleBalle(double x, double y) {
+	public static Ball simpleBalle(double x, double y) {
 		return new SimpleBall(x, y, 8, 8);
 	}
 	
-	public static Balle ghostBalle(double x, double y) {
+	public static Ball ghostBalle(double x, double y) {
 		return new GhostBall(x, y, 8, 8);
 	}
 	
-	public static Balle invertBalle(double x, double y) {
+	public static Ball invertBalle(double x, double y) {
 		return new InvertBall(x, y, 8, 8, true);
 	}
 	
-	public static Balle focusBalle(double x, double y) {
+	public static Ball focusBalle(double x, double y) {
 		return new FocusBall(x, y, 8, 8);
 	}
 
