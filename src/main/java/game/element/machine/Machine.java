@@ -1,13 +1,14 @@
 package game.element.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.DodgeShape;
 import controler.DataCtrl.TypeElement;
-import event.EventRegister;
 import exception.EmptyListException;
 import game.element.Element;
+import game.element.zone.Zone;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -36,6 +37,8 @@ public class Machine implements Element {
 	 * Lorsque la machine est détruite toutes les zone doivents l'etre 
 	 * Quand une zon est survoler le décompte de la machine dois descendre
 	 */
+	
+	private ArrayList<Zone> zones; 
 
 	// -----
 
@@ -49,6 +52,8 @@ public class Machine implements Element {
 	// Chrono
 	private Timeline timelineChrono;
 	private Timeline timelineBall;
+	
+	private int nbZoneHover; 
 
 
 	// ------------------------------------
@@ -66,7 +71,7 @@ public class Machine implements Element {
 	 * @param typeBalle Les types de balles que la machine lance
 	 */
 	public Machine(Position pos, int life, DodgeColor color, DodgeShape shape, List<TypeElement> typeBalle) {
-		this(pos, 10, life, color, shape, 3, typeBalle);
+		this(pos, 50, life, color, shape, 3, typeBalle);
 	}
 
 	/**
@@ -100,6 +105,13 @@ public class Machine implements Element {
 
 		timelineChrono.setCycleCount(Animation.INDEFINITE);
 		timelineBall.setCycleCount(Animation.INDEFINITE);
+		
+		this.zones = new ArrayList<>(); 
+		this.nbZoneHover = 0; 
+	}
+	
+	public void addZone(List<Zone> zone) {
+		this.zones.addAll(zone); 
 	}
 
 	// ------------------------------------
@@ -140,7 +152,7 @@ public class Machine implements Element {
 		}));
 	}
 
-	protected void changeLifePoint(int i) {
+	public void changeLifePoint(int i) {
 		life.setCurrent(life.getCurrent() + i);
 	}
 
@@ -158,6 +170,10 @@ public class Machine implements Element {
 
 		this.isDestroy = true;
 		this.life.reset();
+		
+		for (Zone z : zones) {
+			z.destroy();
+		}
 	}
 
 	@Override
@@ -172,6 +188,22 @@ public class Machine implements Element {
 		if (!isDestroy) {
 			timelineChrono.stop();
 			this.life.reset();
+		}
+	}
+	
+
+	/**
+	 * @param i
+	 */
+	public void hoverZone(int i) {
+		nbZoneHover += i; 
+		
+		System.out.println("nbZoneHover : " + nbZoneHover);
+		
+		if(nbZoneHover > 0) {
+			active();
+		} else {
+			stop();
 		}
 	}
 
@@ -235,5 +267,24 @@ public class Machine implements Element {
 	 * @return the ballType
 	 */
 	public List<TypeElement> getBallType() { return ballType; }
+
+	@Override
+	public String toString() {
+		return "Machine [life=" + life + ", isDestroy=" + isDestroy + ", isActived=" + isActived + ", delayThrow="
+				+ delayThrow + ", zones=" + zones + ", color=" + color + ", shape=" + shape + ", position=" + position
+				+ ", ballType=" + ballType + ", radius=" + radius + ", timelineChrono=" + timelineChrono
+				+ ", timelineBall=" + timelineBall + "]";
+	}
+
+	/** 
+	 * Retourne
+	 * @return the zones
+	 */
+	public ArrayList<Zone> getZones() { return zones; }
+
+	
+	
+	
+	
 
 }

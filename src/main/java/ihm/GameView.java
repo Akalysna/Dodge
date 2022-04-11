@@ -4,13 +4,21 @@ import app.Dodge;
 import control.view.View;
 import controler.DataCtrl;
 import controler.DodgeCtrl;
+import controler.DodgeKeyboard;
 import controler.GameCtrl;
+import game.element.machine.Machine;
+import game.niveau.Stage;
+import game.niveau.World;
+import ihm.componant.element.CubyShape;
+import ihm.componant.element.ThrowballShape;
+import ihm.componant.element.ZoneShape;
 import javafx.animation.AnimationTimer;
 import javafx.animation.FillTransition;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 
 
@@ -24,21 +32,72 @@ public class GameView extends AnchorPane implements View {
 
 	private Rectangle fadeRect;
 
+
 	/**
 	 * Constructeur permettant de crée une interface graphique du jeu
 	 * 
 	 * @param dodgeCtrl Controleur principal
 	 */
 	public GameView(DodgeCtrl dodgeCtrl) {
+		CubyShape cuby = new CubyShape(dodgeCtrl.getPlayers().get(0));
+		dodgeCtrl.setCubyKey(DodgeKeyboard.ARROW_MOVE, cuby);
 
-		this.gameCtrl = new GameCtrl(this, dodgeCtrl);
+		// this.gameCtrl = new GameCtrl(this, dodgeCtrl);
+		World world = dodgeCtrl.getLevel(0);
 
-		initialization();
+		Stage stage = dodgeCtrl.getLevel(0).getStage(0);
+		cuby.setPosition(stage.getCubyPos());
+
+		this.setBackground(DataCtrl.BG_COLOR_DARK);
+		this.getChildren().add(cuby);
+
+
+		Machine machine = stage.getMachines().get(0);
+		ThrowballShape throwball = new ThrowballShape(machine);
+		this.getChildren().add(throwball);
+
+		ZoneShape zone = new ZoneShape(machine.getZones().get(0));
+		this.getChildren().add(zone);
+
+
+		cuby.xProperty().addListener((obj, oldV, newV) -> {
+
+			//Si le cuby entre dans la zone
+			if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
+				
+				//Si la zone n'était pas survolé, activé la 
+				if (!zone.isHovered())
+					zone.active();
+			}
+
+			else {
+				if (zone.isHovered())
+					zone.stop();
+			}
+		});
+
+		cuby.yProperty().addListener((obj, oldV, newV) -> {
+			//Si le cuby entre dans la zone
+			if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
+				
+				//Si la zone n'était pas survolé, activé la 
+				if (!zone.isHovered())
+					zone.active();
+			}
+
+			else {
+				if (zone.isHovered())
+					zone.stop();
+			}
+		});
+
+
+		// initialization();
 	}
 
 	public void initialization() {
 
-		this.setBackground(DataCtrl.BG_COLOR_DARK);
+
 		this.getChildren().addAll(gameCtrl.getElement());
 		this.setMouseTransparent(true);
 
@@ -52,9 +111,9 @@ public class GameView extends AnchorPane implements View {
 			public void handle(long now) {
 
 				if (!gameCtrl.isEndGame()) {
-					//gameCtrl.zoneEntered();
+					// gameCtrl.zoneEntered();
 					gameCtrl.balls();
-					//gameCtrl.cubyColision();
+					// gameCtrl.cubyColision();
 					gameCtrl.stopPathMove();
 					gameCtrl.updateStageStats();
 				} else {
@@ -120,6 +179,6 @@ public class GameView extends AnchorPane implements View {
 	@Override
 	public void load() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

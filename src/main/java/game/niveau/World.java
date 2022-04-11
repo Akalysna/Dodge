@@ -43,12 +43,16 @@ public class World {
 		this.stages = new ArrayList<>(); 
 	}
 	
+	public void addStage(List<Stage> stage) {
+		this.stages.addAll(stage); 
+	}
+	
 	/**
+	 * @return 
 	 * 
 	 */
-	public void addStage() {
-		// TODO Auto-generated method stub
-
+	public Stage getStage(int index) {
+		return stages.get(index);
 	}
 
 	/**
@@ -79,6 +83,14 @@ public class World {
 
 
 	public List<Stage> getStages() { return build.getStages(); }
+
+	@Override
+	public String toString() {
+		return "World [name=" + name + ", icon=" + icon + ", music=" + music + ", levelInfo=" + levelInfo + ", build="
+				+ build + ", stages=" + stages + "]";
+	}
+	
+	
 }
 
 class LevelInfo {

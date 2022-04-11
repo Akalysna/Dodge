@@ -1,5 +1,6 @@
 package game.element;
 
+import app.Dodge;
 import controler.DataCtrl.DodgeColor;
 import util.Position;
 
@@ -56,12 +57,27 @@ public class Cuby{
 	//--------------------
 	
 	/**
-	 * Cahnge les coordonné du cuby
+	 * Change les coordonnés du cuby
 	 * @param dx
 	 * @param dy
 	 */
 	public void move(double dx, double dy) {
-		this.position.addCoordinate(dx*speed, dy*speed);
+		
+		if(dx > 0 && this.position.getX()  < Dodge.SCENE_WIDTH - size) {
+			this.position.addX(dx*speed);
+		}
+		
+		if(dx < 0 && this.position.getX() > 0) {
+			this.position.addX(dx*speed);
+		}
+		
+		if(dy > 0 && this.position.getY()  < Dodge.SCENE_HEIGHT - size) {
+			this.position.addY(dy*speed);
+		}
+		
+		if(dy < 0 && this.position.getY() > 0) {
+			this.position.addY(dy*speed);
+		}
 	}
 
 	//--------------------
@@ -89,9 +105,14 @@ public class Cuby{
 	 * @return the position
 	 */
 	public Position getPosition() { return position; }
-	
-	
 
+	/**
+	 * @param position the position to set
+	 */
+	public void setPosition(Position position) { this.position = position; }
+	
+	
+	
 	
 	
 }

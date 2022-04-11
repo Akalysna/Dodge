@@ -1,14 +1,20 @@
 package controler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import event.EventRegister;
 import event.GameEvent;
+import exception.EmptyListException;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import util.RandomUtil;
+import util.Stats;
 
 /**
  * Classe regroupant les données utiles au jeu
@@ -55,6 +61,7 @@ public class DataCtrl {
 		 * @return {@link Color}
 		 */
 		public Color getColor() { return Color.valueOf(colorName); }
+		
 	}
 
 	public enum DodgeShape {
@@ -96,7 +103,7 @@ public class DataCtrl {
 
 	public static final double HEIGHT = 800;
 	public static final double WIDTH = 600;
-
+	
 	/**
 	 * Construit une ligne de suivi, lorsqu'une machine lance une FocusBall
 	 * 

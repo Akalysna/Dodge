@@ -10,6 +10,7 @@ import java.util.List;
 import control.Key;
 import control.Keyboard;
 import game.element.Cuby;
+import ihm.componant.element.CubyShape;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
@@ -39,7 +40,7 @@ public class DodgeKeyboard {
 	 * @param code Haut - Bas - Gauche - Droite
 	 * @param cuby Cuby
 	 */
-	public void addCubyMove(List<KeyCode> code, Cuby cuby) {
+	public void addCubyMove(List<KeyCode> code, CubyShape cuby) {
 
 		/*
 		 * 0 -1		Haut
@@ -61,8 +62,10 @@ public class DodgeKeyboard {
 			int x = i < 2 ? 0 : mod;
 			int y = i < 2 ? mod : 0;
 			
+			//System.out.println(c + " - " + x + " - " + y);
+			
 			keyboard.registerKey(c, new Key(c.getName(), true) {
-
+				
 				@Override
 				public void event() {
 					cuby.move(x, y);

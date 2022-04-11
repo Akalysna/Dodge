@@ -40,8 +40,8 @@ public class Dodge extends Application {
 		DodgeCtrl dodgeCtrl = new DodgeCtrl(scene);
 
 		viewCtrl = new ViewCtrl<>(scene);
-		viewCtrl.registry(ScreenName.HOME, new HomeView());
-		viewCtrl.registry(ScreenName.MAP, new MapView(dodgeCtrl));
+		//viewCtrl.registry(ScreenName.HOME, new HomeView());
+		//viewCtrl.registry(ScreenName.MAP, new MapView(dodgeCtrl));
 		viewCtrl.registry(ScreenName.GAME, new GameView(dodgeCtrl));
 		
 
@@ -55,7 +55,7 @@ public class Dodge extends Application {
 
 		this.stage.show();
 		
-		goTo(ScreenName.HOME);
+		goTo(ScreenName.GAME);
 
 	}
 

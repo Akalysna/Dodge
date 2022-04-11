@@ -7,30 +7,30 @@
       "stages": [
         {
           "cubyPosition": {
-            "x": 200,
-            "y": 600
+            "x": 400,
+            "y": 100
           },
           "throwballs": [
             {
-              "type": 1,
+              "type": "SIMPLE",
               "position": {
                 "x": 200,
                 "y": 200
               },
               "zones": [
                 {
-                  "type": 1,
-                  "shape": 0,
-                  "size": 0,
+                  "type": "SIMPLE",
+                  "shape": "carre",
+                  "size": 40,
                   "position": {
-                    "x": 600,
+                    "x": 300,
                     "y": 300
                   }
                 },
                 {
-                  "type": 1,
-                  "shape": 0,
-                  "size": 0,
+                  "type": "SIMPLE",
+                  "shape": "carre",
+                  "size": 10,
                   "position": {
                     "x": 100,
                     "y": 100

@@ -1,19 +1,10 @@
 package game.element.zone;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import controler.DataCtrl.DodgeColor;
 import game.element.Element;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polyline;
-import javafx.util.Duration;
+import game.element.machine.Machine;
 import util.Position;
 
 public class Zone implements Element {
@@ -30,6 +21,10 @@ public class Zone implements Element {
 	private List<Double> points;
 	private Position position;
 
+	private double size;
+
+	private Machine machine;
+
 	// ---------------------------
 
 	/**
@@ -41,7 +36,7 @@ public class Zone implements Element {
 	 * @param y      Coordonnée de la zone en Y
 	 * @param color  Couleur de la zone
 	 */
-	public Zone(Position pos, List<Double> points, double taille, DodgeColor color) {
+	public Zone(Position pos, List<Double> points, double taille, DodgeColor color, Machine machine) {
 
 		this.color = color;
 
@@ -49,14 +44,30 @@ public class Zone implements Element {
 		this.isDisable = false;
 
 		this.points = points;
+		this.machine = machine;
+		this.position = pos;
+
+		this.size = taille;
 	}
 
+	public Zone(Position pos, List<Double> points, double taille, DodgeColor color) {
+		this(pos, points, taille, color, null);
+	}
+
+
+	/**
+	 * @param machine the machine to set
+	 */
+	public void setMachine(Machine machine) { this.machine = machine; }
+
 	// ---------------------------
+
 
 	@Override
 	public void active() {
 		if (!isDisable) {
 			this.isHovered = true;
+			this.machine.hoverZone(+1); 
 		}
 
 	}
@@ -65,6 +76,7 @@ public class Zone implements Element {
 	public void stop() {
 		if (!isDisable) {
 			this.isHovered = false;
+			this.machine.hoverZone(-1); 
 		}
 	}
 
@@ -72,42 +84,57 @@ public class Zone implements Element {
 	public void destroy() {
 		isDisable = true;
 	}
-	
-	//-------------
 
-	/** 
+	// -------------
+
+	/**
 	 * Retourne
+	 * 
 	 * @return the isHovered
 	 */
 	public boolean isHovered() { return isHovered; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the isDisable
 	 */
 	public boolean isDisable() { return isDisable; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the color
 	 */
 	public DodgeColor getColor() { return color; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the points
 	 */
 	public List<Double> getPoints() { return points; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the position
 	 */
 	public Position getPosition() { return position; }
+	
+	
 
-	
-	
-	
-	
-	
+	/** 
+	 * Retourne
+	 * @return the size
+	 */
+	public double getSize() { return size; }
+
+	@Override
+	public String toString() {
+		return "Zone [points=" + points + " size : " + size + " Color : " + color;
+	}
+
+
+
 }

@@ -51,7 +51,15 @@ public class Position {
 	 * 
 	 */
 	public void addCoordinate(double x, double y) {
+		addX(x);
+		addY(y);
+	}
+	
+	public void addX(double x) {
 		setX(getX() + x);
+	}
+	
+	public void addY(double y) {
 		setY(getY() + y);
 	}
 
