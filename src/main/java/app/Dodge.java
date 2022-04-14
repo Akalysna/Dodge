@@ -44,6 +44,7 @@ public class Dodge extends Application {
 		//viewCtrl.registry(ScreenName.MAP, new MapView(dodgeCtrl));
 		viewCtrl.registry(ScreenName.GAME, new GameView(dodgeCtrl));
 		
+		((GameView) getScreen(ScreenName.GAME)).initWorld(dodgeCtrl.getLevel(0), dodgeCtrl.getPlayers());
 
 		dragWindow();
 		setCursor("cursor.png");

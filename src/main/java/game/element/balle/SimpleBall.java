@@ -1,5 +1,6 @@
 package game.element.balle;
 
+import app.Dodge;
 import controler.DataCtrl;
 import controler.DataCtrl.TypeElement;
 import javafx.animation.AnimationTimer;
@@ -39,12 +40,12 @@ public class SimpleBall extends Ball {
 
 				// ---------------
 
-				if (!position.inXInterval(0, DataCtrl.WIDTH)) {
+				if (!position.inXInterval(0, Dodge.SCENE_WIDTH)) {
 					dx = -dx; // Direction inversé
 					changeLifePoint(-1);
 				}
 
-				if (!position.inYInterval(0, DataCtrl.HEIGHT)) {
+				if (!position.inYInterval(0, Dodge.SCENE_HEIGHT)) {
 					dy = -dy; // Direction inversé
 					changeLifePoint(-1);
 				}

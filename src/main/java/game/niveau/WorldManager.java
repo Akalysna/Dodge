@@ -161,7 +161,6 @@ public class WorldManager {
 	public World getLevel(int index) {
 		return worlds.get(index);
 	}
-
 	
 	/** 
 	 * Retourne

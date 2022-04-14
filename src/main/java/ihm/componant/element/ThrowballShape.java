@@ -132,7 +132,6 @@ public class ThrowballShape extends StackPane {
 
 	private void chronoLbl() {
 		this.timeLbl.setText(String.valueOf(machine.getLife()));
-		System.out.println(machine.getLife());
 	}
 
 }

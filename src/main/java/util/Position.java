@@ -16,6 +16,8 @@ public class Position {
 
 	/** Coordonné en Y */
 	private DoubleProperty y;
+	
+	//----------
 
 	/**
 	 * Contructeur de la position
@@ -28,13 +30,6 @@ public class Position {
 		this.y = new SimpleDoubleProperty(y);
 	}
 
-	public void setX(double x) {
-		this.x.set(x);
-	}
-
-	public void setY(double y) {
-		this.y.set(y);
-	}
 	
 	/**
 	 * 
@@ -50,9 +45,14 @@ public class Position {
 	/**
 	 * 
 	 */
-	public void addCoordinate(double x, double y) {
-		addX(x);
-		addY(y);
+	public void setPosition(double x, double y) {
+		setX(x);
+		setY(y);
+	}
+	
+	public void setPosition(Position pos) {
+		setX(pos.getX());
+		setY(pos.getY());
 	}
 	
 	public void addX(double x) {
@@ -63,11 +63,21 @@ public class Position {
 		setY(getY() + y);
 	}
 
+	
 	// ----------------
 
-	public void setX(DoubleProperty x) { this.x = x; }
+	@Override
+	public String toString() {
+		return "Position (" + x + ", " + y + ")";
+	}
+	
+	public void setX(double x) {
+		this.x.set(x);
+	}
 
-	public void setY(DoubleProperty y) { this.y = y; }
+	public void setY(double y) {
+		this.y.set(y);
+	}
 
 	public double getX() { return x.get(); }
 

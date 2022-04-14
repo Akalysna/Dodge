@@ -40,7 +40,7 @@ public class DodgeKeyboard {
 	 * @param code Haut - Bas - Gauche - Droite
 	 * @param cuby Cuby
 	 */
-	public void addCubyMove(List<KeyCode> code, CubyShape cuby) {
+	public void addCubyMove(List<KeyCode> code, Cuby cuby) {
 
 		/*
 		 * 0 -1		Haut

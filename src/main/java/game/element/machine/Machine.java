@@ -198,7 +198,7 @@ public class Machine implements Element {
 	public void hoverZone(int i) {
 		nbZoneHover += i; 
 		
-		System.out.println("nbZoneHover : " + nbZoneHover);
+		//System.out.println("nbZoneHover : " + nbZoneHover);
 		
 		if(nbZoneHover > 0) {
 			active();

@@ -58,6 +58,8 @@ public abstract class Ball implements Element{
 
 		this.dx = RandomUtil.invertSign(Math.cos(45) * speed);
 		this.dy = RandomUtil.invertSign(Math.sin(45) * speed);
+		
+		initBallMouvement();
 	}
 
 	/**
@@ -68,7 +70,7 @@ public abstract class Ball implements Element{
 	 * @param shape
 	 */
 	protected Ball(Position position, TypeElement type, int life) {
-		this(position, DodgeColor.WHITE, 4, type, life);
+		this(position, DodgeColor.WHITE, 8, type, life);
 	}
 
 	// ------------------
@@ -99,8 +101,7 @@ public abstract class Ball implements Element{
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-		
+		stop();
 	}
 	
 	

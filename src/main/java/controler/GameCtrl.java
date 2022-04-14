@@ -2,338 +2,172 @@ package controler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import app.Dodge;
-import controler.DataCtrl.ScreenName;
 import game.element.Cuby;
-import game.element.balle.Ball;
-import game.element.balle.FocusBall;
-import game.element.factory.BallFactory;
 import game.element.machine.Machine;
 import game.element.zone.Zone;
-import game.niveau.GestionnaireNiveau;
-import ihm.GameView;
-import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.scene.Node;
-import javafx.scene.shape.Line;
+import game.niveau.Stage;
+import game.niveau.World;
+import ihm.componant.element.CubyShape;
+import ihm.componant.element.ThrowballShape;
+import ihm.componant.element.ZoneShape;
 import javafx.scene.shape.Shape;
-import javafx.util.Duration;
+import util.EmptyLevelException;
+import util.Position;
 
 public class GameCtrl {
 
-	// TODO Penser a stop les animation de chaque élément et de la boucle du jeu
+	private World world;
+
+	private Stage currentStage;
+	private int indexStage;
+
+	private ArrayList<CubyShape> players;
+	private ArrayList<ThrowballShape> throwballs;
+	private ArrayList<ZoneShape> zones;
+
 
 	/**
-	 * Classe représentant l'interface graphique du niveau. Cette interface possède
-	 * la boucle du jeu
+	 * @param world
+	 * @param cubies
 	 */
-	private GameView gameView;
+	public GameCtrl(World world, List<Cuby> cubies) {
 
-	/** Controleur principal du jeu */
-	private DodgeCtrl dodgeCtrl;
+		this.world = world;
+		this.players = new ArrayList<>();
+		this.throwballs = new ArrayList<>();
+		this.zones = new ArrayList<>();
 
-	/** Permet de récupérer les informations relatif au niveau */
-	private GestionnaireNiveau gestionNiveau;
+		if (world.getNbStage() > 0) {
+			indexStage = 0;
+			currentStage = world.getStage(indexStage);
+		}
+		
+		players.add(new CubyShape(cubies.get(0)));
 
+//		// Cuby en shape
+//		for (Cuby cuby : cubies) {
+//			System.out.println(cuby);
+//			cuby.setPosition(new Position(100, 100));
+//			players.add(new CubyShape(cuby));
+//		}
+		
+	}
+	
 	/**
-	 * Propriété qui lie l'état des machine. Si elles sont toutes détruites la
-	 * valeur sera égale à true
+	 * @throws EmptyLevelException 
+	 * 
 	 */
-	private BooleanProperty allMachineDestroy;
+	public void start() throws EmptyLevelException {
+		
+		if(currentStage != null) {
+			initStageElement();
+		} else 
+			throw new EmptyLevelException("Ce monde est null ou ne comporte pas de stage");
+	}
 
-	private ArrayList<Cuby> cubys;
-	private ArrayList<Machine> machines;
-	private ArrayList<Zone> zones;
-	private ArrayList<Ball> balles;
-	private ArrayList<PathTransition> paths;
-	private ArrayList<Line> ligne;
+	private void initStageElement() {
 
-	private SoundCtrl home_music;
+		this.throwballs.clear();
+		this.zones.clear();
 
-	public GameCtrl(GameView gameView, DodgeCtrl dodgeCtrl) {
+		// Machine & Zone
+		for (Machine machine : currentStage.getMachines()) {
+			throwballs.add(new ThrowballShape(machine));
 
-		this.gameView = gameView;
-		this.dodgeCtrl = dodgeCtrl;
+			for (Zone zone : machine.getZones()) {
+				zones.add(new ZoneShape(zone));
+			}
+		}
 
-		this.gestionNiveau = dodgeCtrl.getGestionNiveau();
+		// ----------
 
-		this.gestionNiveau.getCurrentLevel().readLevel();
-		this.gestionNiveau.setCurrentStage(0);
+		// Cuby
 
-		this.home_music = new SoundCtrl(gestionNiveau.getCurrentLevel().getMusicPath());
-		this.home_music.play();
+		// TODO Ajouté plusieurs position pour tous les cubys
 
-		this.allMachineDestroy = new SimpleBooleanProperty(false);
+		// Met à jour la position des cubys pour le stage
+		for (CubyShape cubyShape : players) {
+			
+			cubyShape.setPosition(currentStage.getCubyPos());
+			
+			cubyShape.xProperty().addListener((obj, oldV, newV) -> positionCubyZone(cubyShape));
+			cubyShape.yProperty().addListener((obj, oldV, newV) -> positionCubyZone(cubyShape));
+		}
+	}
 
-		init();
-		initListOfElement();
+	private void cubyHoveredZone(CubyShape cuby) {
 
-		this.allMachineDestroy.addListener((obs, o, n) -> {
-			if (n.booleanValue())
-				nextStage();
-		});
+	}
 
+	private void positionCubyZone(CubyShape cuby) {
+		
+//		System.out.println("Le cuby bouge");
+		
+		for (ZoneShape zone : zones) {
+			
+			// Si le cuby entre dans la zone
+			if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
 
-		zone();
-		ball();
+				// Si la zone n'était pas survolé, activé la
+				if (!zone.isHovered())
+					zone.active();
+			}
+
+			else {
+				if (zone.isHovered())
+					zone.stop();
+			}
+		}
 	}
 
 	/**
 	 * 
 	 */
-	private void init() {
+	public boolean nextStage() {
 
-		this.machines = new ArrayList<>();
-		this.zones = new ArrayList<>();
-		this.cubys = new ArrayList<>();
-		this.balles = new ArrayList<>();
-		this.paths = new ArrayList<>();
-		this.ligne = new ArrayList<>();
+		if (indexStage < world.getNbStage() - 1) {
+			indexStage++;
+			currentStage = world.getStage(indexStage);
 
-	}
-
-	private void initListOfElement() {
-
-		clear();
-
-		this.machines.addAll(gestionNiveau.getCurrentStage().getMachines());
-		this.zones.addAll(gestionNiveau.getCurrentStage().getZones());
-		this.cubys.addAll(dodgeCtrl.getPlayers(1));
-		this.paths.addAll(gestionNiveau.getCurrentStage().getPathTransitions());
-
-		double x = gestionNiveau.getCurrentStage().getCubyPosition().getX();
-		double y = gestionNiveau.getCurrentStage().getCubyPosition().getY();
-
-		for (Cuby cuby : cubys) {
-			cuby.setX(x);
-			cuby.setY(y);
-		}
-
-		this.allMachineDestroy.bind(builBindingEndGame(machines, machines.size() - 1));
-	}
-
-	private void clear() {
-
-		if (paths != null)
-			this.paths.forEach(e -> e.stop());
-
-		this.machines.clear();
-		this.zones.clear();
-		this.cubys.clear();
-		this.balles.clear();
-		this.paths.clear();
-		this.ligne.clear();
-
-		this.allMachineDestroy.unbind();
-	}
-
-	public List<Node> getElement() {
-
-		ArrayList<Node> n = new ArrayList<>();
-
-		paths.forEach(e -> {
-			n.add(e.getPath());
-			e.play();
-		});
-
-		n.addAll(machines);
-		n.addAll(zones);
-		n.addAll(cubys);
-		n.addAll(balles);
-
-		return n;
-	}
-
-	// ----
-
-	private void zone() {
-
-		for (Cuby cuby : this.cubys) {
-
-			cuby.layoutXProperty().addListener((obj, oldV, newV) -> {
-
-				this.zones.forEach((zone) -> zone.hover(!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()));
-			});
-
-			cuby.layoutYProperty().addListener((obj, oldV, newV) -> {
-				this.zones.forEach((zone) -> zone.hover(!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()));
-			});
-		}
-	}
-
-	private void ball() {
-
-		ArrayList<Cuby> tmp = new ArrayList<>();
-
-		for (Ball ball : this.balles) {
-
-			ball.layoutYProperty().addListener((obj, oldV, newV) -> {
-				this.cubys.forEach(cuby -> {
-
-					if (!Shape.intersect(ball, cuby).getBoundsInLocal().isEmpty()) {
-						tmp.add(cuby);
-					}
-				});
-
-				this.cubys.removeAll(tmp);
-			});
-		}
-	}
-
-	// ----
-
-	public void balls() {
-
-		for (Machine machine : machines) {
-			
-			if (machine.isThrowBall()) {
-
-				Ball b = BallFactory.get(machine.lance(), machine.getCenterX(), machine.getCenterY());
-
-				if (b instanceof FocusBall) {
-					drawLine(b);
-				}
-
-				balles.add(b);
-				gameView.addNode(b);
-			}
-		}
-
-		List<Node> tmp = new ArrayList<>();
-
-		for (Ball b : balles) {
-			if (b.isDestroy()) {
-				tmp.add(b);
-			}
-		}
-
-		tmp.forEach(e -> gameView.removeNode(e));
-		balles.removeAll(tmp);
-
-	}
-
-	private void drawLine(Ball b) {
-
-		FocusBall ball = (FocusBall) b;
-
-		Cuby cuby = cubys.get(new Random().nextInt(cubys.size()));
-
-
-		new Timeline(new KeyFrame(Duration.millis(3000), event -> {
-			ball.animateBall(true);
-			ball.setDirectionTarget(cuby.getX(), cuby.getY());
-			if (!ligne.isEmpty())
-				gameView.removeNode(this.ligne.remove(0));
-		})).play();
-
-		Line l = DataCtrl.createLine(ball.getX(), ball.getY(), cuby.xProperty(), cuby.yProperty());
-		this.ligne.add(l);
-		gameView.addFirstNode(l);
-
-	}
-
-	public void cubyColision() {
-
-		ArrayList<Cuby> tmp = new ArrayList<>();
-
-		for (Ball z : this.balles) {
-
-			// Si un cuby est dans la zone
-			for (Cuby c : this.cubys) {
-
-				if (!Shape.intersect(z, c).getBoundsInLocal().isEmpty())
-					tmp.add(c);
-			}
-
-			// --------------
-		}
-
-		cubys.removeAll(tmp);
-		tmp.forEach(e -> gameView.removeNode(e));
-	}
-
-	private void nextStage() {
-
-		if (gestionNiveau.nextStage()) {
-			initListOfElement();
-			gameView.loadLevel();
-		} else
-			endLevel();
-	}
-
-	private BooleanBinding builBindingEndGame(ArrayList<Machine> zbind, int i) {
-
-		if (i < 0) {
-			return new BooleanBinding() {
-
-				@Override
-				protected boolean computeValue() {
-					return true;
-				}
-			};
+			initStageElement();
+			return true;
 		} else {
-
-			return zbind.get(i).getIsDestroy().and(builBindingEndGame(zbind, i - 1));
+			endWorld();
+			return false;
 		}
-
 	}
 
-	public void stopPathMove() {
-
-		for (Machine m : machines) {
-			if (m.getIsDestroy().get()) {
-				for (PathTransition pt : paths) {
-					if (pt.getNode().equals(m)) {
-						pt.stop();
-					}
-				}
-			}
-		}
-
-		for (Zone z : zones) {
-			if (z.getIsDisable().get()) {
-				for (PathTransition pt : paths) {
-					if (pt.getNode().equals(z)) {
-						pt.stop();
-					}
-				}
-			}
-		}
-
+	/**
+	 * 
+	 */
+	private void endWorld() {
+		// TODO Auto-generated method stub
 	}
 
-	public void updateStageStats() {
+	// --------------------
 
-		ArrayList<Machine> engine = new ArrayList<>();
+	/**
+	 * Retourne
+	 * 
+	 * @return the players
+	 */
+	public List<CubyShape> getCubys() { return players; }
 
-		for (Machine m : machines) {
-			if (m.getIsDestroy().get()) {
-				engine.add(m);
-			}
-		}
+	/**
+	 * Retourne
+	 * 
+	 * @return the throwballs
+	 */
+	public List<ThrowballShape> getThrowballs() { return throwballs; }
 
-		for (Machine m : engine) {
-			machines.remove(m);
-			gestionNiveau.getCurrentLevel().destroyMachine();
-		}
+	/**
+	 * Retourne
+	 * 
+	 * @return the zones
+	 */
+	public List<ZoneShape> getZones() { return zones; }
 
-	}
 
-	public void endLevel() {
 
-		clear();
-		gameView.stopUpdate();
-
-		Dodge.goTo(ScreenName.MAP);
-	}
-
-	public boolean isEndGame() {
-		return (gestionNiveau.indexCurentStage() > gestionNiveau.nbStage() - 1) || cubys.isEmpty();
-	}
 }

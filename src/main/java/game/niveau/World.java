@@ -17,10 +17,9 @@ public class World {
 	/**Information sur le niveau*/
 	private LevelInfo levelInfo;
 
-	/**Permet de contruire un niveau*/
-	private BuildLevel build;
-	
 	private List<Stage> stages;
+	
+	private int indexCurrentStage; 
 
 	/**
 	 * Constructeur de Niveau
@@ -37,8 +36,6 @@ public class World {
 		this.music = musicPath;
 
 		this.levelInfo = new LevelInfo();
-
-		//this.build = new BuildLevel(levelPath);
 		
 		this.stages = new ArrayList<>(); 
 	}
@@ -47,10 +44,6 @@ public class World {
 		this.stages.addAll(stage); 
 	}
 	
-	/**
-	 * @return 
-	 * 
-	 */
 	public Stage getStage(int index) {
 		return stages.get(index);
 	}
@@ -62,18 +55,14 @@ public class World {
 	 */
 	public int getProgress() { return levelInfo.calculProgress(); }
 
-
-
 	public void destroyMachine() {
 		levelInfo.destroyMachine();
 	}
+	
 
-	public void readLevel() {
-		build.readLevel();
-
+	public int getNbStage() {
+		return this.stages.size(); 
 	}
-
-	public ArrayList<Stage> getCopyStage() { return new ArrayList<Stage>(this.getStages()); }
 
 	public String getName() { return name; }
 
@@ -81,15 +70,12 @@ public class World {
 
 	public String getMusicPath() { return music; }
 
-
-	public List<Stage> getStages() { return build.getStages(); }
+	public List<Stage> getStages() { return stages; }
 
 	@Override
 	public String toString() {
-		return "World [name=" + name + ", icon=" + icon + ", music=" + music + ", levelInfo=" + levelInfo + ", build="
-				+ build + ", stages=" + stages + "]";
+		return "World [name=" + name + ", icon=" + icon + ", music=" + music + ", levelInfo=" + levelInfo  + ", stages=" + stages + "]";
 	}
-	
 	
 }
 

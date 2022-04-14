@@ -2,6 +2,7 @@ package game.element;
 
 import app.Dodge;
 import controler.DataCtrl.DodgeColor;
+import javafx.beans.property.DoubleProperty;
 import util.Position;
 
 /**
@@ -9,13 +10,13 @@ import util.Position;
  * 
  * @author Llona André--Augustine
  */
-public class Cuby{
+public class Cuby {
 
 	private double speed;
 	private double size;
 	private DodgeColor color;
 
-	private Position position;  
+	private Position position;
 
 	/**
 	 * Constructeur du cuby
@@ -32,87 +33,92 @@ public class Cuby{
 		this.speed = vitesse;
 		this.color = color;
 		this.size = width;
-		
-		this.position = pos; 
 
+		this.position = pos;
 	}
-	
+
 	/**
 	 * 
 	 * @param pos
 	 * @param color
 	 */
-	public Cuby(Position pos,DodgeColor color) {
-		this(pos, color, 15, 6); 
+	public Cuby(Position pos, DodgeColor color) {
+		this(pos, color, 15, 6);
 	}
-	
+
 	/**
 	 * 
 	 * @param color
 	 */
 	public Cuby(DodgeColor color) {
-		this(new Position(0, 0), color, 15, 6); 
+		this(new Position(0, 0), color, 15, 6);
 	}
 
-	//--------------------
-	
+	// --------------------
+
 	/**
 	 * Change les coordonnés du cuby
+	 * 
 	 * @param dx
 	 * @param dy
 	 */
 	public void move(double dx, double dy) {
-		
-		if(dx > 0 && this.position.getX()  < Dodge.SCENE_WIDTH - size) {
-			this.position.addX(dx*speed);
+
+		//System.out.println("move in cuby class : " + this.position);
+
+		if (dx > 0 && this.position.getX() < Dodge.SCENE_WIDTH - size) {
+			this.position.addX(dx * speed);
 		}
-		
-		if(dx < 0 && this.position.getX() > 0) {
-			this.position.addX(dx*speed);
+
+		if (dx < 0 && this.position.getX() > 0) {
+			this.position.addX(dx * speed);
 		}
-		
-		if(dy > 0 && this.position.getY()  < Dodge.SCENE_HEIGHT - size) {
-			this.position.addY(dy*speed);
+
+		if (dy > 0 && this.position.getY() < Dodge.SCENE_HEIGHT - size) {
+			this.position.addY(dy * speed);
 		}
-		
-		if(dy < 0 && this.position.getY() > 0) {
-			this.position.addY(dy*speed);
+
+		if (dy < 0 && this.position.getY() > 0) {
+			this.position.addY(dy * speed);
 		}
 	}
 
-	//--------------------
-	
-	/** 
+	// --------------------
+
+	/**
 	 * Retourne
+	 * 
 	 * @return the speed
 	 */
 	public double getSpeed() { return speed; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the size
 	 */
 	public double getSize() { return size; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the color
 	 */
 	public DodgeColor getColor() { return color; }
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the position
 	 */
 	public Position getPosition() { return position; }
+	
 
 	/**
 	 * @param position the position to set
 	 */
 	public void setPosition(Position position) { this.position = position; }
-	
-	
-	
-	
-	
+
+
+
 }

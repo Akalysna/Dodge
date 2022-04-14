@@ -25,7 +25,7 @@ public class DodgeCtrl {
 	
 	public static final FormeManager formeManager = new FormeManager();
 	
-	private WorldManager levelBuilder; 
+	private WorldManager worldManager; 
 
 
 	public DodgeCtrl(Scene scene) throws EmptyLevelException {
@@ -35,10 +35,8 @@ public class DodgeCtrl {
 		//this.gestionNiveau = new GestionnaireNiveau();
 
 		this.dodgeKeyboard = new DodgeKeyboard(scene);
-		this.levelBuilder = new WorldManager();
+		this.worldManager = new WorldManager();
 		
-		System.out.println(levelBuilder.getLevels());
-
 		initPlayer();
 		initKeyBoard();
 	}
@@ -48,7 +46,7 @@ public class DodgeCtrl {
 	 * 
 	 */
 	public World getLevel(int index) {
-		return this.levelBuilder.getLevel(index);
+		return this.worldManager.getLevel(index);
 	}
 
 	/**
@@ -69,7 +67,7 @@ public class DodgeCtrl {
 
 	private void initPlayer() {
 
-		Cuby player1 = new Cuby(DodgeColor.BLUE);
+		Cuby player1 = new Cuby(DodgeColor.WHITE);
 		Cuby player2 = new Cuby(DodgeColor.PINK);
 
 		players.add(player1);
@@ -79,9 +77,9 @@ public class DodgeCtrl {
 	/**
 	 * 
 	 */
-	public void setCubyKey(ArrayList<KeyCode> codes, CubyShape cubyShape) {
-		dodgeKeyboard.addCubyMove(codes,cubyShape);
-	}
+//	public void setCubyKey(ArrayList<KeyCode> codes, CubyShape cubyShape) {
+//		dodgeKeyboard.addCubyMove(codes,cubyShape);
+//	}
 
 	/**
 	 * Initialisation des touches du clavier
@@ -89,9 +87,11 @@ public class DodgeCtrl {
 	private void initKeyBoard() {
 
 		// --- Cuby
-//		dodgeKeyboard.addCubyMove(DodgeKeyboard.ARROW_MOVE, players.get(0));
-//		dodgeKeyboard.addCubyMove(DodgeKeyboard.ZQSD_MOVE, players.get(1));
+		dodgeKeyboard.addCubyMove(DodgeKeyboard.ARROW_MOVE, players.get(0));
+		dodgeKeyboard.addCubyMove(DodgeKeyboard.ZQSD_MOVE, players.get(1));
 
+		//System.out.println(players.get(0));
+		
 		// --- Quitter
 		dodgeKeyboard.addKey(KeyCode.ESCAPE, new Key("Quitter", false) {
 
