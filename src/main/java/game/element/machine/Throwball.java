@@ -3,9 +3,11 @@ package game.element.machine;
 import java.util.ArrayList;
 import java.util.List;
 
+import controler.DataCtrl;
 import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.DodgeShape;
 import controler.DataCtrl.TypeElement;
+import event.ThrowEvent;
 import exception.EmptyListException;
 import game.element.Element;
 import game.element.zone.Zone;
@@ -17,7 +19,7 @@ import util.Position;
 import util.RandomUtil;
 import util.Stats;
 
-public class Machine implements Element {
+public class Throwball implements Element {
 
 	// ------------------------------------
 	// Attribut
@@ -70,8 +72,8 @@ public class Machine implements Element {
 	 * @param color     Couleur de la machine
 	 * @param typeBalle Les types de balles que la machine lance
 	 */
-	public Machine(Position pos, int life, DodgeColor color, DodgeShape shape, List<TypeElement> typeBalle) {
-		this(pos, 50, life, color, shape, 3, typeBalle);
+	public Throwball(Position pos, int life, DodgeColor color, DodgeShape shape, List<TypeElement> typeBalle) {
+		this(pos, 50, life, color, shape, 3000, typeBalle);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class Machine implements Element {
 	 * @param delayThrow           Delai entre chaque lancer
 	 * @param speedLifePointChrono Vitesse du decompte des points de vie
 	 */
-	protected Machine(Position pos, int radius, int life, DodgeColor color, DodgeShape shape, int delayThrow,
+	protected Throwball(Position pos, int radius, int life, DodgeColor color, DodgeShape shape, int delayThrow,
 			List<TypeElement> typeBalle) {
 
 		this.position = pos;
@@ -126,12 +128,10 @@ public class Machine implements Element {
 
 			try {
 
-				@SuppressWarnings("unused")
 				TypeElement type = (TypeElement) RandomUtil.getRandomElement(ballType);
-
-				// TODO Evenenement pour lancer une balle
-				// DataCtrl.GAME_EVENT.handle(new ThrowEvent(type, position));
-
+				
+				DataCtrl.THROW_EVENT.handle(new ThrowEvent(type, this.position.getX(), this.position.getY()));
+				
 			} catch (EmptyListException e) {
 				e.printStackTrace();
 			}
@@ -169,18 +169,23 @@ public class Machine implements Element {
 		this.timelineChrono.stop();
 
 		this.isDestroy = true;
-		this.life.reset();
+		this.life.setCurrent(0);
 		
 		for (Zone z : zones) {
 			z.destroy();
 		}
+		
+		DataCtrl.THROW_EVENT.handle(new ThrowEvent(isDestroy));
 	}
 
 	@Override
 	public void active() {
-		if (!isDestroy)
+		if (!isDestroy) {
 			timelineChrono.play();
+		}
 	}
+	
+	//TODO Séparer le stop du hover et le stop "pause"
 
 	@Override
 	public void stop() {
@@ -189,6 +194,18 @@ public class Machine implements Element {
 			timelineChrono.stop();
 			this.life.reset();
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	public void activeThrow(boolean b) {
+		
+		if(b)
+			timelineBall.play();
+		else 
+			timelineBall.stop();
+			
 	}
 	
 

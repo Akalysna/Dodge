@@ -4,7 +4,6 @@
 package ihm.componant.element;
 
 import game.element.Cuby;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import util.Position;
 
@@ -31,15 +30,6 @@ public class CubyShape extends Rectangle {
 		this.yProperty().bind(cuby.getPosition().getYProperty());
 	}
 
-	/**
-	 * Cahnge les coordonné du cuby
-	 * 
-	 * @param dx
-	 * @param dy
-	 */
-	public void move(double dx, double dy) {
-		cuby.move(dx, dy);
-	}
 
 	/**
 	 * 
@@ -48,6 +38,16 @@ public class CubyShape extends Rectangle {
 		cuby.getPosition().setPosition(position);
 	}
 
+	public void active() {
+		cuby.active();
+	}
 
+	public void stop() {
+		cuby.stop();
+	}
+
+	public boolean isMoving() {
+		return cuby.isMoving();
+	}
 
 }

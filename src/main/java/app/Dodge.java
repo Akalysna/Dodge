@@ -9,7 +9,6 @@ import controler.DodgeCtrl;
 import controler.DataCtrl.ScreenName;
 import ihm.GameView;
 import ihm.HomeView;
-import ihm.MapView;
 import javafx.application.Application;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;

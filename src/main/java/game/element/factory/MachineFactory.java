@@ -5,7 +5,7 @@ import java.util.Arrays;
 import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.DodgeShape;
 import controler.DataCtrl.TypeElement;
-import game.element.machine.Machine;
+import game.element.machine.Throwball;
 import util.Position;
 
 public class MachineFactory {
@@ -14,7 +14,7 @@ public class MachineFactory {
 		SIMPLE, SNAKE, SIZE, GHOST, INVERT,MOVE;
 	}
 
-	public static Machine get(TypeElement type, Position pos) {
+	public static Throwball get(TypeElement type, Position pos) {
 		switch (type) {
 		case SIMPLE:
 			return simpleMachine(pos);
@@ -24,8 +24,8 @@ public class MachineFactory {
 		}
 	}
 
-	public static Machine simpleMachine(Position pos) {
-		return new Machine(pos, 5, DodgeColor.PINK, DodgeShape.ROUND, Arrays.asList(TypeElement.SIMPLE));
+	public static Throwball simpleMachine(Position pos) {
+		return new Throwball(pos, 5, DodgeColor.PINK, DodgeShape.ROUND, Arrays.asList(TypeElement.SIMPLE));
 	}
 
 

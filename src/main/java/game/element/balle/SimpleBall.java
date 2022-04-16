@@ -30,8 +30,9 @@ public class SimpleBall extends Ball {
 			public void handle(long now) {
 
 				// Disparition
-				if (life.getCurrent() == 0) {
-					hasDisappeared = true;
+				if (life.getCurrent() <= 0) {
+					hasDisappeared.setValue(true);
+					destroy();
 				}
 
 				position.setX(position.getX() + dx);
@@ -49,6 +50,7 @@ public class SimpleBall extends Ball {
 					dy = -dy; // Direction inversé
 					changeLifePoint(-1);
 				}
+				
 			}
 		};
 	}

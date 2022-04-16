@@ -3,7 +3,8 @@
  */
 package ihm.componant.element;
 
-import game.element.machine.Machine;
+import controler.DataCtrl;
+import game.element.machine.Throwball;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -27,7 +28,7 @@ import javafx.util.Duration;
  */
 public class ThrowballShape extends StackPane {
 
-	private Machine machine;
+	private Throwball machine;
 
 	private Circle anneauGen;
 	private Circle centreGen;
@@ -40,11 +41,18 @@ public class ThrowballShape extends StackPane {
 	private Timeline timelineBall;
 
 
-	public ThrowballShape(Machine machine) {
+	public ThrowballShape(Throwball machine) {
 		this.machine = machine;
 		initialisation();
 		initAnimation();
 		lifePointChrono();
+
+		DataCtrl.THROW_EVENT.register(event -> {
+			if (event.isDestroy()) {
+				destroyMachine();
+			}
+		});
+
 
 	}
 
@@ -103,6 +111,8 @@ public class ThrowballShape extends StackPane {
 
 	public void destroyMachine() {
 
+		chronoLbl();
+
 		Timeline fadeColor = new Timeline(
 				new KeyFrame(Duration.millis(500), new KeyValue(anneauGen.strokeProperty(), Color.GRAY),
 						new KeyValue(centreGen.strokeProperty(), Color.GRAY),
@@ -113,8 +123,6 @@ public class ThrowballShape extends StackPane {
 		this.animRotation.stop();
 		this.timelineChrono.stop();
 
-		machine.destroy();
-
 	}
 
 	private void lifePointChrono() {
@@ -123,7 +131,6 @@ public class ThrowballShape extends StackPane {
 
 		timelineChrono = new Timeline(new KeyFrame(Duration.millis(500), ev -> {
 			chronoLbl();
-
 		}));
 
 		timelineChrono.setCycleCount(Animation.INDEFINITE);
@@ -132,6 +139,16 @@ public class ThrowballShape extends StackPane {
 
 	private void chronoLbl() {
 		this.timeLbl.setText(String.valueOf(machine.getLife()));
+	}
+
+	/**
+	 * Change l'état du lancé de balle de la machine
+	 * 
+	 * @param b <code>true</code> Activé le lancé de balle <code>false</code>
+	 *          Désactivé le lancé de balle
+	 */
+	public void activeThrow(boolean b) {
+		this.machine.activeThrow(b);
 	}
 
 }

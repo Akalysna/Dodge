@@ -7,10 +7,8 @@ import control.Key;
 import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.ScreenName;
 import game.element.Cuby;
-import game.niveau.GestionnaireNiveau;
-import game.niveau.WorldManager;
 import game.niveau.World;
-import ihm.componant.element.CubyShape;
+import game.niveau.WorldManager;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -20,7 +18,6 @@ public class DodgeCtrl {
 
 	private ArrayList<Cuby> players;
 
-	private GestionnaireNiveau gestionNiveau;
 	private DodgeKeyboard dodgeKeyboard;
 	
 	public static final FormeManager formeManager = new FormeManager();
@@ -129,8 +126,6 @@ public class DodgeCtrl {
 	}
 
 	// ---------
-
-	public GestionnaireNiveau getGestionNiveau() { return gestionNiveau; }
 
 	/**
 	 * Retourne

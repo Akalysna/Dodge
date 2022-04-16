@@ -4,7 +4,7 @@ import java.util.List;
 
 import controler.DataCtrl.DodgeColor;
 import game.element.Element;
-import game.element.machine.Machine;
+import game.element.machine.Throwball;
 import util.Position;
 
 public class Zone implements Element {
@@ -22,8 +22,9 @@ public class Zone implements Element {
 	private Position position;
 
 	private double size;
+	private int nbItemInZone;
 
-	private Machine machine;
+	private Throwball machine;
 
 	// ---------------------------
 
@@ -36,7 +37,7 @@ public class Zone implements Element {
 	 * @param y      Coordonnée de la zone en Y
 	 * @param color  Couleur de la zone
 	 */
-	public Zone(Position pos, List<Double> points, double taille, DodgeColor color, Machine machine) {
+	public Zone(Position pos, List<Double> points, double taille, DodgeColor color, Throwball machine) {
 
 		this.color = color;
 
@@ -48,6 +49,7 @@ public class Zone implements Element {
 		this.position = pos;
 
 		this.size = taille;
+		this.nbItemInZone = 0; 
 	}
 
 	public Zone(Position pos, List<Double> points, double taille, DodgeColor color) {
@@ -58,10 +60,13 @@ public class Zone implements Element {
 	/**
 	 * @param machine the machine to set
 	 */
-	public void setMachine(Machine machine) { this.machine = machine; }
+	public void setMachine(Throwball machine) { this.machine = machine; }
 
 	// ---------------------------
 
+	public void addItemInZone(int i) {
+		this.nbItemInZone += i;
+	}
 
 	@Override
 	public void active() {
@@ -83,6 +88,8 @@ public class Zone implements Element {
 	@Override
 	public void destroy() {
 		isDisable = true;
+		
+		System.out.println("Je suis detruit");
 	}
 
 	// -------------
@@ -134,7 +141,11 @@ public class Zone implements Element {
 	public String toString() {
 		return "Zone [points=" + points + " size : " + size + " Color : " + color;
 	}
-
-
+	
+	/** 
+	 * Retourne
+	 * @return the nbItemInZone
+	 */
+	public int getNbItemInZone() { return nbItemInZone; }
 
 }

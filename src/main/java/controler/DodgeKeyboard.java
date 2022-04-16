@@ -28,7 +28,7 @@ public class DodgeKeyboard {
 
 	/** Touche ZQSD */
 	public final static ArrayList<KeyCode> ZQSD_MOVE = new ArrayList<>(
-			Arrays.asList(KeyCode.Z, KeyCode.D, KeyCode.S, KeyCode.Q));
+			Arrays.asList(KeyCode.Z, KeyCode.S, KeyCode.Q, KeyCode.D));
 
 	public DodgeKeyboard(Scene scene) {
 		keyboard = new Keyboard(scene);
@@ -68,7 +68,8 @@ public class DodgeKeyboard {
 				
 				@Override
 				public void event() {
-					cuby.move(x, y);
+					if(cuby.isMoving())
+						cuby.move(x, y);
 				}
 
 				@Override

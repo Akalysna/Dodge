@@ -10,13 +10,14 @@ import util.Position;
  * 
  * @author Llona André--Augustine
  */
-public class Cuby {
+public class Cuby  implements Element{
 
 	private double speed;
 	private double size;
 	private DodgeColor color;
 
 	private Position position;
+	private boolean isMoving; 
 
 	/**
 	 * Constructeur du cuby
@@ -35,6 +36,7 @@ public class Cuby {
 		this.size = width;
 
 		this.position = pos;
+		this.isMoving = false; 
 	}
 
 	/**
@@ -65,7 +67,7 @@ public class Cuby {
 	public void move(double dx, double dy) {
 
 		//System.out.println("move in cuby class : " + this.position);
-
+		
 		if (dx > 0 && this.position.getX() < Dodge.SCENE_WIDTH - size) {
 			this.position.addX(dx * speed);
 		}
@@ -81,6 +83,22 @@ public class Cuby {
 		if (dy < 0 && this.position.getY() > 0) {
 			this.position.addY(dy * speed);
 		}
+	}
+	
+	@Override
+	public void active() {
+		this.isMoving = true;
+		
+	}
+
+	@Override
+	public void stop() {
+		this.isMoving = false; 
+	}
+
+	@Override
+	public void destroy() {
+		stop();
 	}
 
 	// --------------------
@@ -119,6 +137,10 @@ public class Cuby {
 	 */
 	public void setPosition(Position position) { this.position = position; }
 
-
+	/** 
+	 * Retourne
+	 * @return the isMoving
+	 */
+	public boolean isMoving() { return isMoving; }
 
 }

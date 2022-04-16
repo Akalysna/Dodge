@@ -16,7 +16,7 @@ import controler.DataCtrl.TypeElement;
 import controler.DodgeCtrl;
 import controler.FormeManager;
 import game.element.factory.MachineFactory;
-import game.element.machine.Machine;
+import game.element.machine.Throwball;
 import game.element.zone.Zone;
 import util.Position;
 
@@ -101,7 +101,7 @@ public class WorldManager {
 				y = jMachine.getJSONObject("position").getDouble("y");
 				Position cubyPos = new Position(x, y);
 
-				Machine m = MachineFactory.get(type, cubyPos);
+				Throwball m = MachineFactory.get(type, cubyPos);
 
 				JSONArray jsonZone = jMachine.getJSONArray("zones");
 
@@ -117,7 +117,7 @@ public class WorldManager {
 		return stages;
 	}
 
-	private ArrayList<Zone> getZones(JSONArray jsonZone, Machine m) {
+	private ArrayList<Zone> getZones(JSONArray jsonZone, Throwball m) {
 
 		ArrayList<Zone> zones = new ArrayList<>();
 		

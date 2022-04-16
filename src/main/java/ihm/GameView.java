@@ -6,9 +6,12 @@ import control.view.View;
 import controler.DataCtrl;
 import controler.DodgeCtrl;
 import controler.GameCtrl;
+import event.NodeEvent;
+import event.EventRegister;
 import game.element.Cuby;
 import game.niveau.World;
 import javafx.animation.AnimationTimer;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import util.EmptyLevelException;
@@ -24,6 +27,8 @@ public class GameView extends AnchorPane implements View {
 
 	private Rectangle fadeRect;
 	private DodgeCtrl dodgeCtrl;
+
+	public static EventRegister<NodeEvent> ELEMENT_EVENT = new EventRegister<>();
 
 
 	/**
@@ -50,17 +55,33 @@ public class GameView extends AnchorPane implements View {
 			this.getChildren().addAll(gameCtrl.getThrowballs());
 			this.getChildren().addAll(gameCtrl.getZones());
 			this.getChildren().addAll(gameCtrl.getCubys());
+			
+//			update = new AnimationTimer() {
+//				
+//				@Override
+//				public void handle(long now) {
+//					gameCtrl.cubyHoveredZone();
+//				}
+//			};
+//			
+//			update.start();
+			
+			
 
 		} catch (EmptyLevelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		ELEMENT_EVENT.register(event -> {
+			if (event.isRemove())
+				this.getChildren().removeAll(event.getElement());
+			else
+				this.getChildren().addAll(event.getElement());
+		});
 	}
 
 	@Override
 	public void load() {
-		// TODO Auto-generated method stub
-
 	}
 
 
@@ -99,6 +120,15 @@ public class GameView extends AnchorPane implements View {
 
 	private void clear() {
 		this.getChildren().clear();
+	}
+
+	/**
+	 * 
+	 */
+	private void endGame() {
+
+		clear();
+
 	}
 
 

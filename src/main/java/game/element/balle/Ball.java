@@ -4,6 +4,8 @@ import controler.DataCtrl.DodgeColor;
 import controler.DataCtrl.TypeElement;
 import game.element.Element;
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import util.Position;
 import util.RandomUtil;
 import util.Stats;
@@ -15,7 +17,7 @@ import util.Stats;
  * @version 1.0
  *
  */
-public abstract class Ball implements Element{
+public abstract class Ball implements Element {
 
 	protected Position position;
 	protected DodgeColor color;
@@ -30,7 +32,7 @@ public abstract class Ball implements Element{
 	protected boolean isStop;
 
 	/** Indique si la balle à disparu */
-	protected boolean hasDisappeared;
+	protected BooleanProperty hasDisappeared;
 
 	protected AnimationTimer mouvementTimeline;
 
@@ -55,10 +57,12 @@ public abstract class Ball implements Element{
 		this.isStop = true;
 		this.speed = 5;
 		this.life = new Stats<>(life);
+		
+		this.hasDisappeared = new SimpleBooleanProperty(false);
 
 		this.dx = RandomUtil.invertSign(Math.cos(45) * speed);
 		this.dy = RandomUtil.invertSign(Math.sin(45) * speed);
-		
+
 		initBallMouvement();
 	}
 
@@ -103,8 +107,8 @@ public abstract class Ball implements Element{
 	public void destroy() {
 		stop();
 	}
-	
-	
+
+
 	/**
 	 * 
 	 */
@@ -126,12 +130,20 @@ public abstract class Ball implements Element{
 	// ------------------
 
 
+
 	/**
 	 * Retourne
 	 * 
 	 * @return the position
 	 */
 	public Position getPosition() { return position; }
+
+
+
+	@Override
+	public String toString() {
+		return "Ball (" + position.getX() + ", " + position.getY() + ")";
+	}
 
 	/**
 	 * Retourne
@@ -195,4 +207,11 @@ public abstract class Ball implements Element{
 	 */
 	public void setSpeed(double speed) { this.speed = speed; }
 
+	/** 
+	 * Retourne
+	 * @return the hasDisappeared
+	 */
+	public BooleanProperty getHasDisappeared() { return hasDisappeared; }
+
+	
 }

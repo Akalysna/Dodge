@@ -3,12 +3,12 @@ package game.niveau;
 import java.util.ArrayList;
 import java.util.List;
 
-import game.element.machine.Machine;
+import game.element.machine.Throwball;
 import util.Position;
 
 public class Stage {
 
-	private ArrayList<Machine> machines;
+	private ArrayList<Throwball> machines;
 	private Position cubyPos;
 
 	public Stage(Position cubyPos) {
@@ -16,11 +16,11 @@ public class Stage {
 		this.cubyPos = cubyPos;
 	}
 
-	public void addMachine(Machine machine) {
+	public void addMachine(Throwball machine) {
 		this.machines.add(machine);
 	}
 
-	public List<Machine> getMachines() { return machines; }
+	public List<Throwball> getMachines() { return machines; }
 
 	/**
 	 * Retourne

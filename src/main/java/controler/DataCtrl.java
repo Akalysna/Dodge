@@ -7,6 +7,7 @@ import java.util.Random;
 
 import event.EventRegister;
 import event.GameEvent;
+import event.ThrowEvent;
 import exception.EmptyListException;
 import javafx.beans.property.DoubleProperty;
 import javafx.scene.layout.Background;
@@ -103,6 +104,9 @@ public class DataCtrl {
 
 	public static final double HEIGHT = 800;
 	public static final double WIDTH = 600;
+	
+	
+	public static EventRegister<ThrowEvent> THROW_EVENT = new EventRegister<>(); 
 	
 	/**
 	 * Construit une ligne de suivi, lorsqu'une machine lance une FocusBall

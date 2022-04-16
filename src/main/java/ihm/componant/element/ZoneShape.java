@@ -3,6 +3,7 @@
  */
 package ihm.componant.element;
 
+import controler.DataCtrl;
 import game.element.zone.Zone;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -30,6 +31,12 @@ public class ZoneShape extends Polyline {
 		}
 		
 		initialization();
+		
+		DataCtrl.THROW_EVENT.register(event -> {
+			if(event.isDestroy()) {
+				destroy();
+			}
+		});
 	}
 
 	public void initialization() {
@@ -49,6 +56,12 @@ public class ZoneShape extends Polyline {
 		this.setEffect(ombre);
 
 	}
+	
+	public void addItemInZone(int i) {
+		zone.addItemInZone(i);
+	}
+	
+	public int getNbItemInZone() { return zone.getNbItemInZone(); }
 
 	public void active() {
 		zone.active();
@@ -63,7 +76,6 @@ public class ZoneShape extends Polyline {
 	}
 
 	public void destroy() {
-		zone.destroy();
 
 		Timeline fadeColor = new Timeline(new KeyFrame(Duration.millis(500), new KeyValue(strokeProperty(), Color.GRAY),
 				new KeyValue(((DropShadow) getEffect()).colorProperty(), Color.GRAY),

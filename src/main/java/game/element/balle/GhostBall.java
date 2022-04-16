@@ -26,7 +26,7 @@ public class GhostBall extends Ball {
 
 				// Disparition
 				if (life.getCurrent() == 0) {
-					hasDisappeared = true;
+					hasDisappeared.set(true);
 				}
 
 				position.setX(position.getX() + dx);
