@@ -39,7 +39,44 @@
               ]
             }
           ]
+        }, 
+
+        {
+          "cubyPosition": {
+            "x": 400,
+            "y": 100
+          },
+          "throwballs": [
+            {
+              "type": "SIMPLE",
+              "position": {
+                "x": 500,
+                "y": 300
+              },
+              "zones": [
+                {
+                  "type": "SIMPLE",
+                  "shape": "carre",
+                  "size": 40,
+                  "position": {
+                    "x": 600,
+                    "y": 400
+                  }
+                },
+                {
+                  "type": "SIMPLE",
+                  "shape": "carre",
+                  "size": 10,
+                  "position": {
+                    "x": 100,
+                    "y": 100
+                  }
+                }
+              ]
+            }
+          ]
         }
+
       ]
     }
   ],

@@ -34,13 +34,13 @@ public class Throwball implements Element {
 
 	/** Délai entre chaque lancé de balle exprimé en miliseconde */
 	private int delayThrow;
-	
+
 	/***
-	 * Lorsque la machine est détruite toutes les zone doivents l'etre 
-	 * Quand une zon est survoler le décompte de la machine dois descendre
+	 * Lorsque la machine est détruite toutes les zone doivents l'etre Quand une zon
+	 * est survoler le décompte de la machine dois descendre
 	 */
-	
-	private ArrayList<Zone> zones; 
+
+	private ArrayList<Zone> zones;
 
 	// -----
 
@@ -54,8 +54,8 @@ public class Throwball implements Element {
 	// Chrono
 	private Timeline timelineChrono;
 	private Timeline timelineBall;
-	
-	private int nbZoneHover; 
+
+	private int nbZoneHover;
 
 
 	// ------------------------------------
@@ -107,13 +107,13 @@ public class Throwball implements Element {
 
 		timelineChrono.setCycleCount(Animation.INDEFINITE);
 		timelineBall.setCycleCount(Animation.INDEFINITE);
-		
-		this.zones = new ArrayList<>(); 
-		this.nbZoneHover = 0; 
+
+		this.zones = new ArrayList<>();
+		this.nbZoneHover = 0;
 	}
-	
+
 	public void addZone(List<Zone> zone) {
-		this.zones.addAll(zone); 
+		this.zones.addAll(zone);
 	}
 
 	// ------------------------------------
@@ -129,9 +129,9 @@ public class Throwball implements Element {
 			try {
 
 				TypeElement type = (TypeElement) RandomUtil.getRandomElement(ballType);
-				
+
 				DataCtrl.THROW_EVENT.handle(new ThrowEvent(type, this.position.getX(), this.position.getY()));
-				
+
 			} catch (EmptyListException e) {
 				e.printStackTrace();
 			}
@@ -170,11 +170,11 @@ public class Throwball implements Element {
 
 		this.isDestroy = true;
 		this.life.setCurrent(0);
-		
+
 		for (Zone z : zones) {
 			z.destroy();
 		}
-		
+
 		DataCtrl.THROW_EVENT.handle(new ThrowEvent(isDestroy));
 	}
 
@@ -184,8 +184,8 @@ public class Throwball implements Element {
 			timelineChrono.play();
 		}
 	}
-	
-	//TODO Séparer le stop du hover et le stop "pause"
+
+	// TODO Séparer le stop du hover et le stop "pause"
 
 	@Override
 	public void stop() {
@@ -195,29 +195,31 @@ public class Throwball implements Element {
 			this.life.reset();
 		}
 	}
-	
+
 	/**
+	 * Change l'état du lancé de balle de la machine
 	 * 
+	 * @param b <code>true</code> Activé le lancé de balle <code>false</code>
+	 *          Désactivé le lancé de balle
 	 */
 	public void activeThrow(boolean b) {
-		
-		if(b)
+
+		if (b)
 			timelineBall.play();
-		else 
+		else
 			timelineBall.stop();
-			
 	}
-	
+
 
 	/**
 	 * @param i
 	 */
 	public void hoverZone(int i) {
-		nbZoneHover += i; 
-		
-		//System.out.println("nbZoneHover : " + nbZoneHover);
-		
-		if(nbZoneHover > 0) {
+		nbZoneHover += i;
+
+		// System.out.println("nbZoneHover : " + nbZoneHover);
+
+		if (nbZoneHover > 0) {
 			active();
 		} else {
 			stop();
@@ -293,15 +295,13 @@ public class Throwball implements Element {
 				+ ", timelineBall=" + timelineBall + "]";
 	}
 
-	/** 
+	/**
 	 * Retourne
+	 * 
 	 * @return the zones
 	 */
 	public ArrayList<Zone> getZones() { return zones; }
 
-	
-	
-	
-	
+
 
 }

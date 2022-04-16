@@ -68,7 +68,7 @@ public class DodgeCtrl {
 		Cuby player2 = new Cuby(DodgeColor.PINK);
 
 		players.add(player1);
-		players.add(player2);
+		//players.add(player2);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class DodgeCtrl {
 
 		// --- Cuby
 		dodgeKeyboard.addCubyMove(DodgeKeyboard.ARROW_MOVE, players.get(0));
-		dodgeKeyboard.addCubyMove(DodgeKeyboard.ZQSD_MOVE, players.get(1));
+		//dodgeKeyboard.addCubyMove(DodgeKeyboard.ZQSD_MOVE, players.get(1));
 
 		//System.out.println(players.get(0));
 		

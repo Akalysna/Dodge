@@ -5,7 +5,6 @@ import java.util.List;
 
 import event.NodeEvent;
 import game.element.Cuby;
-import game.element.Element;
 import game.element.balle.Ball;
 import game.element.machine.Throwball;
 import game.element.zone.Zone;
@@ -78,10 +77,10 @@ public class GameCtrl {
 			cubys.add(new CubyShape(cuby));
 		}
 
-		throwballEvent();
+		ballEvent();
 	}
 
-	// ------------
+	// --------------
 
 
 	/**
@@ -110,9 +109,9 @@ public class GameCtrl {
 		this.zones.clear();
 		this.balls.clear();
 
-		// ----
+		// ---Initialisation des machines et des zones---
 
-		// Pour chaque machine du stage
+		// Pour schaque machine du stage
 		for (Throwball throwball : currentStage.getMachines()) {
 
 			// Transformation en shape
@@ -132,23 +131,25 @@ public class GameCtrl {
 
 		// ----
 
-		// TODO Ajouté plusieurs position pour tous les cubys
+		// TODO Ajouté plusieurs position pour tous les cubys dans le json
 
-		// Met à jour la position des cubys pour le stage
+		// Met à jour la position des cubys pour le stage et du survol des zones
 		for (CubyShape shpCuby : cubys) {
 
 			shpCuby.setPosition(currentStage.getCubyPos());
-			shpCuby.active();
+			shpCuby.active(); // Active le déplacement du cuby
 
 			shpCuby.xProperty().addListener((obj, oldV, newV) -> cubyHoveredZone());
 			shpCuby.yProperty().addListener((obj, oldV, newV) -> cubyHoveredZone());
 		}
 	}
 
+	// ---
+
 	/**
 	 * Évenement lié au lancer de balles par la machine
 	 */
-	private void throwballEvent() {
+	private void ballEvent() {
 
 		// Enregistrement de l'événement
 		DataCtrl.THROW_EVENT.register(event -> {
@@ -170,6 +171,7 @@ public class GameCtrl {
 
 				// A chaque déplacement en X, vérifié qu'il n'y ai pas de colission
 				// avec les cubys
+
 				ballshape.centerXProperty().addListener((obj, o, n) -> ballCollisionCuby(ballshape));
 				ballshape.centerYProperty().addListener((obj, o, n) -> ballCollisionCuby(ballshape));
 
@@ -187,101 +189,9 @@ public class GameCtrl {
 		});
 	}
 
-	public void hoveredZone() {
-		for (CubyShape cuby : cubys) {
-			//cubyHoveredZone(cuby);
-		}
-	}
-
-	private void cubyLeaveZone(ZoneShape zone) {
-
-		if (zone.isHovered()) {
-			zone.stop();
-			zone.addItemInZone(-1);
-			System.out.println(zone.getNbItemInZone());
-		}
-
-	}
-
-	private ZoneShape zoneIntersect(Shape shape) {
-
-		for (ZoneShape zone : zones) {
-
-			if (!Shape.intersect(zone, shape).getBoundsInLocal().isEmpty()) { return zone; }
-		}
-
-		return null;
-	}
-
-	private void cubyEnteredZone(ZoneShape zone) {
-		
-		if (!zone.isHovered()) {
-			zone.active();
-			zone.addItemInZone(+1);
-			System.out.println(zone.getNbItemInZone());
-		}
-	}
-
-	private void cubyHoveredZone() {
-
-		for (ZoneShape zone : zones) {
-
-			boolean intersect = false;
-
-			for (CubyShape cuby : this.cubys) {
-				if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
-					intersect = true;
-				}
-			}
-
-			if (intersect) {
-				cubyEnteredZone(zone);
-			} else {
-				cubyLeaveZone(zone);
-			}
-		}
-
-//			// Si collision
-//			if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
-//
-//				if (!zone.isHovered()) {
-//					zone.active();
-//					zone.addItemInZone(+1);
-//					System.out.println(zone.getNbItemInZone());
-//				}
-//
-//
-//			} else {
-//
-//				if (zone.isHovered()) {
-//					zone.stop();
-//					zone.addItemInZone(-1);
-//					System.out.println(zone.getNbItemInZone());
-//				}
-//			}
-//		}
-
-//		for (ZoneShape zone : zones) {
-//
-//			// Si le cuby entre dans la zone
-//			if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
-//
-//				// Si la zone n'était pas survolé, activé la
-//				if (!zone.isHovered() && cuby.isMoving())
-//					zone.active();
-//				else if (!cuby.isMoving())
-//					zone.stop();
-//			}
-//
-//			else {
-//				if (zone.isHovered())
-//					zone.stop();
-//			}
-//		}
-	}
-
 	/**
-	 * Supprime le(s) cuby(s) qui ont colisionné la balle, si collision
+	 * Supprime le(s) cuby(s) qui ont collisionné la balle, si collision. Les cubys
+	 * sont stoppé et supprimé de l'affichage
 	 * 
 	 * @param ballShape Balle qui collisionne
 	 */
@@ -296,14 +206,9 @@ public class GameCtrl {
 			if (!Shape.intersect(cuby, ballShape).getBoundsInLocal().isEmpty()) {
 
 				cuby.stop();
+				cubyHoveredZone();
 
-				ZoneShape zone;
-
-				if ((zone = zoneIntersect(cuby)) != null) {
-					cubyLeaveZone(zone);
-				}
-
-				// Suppressioon du cuby à l'affichage
+				// Suppression du cuby à l'affichage
 				GameView.ELEMENT_EVENT.handle(new NodeEvent(true, cuby));
 
 				list.add(cuby);
@@ -312,19 +217,97 @@ public class GameCtrl {
 
 		if (!list.isEmpty()) {
 			cubys.removeAll(list);
-			endWorld();
 		}
+
+		isEndStage();
 
 	}
 
+	// ---
+
+	/**
+	 * Modifie l'état des zone si des cubys les survole
+	 */
+	private void cubyHoveredZone() {
+
+		// Pour chaque zone
+		for (ZoneShape zone : zones) {
+
+			// Vrai si au moins un cuby est dans la zone
+			boolean isIntersect = false;
+
+			for (CubyShape cuby : this.cubys) {
+				if (!Shape.intersect(zone, cuby).getBoundsInLocal().isEmpty()) {
+					isIntersect = true;
+				}
+			}
+
+			// S'il y a au moins 1 cuby
+			if (isIntersect) {
+
+				// S'il s'agit d'un premier cuby à survolé la zone
+				if (!zone.isHovered()) {
+					zone.active();
+					zone.addItemInZone(+1);
+				}
+
+			} else { // Si aucun cuby sur vole la zone
+
+				// La zone était active l'éteindre
+				if (zone.isHovered()) {
+					zone.stop();
+					zone.addItemInZone(-1);
+				}
+			}
+		}
+	}
+
+	// --------------
+
+	/**
+	 * Verifi s'il s'agit de la fin du stage
+	 */
+	private void isEndStage() {
+
+		if (cubys.isEmpty()) {
+			System.out.println("Toutes les cubys sont morts");
+			endWorld();
+		}
+
+		else if (allThrowballStop()) {
+			System.out.println("Toutes les machines sont eteinte");
+			nextStage();
+		}
+	}
+
+	/**
+	 * Vérifie si toutes les machines sont désactivé
+	 * 
+	 * @return <code>true</code> Toutes les machines sont désactivé
+	 */
+	private boolean allThrowballStop() {
+		// this.currentStage.getMachines()
+
+		boolean isEndGame = true;
+
+		for (ThrowballShape shpThrowball : throwballs) {
+			isEndGame &= shpThrowball.isDestroy();
+		}
+
+		return isEndGame;
+	}
 
 	public boolean nextStage() {
 
 		if (indexStage < world.getNbStage() - 1) {
+
 			indexStage++;
 			currentStage = world.getStage(indexStage);
 
+			elementInGame(true);
 			initStageElement();
+			elementInGame(false);
+
 			return true;
 		} else {
 			endWorld();
@@ -332,13 +315,27 @@ public class GameCtrl {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private void elementInGame(boolean isRemove) {
+
+		ArrayList<Node> nodes = new ArrayList<>();
+		nodes.addAll(balls);
+		nodes.addAll(throwballs);
+		nodes.addAll(zones);
+
+		GameView.ELEMENT_EVENT.handle(new NodeEvent(isRemove, nodes));
+	}
+
+
 
 	private void endWorld() {
 
-		GameView.ELEMENT_EVENT.handle(new NodeEvent(true, balls.toArray(new Node[balls.size()])));
-
+		elementInGame(true);
 		System.out.println("C'est fini");
 	}
+
 
 	// --------------------
 

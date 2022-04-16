@@ -122,8 +122,18 @@ public class ThrowballShape extends StackPane {
 
 		this.animRotation.stop();
 		this.timelineChrono.stop();
+		
 
 	}
+	
+	/**
+	 * Retourne l'état de la machine, si elle est détruite ou non
+	 * @return <code>true</code> La machine est détruite
+	 */
+	public boolean isDestroy() {
+		return machine.isDestroy();
+	}
+	
 
 	private void lifePointChrono() {
 

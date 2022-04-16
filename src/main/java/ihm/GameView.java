@@ -25,7 +25,6 @@ public class GameView extends AnchorPane implements View {
 	/** Boucle de mise a jour du jeu */
 	private AnimationTimer update;
 
-	private Rectangle fadeRect;
 	private DodgeCtrl dodgeCtrl;
 
 	public static EventRegister<NodeEvent> ELEMENT_EVENT = new EventRegister<>();
@@ -73,8 +72,10 @@ public class GameView extends AnchorPane implements View {
 		}
 
 		ELEMENT_EVENT.register(event -> {
-			if (event.isRemove())
+			if (event.isRemove()) {
 				this.getChildren().removeAll(event.getElement());
+				System.out.println(this.getChildren());
+			}
 			else
 				this.getChildren().addAll(event.getElement());
 		});

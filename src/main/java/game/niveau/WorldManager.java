@@ -93,7 +93,7 @@ public class WorldManager {
 
 			for (int j = 0; j < jsonMachine.length(); j++) {
 
-				JSONObject jMachine = jsonMachine.getJSONObject(i);
+				JSONObject jMachine = jsonMachine.getJSONObject(j);
 
 				TypeElement type = TypeElement.valueOf(jMachine.getString("type"));
 
@@ -108,7 +108,7 @@ public class WorldManager {
 				ArrayList<Zone> zones =  getZones(jsonZone , m);
 
 				m.addZone(zones);
-				stage.addMachine(m);
+				stage.addThrowball(m);
 			}
 
 			stages.add(stage);

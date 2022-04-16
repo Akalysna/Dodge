@@ -8,22 +8,50 @@ import util.Position;
 
 public class Stage {
 
-	private ArrayList<Throwball> machines;
+	/** Liste des machines du stage */
+	private ArrayList<Throwball> throwball;
+
+	// TODO Ajouté dans le JSON plusieurs position pour les diffs cubys
+	/** Position du cuby dans le niveau */
 	private Position cubyPos;
 
+	/**
+	 * Constructeur Stage. Initialisation des listes
+	 * 
+	 * @param cubyPos Position des cubys pour le stage
+	 */
 	public Stage(Position cubyPos) {
-		this.machines = new ArrayList<>();
+		this.throwball = new ArrayList<>();
 		this.cubyPos = cubyPos;
 	}
 
-	public void addMachine(Throwball machine) {
-		this.machines.add(machine);
+	/**
+	 * Ajout de machine dans la liste des machines du stage
+	 * 
+	 * @param throwball Machine à ajouté
+	 */
+	public void addThrowball(Throwball throwball) {
+		this.throwball.add(throwball);
 	}
 
-	public List<Throwball> getMachines() { return machines; }
+	/**
+	 * Retourne le nombre de machine dans le stage
+	 * 
+	 * @return int
+	 */
+	public int getNbThrowball() { return throwball.size(); }
+
+	// ----
 
 	/**
-	 * Retourne
+	 * Retourne la liste des machines du stage
+	 * 
+	 * @return Liste
+	 */
+	public List<Throwball> getMachines() { return throwball; }
+
+	/**
+	 * Retourne la position des cubys du stage
 	 * 
 	 * @return the cubyPos
 	 */
@@ -31,8 +59,7 @@ public class Stage {
 
 	@Override
 	public String toString() {
-		return "Stage [machines=" + machines + ", cubyPos=" + cubyPos + "]";
+		return "Stage [ \n\tMachines : " + throwball + "\n\tPosition cuby : " + cubyPos + "]";
 	}
-
 
 }
